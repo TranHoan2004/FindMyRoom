@@ -18,4 +18,5 @@ public class BoardingHouseDTO {
     private int totalRoom;
     private int numberOfRentedRooms;
     private int area;
+    private int numberOfStar;
 }

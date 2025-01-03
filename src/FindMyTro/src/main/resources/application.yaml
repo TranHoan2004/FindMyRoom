@@ -16,3 +16,7 @@ spring:
           auto: update
   application:
     name: FindMyRoom
+  mvc:
+    view:
+      prefix: classpath:/templates/
+      suffix: .html

@@ -44,6 +44,11 @@ public class BoardingHouse {
     @Max(100)
     private int area;
 
+    @Column(nullable = false, name = "star", columnDefinition = "int default 0")
+    @Min(0)
+    @Max(5)
+    private int numberOfStar;
+
     @OneToMany(mappedBy = "house", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Review> reviews;
 
