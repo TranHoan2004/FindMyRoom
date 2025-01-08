@@ -27,7 +27,7 @@ public class LoginLogoutAndRegisterController {
     @GetMapping("/login")
     public String redirectToLogin(Model model) {
         model.addAttribute("user", new UserDTO());
-        return "login";
+        return "login-forgot-register/login";
     }
 
     @PostMapping("/login")
@@ -54,7 +54,7 @@ public class LoginLogoutAndRegisterController {
     @GetMapping("/create_account")
     public String redirectToRegister(Model model) {
         model.addAttribute("user", userDTO);
-        return "register";
+        return "login-forgot-register/register";
     }
 
     @PostMapping("/register")
@@ -82,7 +82,7 @@ public class LoginLogoutAndRegisterController {
             Logger.getLogger(LoginLogoutAndRegisterController.class.getName()).log(Level.ALL, e.getMessage(), e);
             model.addAttribute("error", e.getMessage());
         }
-        return "register";
+        return "login-forgot-register/register";
     }
 
     // second part of register screen
@@ -103,7 +103,7 @@ public class LoginLogoutAndRegisterController {
             Logger.getLogger(LoginLogoutAndRegisterController.class.getName()).log(Level.ALL, e.getMessage(), e);
             model.addAttribute("error", e.getMessage());
         }
-        return "register";
+        return "login-forgot-register/register";
     }
 
     // third part of register screen
@@ -114,7 +114,7 @@ public class LoginLogoutAndRegisterController {
                 userDTO.setPassword(user.getPassword());
                 userDTO.setPhoneNumber(user.getPhoneNumber());
                 userService.addAnNewAccount(userDTO);
-                return "login";
+                return "login-forgot-register/login";
             } else {
                 throw new Exception("Rewrite password and password are not match");
             }
@@ -123,7 +123,7 @@ public class LoginLogoutAndRegisterController {
             model.addAttribute("error", e.getMessage());
             model.addAttribute("verifyCode", true);
             model.addAttribute("user", new UserDTO());
-            return "register";
+            return "login-forgot-register/register";
         }
     }
 

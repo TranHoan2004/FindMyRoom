@@ -10,6 +10,6 @@ public class HomeController {
     @GetMapping("/")
     public String index(Model model) {
         model.addAttribute("user", new UserDTO());
-        return "login";
+        return "login-forgot-register/login";
     }
 }
