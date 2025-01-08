@@ -5,6 +5,7 @@ import com.FindMyRoom.model.User;
 import com.FindMyRoom.repository.UserRepository;
 import jakarta.persistence.EntityManager;
 import org.hibernate.Session;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,33 +22,38 @@ public class UserRepositoryImpl implements UserRepository {
         this.em = em;
     }
 
+    @NotNull
     @Override
-    public <S extends Admin> S save(S entity) {
+    public <S extends User> S save(@NotNull S entity) {
+        return em.unwrap(Session.class).merge(entity);
+    }
+
+    @NotNull
+    @Override
+    public <S extends User> Iterable<S> saveAll(@NotNull Iterable<S> entities) {
         return null;
     }
 
+    @NotNull
     @Override
-    public <S extends Admin> Iterable<S> saveAll(Iterable<S> entities) {
-        return null;
-    }
-
-    @Override
-    public Optional<Admin> findById(Integer integer) {
+    public Optional<User> findById(@NotNull Integer integer) {
         return Optional.empty();
     }
 
     @Override
-    public boolean existsById(Integer integer) {
+    public boolean existsById(@NotNull Integer integer) {
         return false;
     }
 
+    @NotNull
     @Override
-    public Iterable<Admin> findAll() {
+    public Iterable<User> findAll() {
         return null;
     }
 
+    @NotNull
     @Override
-    public Iterable<Admin> findAllById(Iterable<Integer> integers) {
+    public Iterable<User> findAllById(@NotNull Iterable<Integer> integers) {
         return null;
     }
 
@@ -57,22 +63,22 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void deleteById(Integer integer) {
+    public void deleteById(@NotNull Integer integer) {
 
     }
 
     @Override
-    public void delete(Admin entity) {
+    public void delete(@NotNull User entity) {
 
     }
 
     @Override
-    public void deleteAllById(Iterable<? extends Integer> integers) {
+    public void deleteAllById(@NotNull Iterable<? extends Integer> integers) {
 
     }
 
     @Override
-    public void deleteAll(Iterable<? extends Admin> entities) {
+    public void deleteAll(@NotNull Iterable<? extends User> entities) {
 
     }
 

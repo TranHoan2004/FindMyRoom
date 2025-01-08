@@ -22,8 +22,9 @@
 <div class="limiter">
     <div class="container-login100">
         <div class="wrap-login100">
-            <div class="form-step active" id="step1" th:if="${vetifyCode == null}">
-                <form class="login100-form validate-form" th:action="@{/create}" th:method="POST">
+            <!--First part-->
+            <div class="form-step active" id="step1" th:if="${verifyCode == null}">
+                <form class="login100-form validate-form" th:action="@{/email}" th:method="POST" th:object="${user}">
                     <span class="login100-form-title"> Create new account </span>
 
                     <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
@@ -34,15 +35,17 @@
                         </label>
                         <span class="focus-input100"></span>
                         <span class="symbol-input100">
-                                 <i class="fa fa-envelope" aria-hidden="true"></i>
-                            </span>
+                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                        </span>
                     </div>
 
-                    <p class="text-center" style="color: red" th:if="${error != null}" th:text="${error}"></p>
-                    <p style="color: green" class="text-center" th:if="${message != null}" th:text="${message}"></p>
+                    <div class="wrap-input100">
+                        <p class="text-center" style="color: red" th:if="${error != null}" th:text="${error}"></p>
+                        <p style="color: green" class="text-center" th:if="${message != null}" th:text="${message}"></p>
+                    </div>
 
                     <div class="container-login100-form-btn">
-                        <input type="submit" class="login100-form-btn" value="Check vertify code"/>
+                        <input type="submit" class="login100-form-btn" value="Check verify code"/>
                     </div>
 
                     <div class="text-center p-t-136">
@@ -54,7 +57,8 @@
                 </form>
             </div>
 
-            <div class="form-step active" id="step2" th:if="${vetifyCode == true}">
+            <!--Second part-->
+            <div class="form-step active" id="step2" th:if="${verifyCode == false}">
                 <form th:action="@{/validateCode}" th:method="POST">
                     <span class="login100-form-title"> Verify Email </span>
 
@@ -70,7 +74,9 @@
                         </span>
                     </div>
 
-                    <p class="text-center" style="color: red" th:if="${error != null}" th:text="${error}"></p>
+                    <div class="wrap-input100">
+                        <p class="text-center" style="color: red" th:if="${error != null}" th:text="${error}"></p>
+                    </div>
 
                     <div class="container-login100-form-btn">
                         <input type="submit" class="login100-form-btn" value="Check"/>
@@ -78,8 +84,9 @@
                 </form>
             </div>
 
-            <div class="form-step active" id="step3" th:if="${vetifyCode == false}">
-                <form th:action="@{/create}" th:method="POST">
+            <!--Third part-->
+            <div class="form-step active" id="step3" th:if="${verifyCode == true}">
+                <form th:action="@{/create}" th:method="POST" th:object="${user}">
                     <span class="login100-form-title"> Your information </span>
 
                     <div class="wrap-input100 validate-input">
@@ -118,7 +125,9 @@
                         </span>
                     </div>
 
-                    <p class="text-center" style="color: red" th:if="${error != null}" th:text="${error}"></p>
+                    <div class="wrap-input100">
+                        <p class="text-center" style="color: red" th:if="${error != null}" th:text="${error}"></p>
+                    </div>
 
                     <div class="container-login100-form-btn">
                         <input type="submit" class="login100-form-btn" value="Create your account"/>
