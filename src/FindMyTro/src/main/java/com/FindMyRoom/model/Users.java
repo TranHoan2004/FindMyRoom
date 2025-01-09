@@ -40,7 +40,7 @@ public class Users {
     @Column
     private Boolean gender;
 
-    @Column(name = "image_url", columnDefinition = "varbinary(max)")
+    @Column(name = "image_url", columnDefinition = "VARBINARY(MAX)")
     private byte[] imgURL;
 
     @Column(nullable = false)

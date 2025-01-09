@@ -46,7 +46,7 @@ public class Service {
     @Temporal(TemporalType.DATE)
     private Date endDate;
 
-    @Column(nullable = false, columnDefinition = "int default 0", name = "sold_quantity")
+    @Column(nullable = false, columnDefinition = "INT DEFAULT 0", name = "sold_quantity")
     private int soldQuantity;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

@@ -20,7 +20,7 @@ public class BoardingHouse {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "special_items", columnDefinition = "varchar(max)")
+    @Column(name = "special_items", columnDefinition = "VARBINARY(MAX)")
     private String specialItem;
 
     @Column(nullable = false)
@@ -30,7 +30,7 @@ public class BoardingHouse {
     @Column(nullable = false)
     private String address;
 
-    @Column(columnDefinition = "varchar(max)", name = "available_room")
+    @Column(columnDefinition = "VARCHAR(MAX)", name = "available_room")
     private String availableRoom;
 
     @Column(nullable = false, name = "total_rooms")
@@ -44,10 +44,10 @@ public class BoardingHouse {
     @Max(100)
     private int area;
 
-    @Column(nullable = false, columnDefinition = "varchar(max)")
+    @Column(nullable = false, columnDefinition = "VARCHAR(MAX)")
     private String media;
 
-    @Column(nullable = false, name = "star", columnDefinition = "int default 0")
+    @Column(nullable = false, name = "star", columnDefinition = "INT DEFAULT 0")
     @Min(0)
     @Max(5)
     private int numberOfStar;

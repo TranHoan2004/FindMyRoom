@@ -21,7 +21,7 @@ public class Business {
     @Column(nullable = false)
     private float balance;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 20, name = "permission_number")
     private String permissionNumber;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "business")
