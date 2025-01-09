@@ -9,4 +9,5 @@ public interface UserService {
     List<String> getAllEmails();
     UserDTO getUserDTOByEmail(String email);
     void addAnNewAccount(UserDTO userDTO) throws ParseException;
+    void updateUserDTO(UserDTO userDTO);
 }

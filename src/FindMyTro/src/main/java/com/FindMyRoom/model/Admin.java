@@ -20,7 +20,7 @@ public class Admin {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @MapsId("adminID")
     @JoinColumn(name = "admin_id", referencedColumnName = "id")
-    private User user;
+    private Users user;
 
     @OneToMany(mappedBy = "admin", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Employee> employees;

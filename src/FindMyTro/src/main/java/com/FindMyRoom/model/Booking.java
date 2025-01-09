@@ -2,7 +2,9 @@ package com.FindMyRoom.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.FutureOrPresent;
 import java.util.Date;
 
 @Getter
@@ -19,9 +21,12 @@ public class Booking {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    private User user;
+    private Users user;
 
     @Column(name = "booking_date", nullable = false)
+    @FutureOrPresent
+    @DateTimeFormat(pattern = "yyyy-MM-dd", fallbackPatterns = {"yyyy/MM/dd", "dd-MM-yyyy", "dd/MM/yyyy"})
+    @Temporal(TemporalType.DATE)
     private Date bookingDate;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

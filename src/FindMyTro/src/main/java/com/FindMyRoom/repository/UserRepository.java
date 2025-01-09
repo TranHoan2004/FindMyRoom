@@ -1,12 +1,12 @@
 package com.FindMyRoom.repository;
 
-import com.FindMyRoom.model.Admin;
-import com.FindMyRoom.model.User;
+import com.FindMyRoom.model.Users;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
+import java.util.Optional;
 
-public interface UserRepository extends CrudRepository<User, Integer> {
+public interface UserRepository extends CrudRepository<Users, Integer> {
     List<String> getEmails();
-    User getByEmail(String email);
+    Users getByEmail(String email);
 }

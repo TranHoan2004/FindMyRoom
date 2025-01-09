@@ -16,7 +16,7 @@ public class Business {
     @Id
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    private User user;
+    private Users user;
 
     @Column(nullable = false)
     private float balance;

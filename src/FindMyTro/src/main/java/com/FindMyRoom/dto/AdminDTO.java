@@ -8,5 +8,5 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class AdminDTO {
-    private long adminID;
+    private UserDTO user;
 }

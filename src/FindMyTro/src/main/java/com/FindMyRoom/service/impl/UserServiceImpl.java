@@ -1,11 +1,12 @@
 package com.FindMyRoom.service.impl;
 
 import com.FindMyRoom.dto.UserDTO;
-import com.FindMyRoom.model.User;
+import com.FindMyRoom.model.Users;
 import com.FindMyRoom.repository.UserRepository;
 import com.FindMyRoom.service.UserService;
 import com.FindMyRoom.utils.CurrentDate;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -15,6 +16,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
+    @Autowired
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -26,20 +28,27 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getUserDTOByEmail(String email) {
-        User users = userRepository.getByEmail(email);
+        Users users = userRepository.getByEmail(email);
         return convert(users);
     }
 
     @Override
-    public void addAnNewAccount(UserDTO userDTO) throws ParseException {
-        if (userDTO != null) {
-            userDTO.setCreatedDate(CurrentDate.getCurrentDate());
-            userDTO.setStatus(true);
-            userRepository.save(convert(userDTO));
-        }
+    public void addAnNewAccount(@NotNull UserDTO userDTO) throws ParseException {
+        userDTO.setCreatedDate(CurrentDate.getCurrentDate());
+        userDTO.setStatus(true);
+        userRepository.save(convert(userDTO));
     }
 
-    private UserDTO convert(@NotNull User user) {
+    @Override
+    public void updateUserDTO(@NotNull UserDTO userDTO) {
+        UserDTO user = convert(userRepository.getByEmail(userDTO.getEmail()));
+        user.setPhoneNumber(userDTO.getPhoneNumber());
+        user.setEmail(userDTO.getEmail());
+        user.setPassword(userDTO.getPassword());
+        userRepository.save(convert(user));
+    }
+
+    private UserDTO convert(@NotNull Users user) {
         return UserDTO.builder()
                 .id(user.getId())
                 .email(user.getEmail())
@@ -53,8 +62,8 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
-    private User convert(@NotNull UserDTO user) {
-        return User.builder()
+    private Users convert(@NotNull UserDTO user) {
+        return Users.builder()
                 .id(user.getId())
                 .email(user.getEmail())
                 .password(user.getPassword())
@@ -66,4 +75,5 @@ public class UserServiceImpl implements UserService {
                 .status(user.getStatus())
                 .build();
     }
+
 }

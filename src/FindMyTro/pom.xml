@@ -96,6 +96,10 @@
 			<artifactId>javase</artifactId>
 			<version>3.5.3</version>
 		</dependency> <!--(google.zxing) javase-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

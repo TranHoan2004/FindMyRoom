@@ -1,7 +1,6 @@
 package com.FindMyRoom.repository.impl;
 
-import com.FindMyRoom.model.Admin;
-import com.FindMyRoom.model.User;
+import com.FindMyRoom.model.Users;
 import com.FindMyRoom.repository.UserRepository;
 import jakarta.persistence.EntityManager;
 import org.hibernate.Session;
@@ -24,19 +23,19 @@ public class UserRepositoryImpl implements UserRepository {
 
     @NotNull
     @Override
-    public <S extends User> S save(@NotNull S entity) {
+    public <S extends Users> S save(@NotNull S entity) {
         return em.unwrap(Session.class).merge(entity);
     }
 
     @NotNull
     @Override
-    public <S extends User> Iterable<S> saveAll(@NotNull Iterable<S> entities) {
+    public <S extends Users> Iterable<S> saveAll(@NotNull Iterable<S> entities) {
         return null;
     }
 
     @NotNull
     @Override
-    public Optional<User> findById(@NotNull Integer integer) {
+    public Optional<Users> findById(@NotNull Integer integer) {
         return Optional.empty();
     }
 
@@ -47,13 +46,13 @@ public class UserRepositoryImpl implements UserRepository {
 
     @NotNull
     @Override
-    public Iterable<User> findAll() {
+    public Iterable<Users> findAll() {
         return null;
     }
 
     @NotNull
     @Override
-    public Iterable<User> findAllById(@NotNull Iterable<Integer> integers) {
+    public Iterable<Users> findAllById(@NotNull Iterable<Integer> integers) {
         return null;
     }
 
@@ -68,7 +67,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void delete(@NotNull User entity) {
+    public void delete(@NotNull Users entity) {
 
     }
 
@@ -78,7 +77,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void deleteAll(@NotNull Iterable<? extends User> entities) {
+    public void deleteAll(@NotNull Iterable<? extends Users> entities) {
 
     }
 
@@ -90,15 +89,15 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public List<String> getEmails() {
         Session session = em.unwrap(Session.class);
-        List<String> emails = session.createQuery("select u.email from User u", String.class).getResultList();
+        List<String> emails = session.createQuery("select u.email from Users u", String.class).getResultList();
         session.close();
         return emails;
     }
 
     @Override
-    public User getByEmail(String email) {
+    public Users getByEmail(String email) {
         Session session = em.unwrap(Session.class);
-        User user = session.createQuery("select u from User u where u.email=:email", User.class)
+        Users user = session.createQuery("select u from Users u where u.email=:email", Users.class)
                 .setParameter("email", email)
                 .getSingleResult();
         session.close();

@@ -44,6 +44,9 @@ public class BoardingHouse {
     @Max(100)
     private int area;
 
+    @Column(nullable = false, columnDefinition = "varchar(max)")
+    private String media;
+
     @Column(nullable = false, name = "star", columnDefinition = "int default 0")
     @Min(0)
     @Max(5)
