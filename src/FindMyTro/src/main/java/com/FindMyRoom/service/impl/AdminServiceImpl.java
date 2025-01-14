@@ -20,12 +20,10 @@ import java.util.Optional;
 @Service
 public class AdminServiceImpl implements AdminService {
     private final AdminRepository adminRepository;
-    private final EntityManager entityManager;
 
     @Autowired
-    public AdminServiceImpl(AdminRepositoryImpl adminRepository, EntityManager em) {
+    public AdminServiceImpl(AdminRepositoryImpl adminRepository) {
         this.adminRepository = adminRepository;
-        this.entityManager = em;
     }
 
     @Override
@@ -40,9 +38,12 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Optional<AdminDTO> getAllAdminDTOs() {
-        Session session = entityManager.unwrap(Session.class);
-        Optional<Admin> users = session.createQuery("from Admin", Admin.class).uniqueResultOptional();
-        return users.map(this::convert);
+        Iterable<Admin> users = adminRepository.findAll();
+        Optional<AdminDTO> list = Optional.empty();
+        for (Admin admin : users) {
+            list = Optional.ofNullable(convert(admin));
+        }
+        return list;
     }
 
     @Nullable

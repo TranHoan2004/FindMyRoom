@@ -1,7 +1,11 @@
 package com.FindMyRoom.repository.impl;
 
 import com.FindMyRoom.model.Admin;
+import com.FindMyRoom.model.Business;
 import com.FindMyRoom.repository.BusinessRepository;
+import jakarta.persistence.EntityManager;
+import org.hibernate.Session;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,58 +15,71 @@ import java.util.Optional;
 @Repository
 @Transactional(propagation = Propagation.REQUIRED)
 public class BusinessRepositoryImpl implements BusinessRepository {
+    private final EntityManager em;
+
+    public BusinessRepositoryImpl(EntityManager em) {
+        this.em = em;
+    }
+
     @Override
     public long count() {
         return 0;
     }
 
+    @NotNull
     @Override
-    public <S extends Admin> S save(S entity) {
+    public <S extends Business> S save(@NotNull S entity) {
         return null;
     }
 
+    @NotNull
     @Override
-    public <S extends Admin> Iterable<S> saveAll(Iterable<S> entities) {
+    public <S extends Business> Iterable<S> saveAll(@NotNull Iterable<S> entities) {
         return null;
     }
 
+    @NotNull
     @Override
-    public Optional<Admin> findById(Integer integer) {
+    public Optional<Business> findById(@NotNull Integer integer) {
         return Optional.empty();
     }
 
     @Override
-    public boolean existsById(Integer integer) {
+    public boolean existsById(@NotNull Integer integer) {
         return false;
     }
 
+    @NotNull
     @Override
-    public Iterable<Admin> findAll() {
+    public Iterable<Business> findAll() {
+        return em.unwrap(Session.class)
+                .createQuery("from Business", Business.class)
+                .list();
+    }
+
+    @NotNull
+    @Override
+    public Iterable<Business> findAllById(@NotNull Iterable<Integer> integers) {
         return null;
     }
 
     @Override
-    public Iterable<Admin> findAllById(Iterable<Integer> integers) {
-        return null;
-    }
-
-    @Override
-    public void deleteById(Integer integer) {
+    public void deleteById(@NotNull Integer integer) {
 
     }
 
     @Override
-    public void delete(Admin entity) {
+    public void delete(@NotNull Business entity) {
 
     }
 
     @Override
-    public void deleteAllById(Iterable<? extends Integer> integers) {
+    public void deleteAllById(@NotNull Iterable<? extends Integer> integers) {
 
     }
 
     @Override
-    public void deleteAll(Iterable<? extends Admin> entities) {
+    public void deleteAll(@NotNull Iterable<? extends Business> entities) {
 
     }
 

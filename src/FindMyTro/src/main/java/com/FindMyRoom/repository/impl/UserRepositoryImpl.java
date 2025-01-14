@@ -47,7 +47,9 @@ public class UserRepositoryImpl implements UserRepository {
     @NotNull
     @Override
     public Iterable<Users> findAll() {
-        return null;
+        return em.unwrap(Session.class)
+                .createQuery("from Users", Users.class)
+                .list();
     }
 
     @NotNull

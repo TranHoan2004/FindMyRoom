@@ -7,7 +7,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class EmployeeDTO {
-    private long employeeID;
+public class EmployeeDTO extends UserDTO {
     private long adminID;
 }

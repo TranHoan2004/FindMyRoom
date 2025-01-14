@@ -10,7 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -46,6 +49,16 @@ public class UserServiceImpl implements UserService {
         user.setEmail(userDTO.getEmail());
         user.setPassword(userDTO.getPassword());
         userRepository.save(convert(user));
+    }
+
+    @Override
+    public Optional<UserDTO> getAllUserDTOs() {
+        Iterable<Users> list = userRepository.findAll();
+        Optional<UserDTO> optionalUser = Optional.empty();
+        for (Users user : list) {
+            optionalUser = Optional.of(convert(user));
+        }
+        return optionalUser;
     }
 
     private UserDTO convert(@NotNull Users user) {

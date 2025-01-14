@@ -1,14 +1,14 @@
 package com.FindMyRoom.dto;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.Date;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 public class UserDTO {
     private long id;
     private String email;
