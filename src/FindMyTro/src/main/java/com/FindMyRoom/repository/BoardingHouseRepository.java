@@ -1,8 +1,8 @@
 package com.FindMyRoom.repository;
 
-import com.FindMyRoom.model.Admin;
+import com.FindMyRoom.model.BoardingHouse;
 import org.springframework.data.repository.CrudRepository;
 
-public interface BoardingHouseRepository extends CrudRepository<Admin, Integer> {
+public interface BoardingHouseRepository extends CrudRepository<BoardingHouse, Long> {
 
 }

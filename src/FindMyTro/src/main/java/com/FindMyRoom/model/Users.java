@@ -1,5 +1,6 @@
 package com.FindMyRoom.model;
 
+import com.FindMyRoom.model.utils.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -67,6 +68,11 @@ public class Users {
     @Getter
     @Setter
     private Date createdDate;
+
+    @Getter
+    @Setter
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
     private List<Admin> admins;

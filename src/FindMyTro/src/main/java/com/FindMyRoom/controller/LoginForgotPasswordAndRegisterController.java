@@ -5,7 +5,6 @@ import com.FindMyRoom.service.UserService;
 import com.FindMyRoom.utils.RandomCode;
 import com.FindMyRoom.utils.email.EmailService;
 import com.FindMyRoom.utils.email.EmailServiceImpl;
-import jakarta.servlet.http.HttpSession;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,34 +35,34 @@ public class LoginForgotPasswordAndRegisterController {
         return "login-forgot-register/login";
     }
 
-    @PostMapping("/login")
-    public String login(@ModelAttribute("user") UserDTO user, Model model, HttpSession session) {
-        List<String> emails;
-        UserDTO userDTO;
-        try {
-            emails = userService.getAllEmails();
-            if (!emails.contains(user.getEmail())) {
-                throw new Exception("This email is not existing");
-            }
-            userDTO = userService.getUserDTOByEmail(user.getEmail());
-            if (!user.getPassword().equals(userDTO.getPassword())) {
-                throw new Exception("Wrong password");
-            }
-            session.setAttribute("user", userDTO);
-        } catch (Exception e) {
-            Logger.getLogger(LoginForgotPasswordAndRegisterController.class.getName()).log(Level.ALL, e.getMessage(), e);
-            model.addAttribute("error", e.getMessage());
-        }
-        return "home";
-    }
+//    @PostMapping("/login")
+//    public String login(@ModelAttribute("user") UserDTO user, Model model, HttpSession session) {
+//        List<String> emails;
+//        UserDTO userDTO;
+//        try {
+//            emails = userService.getAllEmails();
+//            if (!emails.contains(user.getEmail())) {
+//                throw new Exception("This email is not existing");
+//            }
+//            userDTO = userService.getUserDTOByEmail(user.getEmail());
+//            if (!user.getPassword().equals(userDTO.getPassword())) {
+//                throw new Exception("Wrong password");
+//            }
+//            session.setAttribute("user", userDTO);
+//        } catch (Exception e) {
+//            Logger.getLogger(LoginForgotPasswordAndRegisterController.class.getName()).log(Level.ALL, e.getMessage(), e);
+//            model.addAttribute("error", e.getMessage());
+//        }
+//        return "home";
+//    }
 
-    @GetMapping("/create_account")
+    @GetMapping("/createAccount")
     public String redirectToRegister(Model model) {
         model.addAttribute("user", userDTO);
         return "login-forgot-register/register";
     }
 
-    @GetMapping("/forgot_password")
+    @GetMapping("/forgotPassword")
     public String redirectToForgotPassword(Model model) {
         resetUserDTOAttributes();
         model.addAttribute("user", userDTO);
@@ -73,7 +72,7 @@ public class LoginForgotPasswordAndRegisterController {
         return "login-forgot-register/forgot-password";
     }
 
-    // first part of register screen
+    // <editor-fold desc="Register screen">
     @PostMapping("/email")
     public String getEmailToSendVerificationCode(Model model, @ModelAttribute("user") UserDTO user) {
         try {
@@ -86,7 +85,6 @@ public class LoginForgotPasswordAndRegisterController {
         return "login-forgot-register/register";
     }
 
-    // second part of register screen
     @PostMapping("/validateCode")
     public String validateCode(Model model, @RequestParam("code") String code) {
         try {
@@ -107,7 +105,6 @@ public class LoginForgotPasswordAndRegisterController {
         return "login-forgot-register/register";
     }
 
-    // third part of register screen
     @PostMapping("/create")
     public String createAccount(Model model, @ModelAttribute("user") UserDTO user) {
         try {
@@ -128,10 +125,11 @@ public class LoginForgotPasswordAndRegisterController {
             return "login-forgot-register/register";
         }
     }
+    // </editor-fold>
 
-    // first part of forgot password screen
+    // <editor-fold desc="Forgot password screen">
     @PostMapping("/validateEmail")
-    public String getEmailOfForgotenPasswordAccount(Model model, @ModelAttribute("user") UserDTO user) {
+    public String getEmailOfForgottenPasswordAccount(Model model, @ModelAttribute("user") UserDTO user) {
         try {
             verifyEmailAndSendVerificationCode(false, userDTO);
             model.addAttribute("verifyCode", false);
@@ -143,7 +141,6 @@ public class LoginForgotPasswordAndRegisterController {
         return "login-forgot-register/forgot-password";
     }
 
-    // third part of forgot password screen
     @PostMapping("/verifyPassword")
     public String checkPassword(Model model, @ModelAttribute("user") UserDTO user) {
         try {
@@ -164,11 +161,12 @@ public class LoginForgotPasswordAndRegisterController {
             return "login-forgot-register/forgot-password";
         }
     }
+    // </editor-fold>
 
-    public String logout(@NotNull HttpSession session) {
-        session.invalidate();
-        return "login-forgot-register/login";
-    }
+//    public String logout(@NotNull HttpSession session) {
+//        session.invalidate();
+//        return "login-forgot-register/login";
+//    }
 
     private void sendEmail(String email) {
         EmailService service = new EmailServiceImpl();

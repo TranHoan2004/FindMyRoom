@@ -1,6 +1,9 @@
 package com.FindMyRoom.dto;
 
-import lombok.*;
+import com.FindMyRoom.model.utils.Role;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.util.Date;
@@ -20,4 +23,5 @@ public class UserDTO {
     private byte[] imgURL;
     private Boolean status;
     private Date createdDate;
+    private Role role;
 }

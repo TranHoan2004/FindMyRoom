@@ -25,17 +25,20 @@ import java.util.Optional;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    @Autowired
-    private AdminService adminService;
+    private final AdminService adminService;
 
-    @Autowired
-    private BusinessService businessService;
+    private final BusinessService businessService;
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private EmployeeService employeeService;
+    private final EmployeeService employeeService;
+
+    public SecurityConfig(AdminService adminService, BusinessService businessService, UserService userService, EmployeeService employeeService) {
+        this.adminService = adminService;
+        this.businessService = businessService;
+        this.userService = userService;
+        this.employeeService = employeeService;
+    }
 
     @Bean
     public SecurityFilterChain generalConfiguration(HttpSecurity http) throws Exception {
@@ -55,7 +58,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/register").hasRole("USER")
-                        .requestMatchers("/forgot_password").permitAll()
+                        .requestMatchers("/forgotPassword").permitAll()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
@@ -71,38 +74,38 @@ public class SecurityConfig {
         return http.build();
     }
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-        Optional<UserDTO> userDTOs = userService.getAllUserDTOs();
-        Optional<AdminDTO> adminDTOs = adminService.getAllAdminDTOs();
-        Optional<BusinessDTO> businessDTOs = businessService.getAllBusinessAccount();
-        Optional<EmployeeDTO> employeeDTOs = employeeService.getAllEmployeeDTOs();
-
-        userDTOs.stream().map(userDTO -> User.builder()
-                .roles("USER")
-                .username(userDTO.getEmail())
-                .password(userDTO.getPassword())
-                .build()
-        ).forEach(manager::createUser);
-        adminDTOs.stream().map(adminDTO -> User.builder()
-                .roles("ADMIN")
-                .username(adminDTO.getUser().getEmail())
-                .password(adminDTO.getUser().getPassword())
-                .build()
-        ).forEach(manager::createUser);
-        businessDTOs.stream().map(businessDTO -> User.builder()
-                .roles("BUSINESSMAN")
-                .username(businessDTO.getEmail())
-                .password(businessDTO.getPassword())
-                .build()
-        ).forEach(manager::createUser);
-        employeeDTOs.stream().map(employeeDTO -> User.builder()
-                .roles("EMPLOYEE")
-                .username(employeeDTO.getEmail())
-                .password(employeeDTO.getPassword())
-                .build()
-        ).forEach(manager::createUser);
-        return manager;
-    }
+//    @Bean
+//    public UserDetailsService userDetailsService() {
+//        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
+//        Optional<UserDTO> userDTOs = userService.getAllUserDTOs();
+//        Optional<AdminDTO> adminDTOs = adminService.getAllAdminDTOs();
+//        Optional<BusinessDTO> businessDTOs = businessService.getAllBusinessAccount();
+//        Optional<EmployeeDTO> employeeDTOs = employeeService.getAllEmployeeDTOs();
+//
+//        userDTOs.stream().map(userDTO -> User.builder()
+//                .roles("USER")
+//                .username(userDTO.getEmail())
+//                .password(userDTO.getPassword())
+//                .build()
+//        ).forEach(manager::createUser);
+//        adminDTOs.stream().map(adminDTO -> User.builder()
+//                .roles("ADMIN")
+//                .username(adminDTO.getUser().getEmail())
+//                .password(adminDTO.getUser().getPassword())
+//                .build()
+//        ).forEach(manager::createUser);
+//        businessDTOs.stream().map(businessDTO -> User.builder()
+//                .roles("BUSINESSMAN")
+//                .username(businessDTO.getEmail())
+//                .password(businessDTO.getPassword())
+//                .build()
+//        ).forEach(manager::createUser);
+//        employeeDTOs.stream().map(employeeDTO -> User.builder()
+//                .roles("EMPLOYEE")
+//                .username(employeeDTO.getEmail())
+//                .password(employeeDTO.getPassword())
+//                .build()
+//        ).forEach(manager::createUser);
+//        return manager;
+//    }
 }

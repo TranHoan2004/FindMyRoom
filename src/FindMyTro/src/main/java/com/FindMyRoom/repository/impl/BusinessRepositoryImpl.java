@@ -22,64 +22,57 @@ public class BusinessRepositoryImpl implements BusinessRepository {
     }
 
     @Override
-    public long count() {
-        return 0;
-    }
-
-    @NotNull
-    @Override
-    public <S extends Business> S save(@NotNull S entity) {
+    public <S extends Business> S save(S entity) {
         return null;
     }
 
-    @NotNull
     @Override
-    public <S extends Business> Iterable<S> saveAll(@NotNull Iterable<S> entities) {
+    public <S extends Business> Iterable<S> saveAll(Iterable<S> entities) {
         return null;
     }
 
-    @NotNull
     @Override
-    public Optional<Business> findById(@NotNull Integer integer) {
+    public Optional<Business> findById(Long aLong) {
         return Optional.empty();
     }
 
     @Override
-    public boolean existsById(@NotNull Integer integer) {
+    public boolean existsById(Long aLong) {
         return false;
     }
 
-    @NotNull
     @Override
     public Iterable<Business> findAll() {
-        return em.unwrap(Session.class)
-                .createQuery("from Business", Business.class)
-                .list();
-    }
-
-    @NotNull
-    @Override
-    public Iterable<Business> findAllById(@NotNull Iterable<Integer> integers) {
         return null;
     }
 
     @Override
-    public void deleteById(@NotNull Integer integer) {
+    public Iterable<Business> findAllById(Iterable<Long> longs) {
+        return null;
+    }
+
+    @Override
+    public long count() {
+        return 0;
+    }
+
+    @Override
+    public void deleteById(Long aLong) {
 
     }
 
     @Override
-    public void delete(@NotNull Business entity) {
+    public void delete(Business entity) {
 
     }
 
     @Override
-    public void deleteAllById(@NotNull Iterable<? extends Integer> integers) {
+    public void deleteAllById(Iterable<? extends Long> longs) {
 
     }
 
     @Override
-    public void deleteAll(@NotNull Iterable<? extends Business> entities) {
+    public void deleteAll(Iterable<? extends Business> entities) {
 
     }
 

@@ -9,5 +9,6 @@ public interface AdminService {
     List<String> getAllEmails() throws Exception;
 
     AdminDTO getAdminDTOByID(long id) throws Exception;
+
     Optional<AdminDTO> getAllAdminDTOs();
 }

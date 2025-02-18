@@ -4,9 +4,9 @@ import com.FindMyRoom.model.Users;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
-import java.util.Optional;
 
-public interface UserRepository extends CrudRepository<Users, Integer> {
+public interface UserRepository extends CrudRepository<Users, Long> {
     List<String> getEmails();
+
     Users getByEmail(String email);
 }

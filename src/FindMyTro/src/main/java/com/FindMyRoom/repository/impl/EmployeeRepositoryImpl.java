@@ -15,7 +15,6 @@ import java.util.Optional;
 @Repository
 @Transactional(propagation = Propagation.REQUIRED)
 public class EmployeeRepositoryImpl implements EmployeeRepository {
-    @Autowired
     private final EntityManager em;
 
     public EmployeeRepositoryImpl(EntityManager em) {
@@ -23,59 +22,52 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
     }
 
     @Override
-    public long count() {
-        return 0;
-    }
-
-    @NotNull
-    @Override
-    public <S extends Employee> S save(@NotNull S entity) {
+    public <S extends Employee> S save(S entity) {
         return null;
     }
 
-    @NotNull
     @Override
-    public <S extends Employee> Iterable<S> saveAll(@NotNull Iterable<S> entities) {
+    public <S extends Employee> Iterable<S> saveAll(Iterable<S> entities) {
         return null;
     }
 
-    @NotNull
     @Override
-    public Optional<Employee> findById(@NotNull Integer integer) {
+    public Optional<Employee> findById(Long aLong) {
         return Optional.empty();
     }
 
     @Override
-    public boolean existsById(@NotNull Integer integer) {
+    public boolean existsById(Long aLong) {
         return false;
     }
 
-    @NotNull
     @Override
     public Iterable<Employee> findAll() {
-        return em.unwrap(Session.class)
-                .createQuery("from Employee", Employee.class)
-                .list();
-    }
-
-    @NotNull
-    @Override
-    public Iterable<Employee> findAllById(@NotNull Iterable<Integer> integers) {
         return null;
     }
 
     @Override
-    public void deleteById(@NotNull Integer integer) {
+    public Iterable<Employee> findAllById(Iterable<Long> longs) {
+        return null;
+    }
+
+    @Override
+    public long count() {
+        return 0;
+    }
+
+    @Override
+    public void deleteById(Long aLong) {
 
     }
 
     @Override
-    public void delete(@NotNull Employee entity) {
+    public void delete(Employee entity) {
 
     }
 
     @Override
-    public void deleteAllById(@NotNull Iterable<? extends Integer> integers) {
+    public void deleteAllById(Iterable<? extends Long> longs) {
 
     }
 

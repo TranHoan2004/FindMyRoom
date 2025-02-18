@@ -6,54 +6,56 @@ import com.FindMyRoom.repository.UserRepository;
 import com.FindMyRoom.service.UserService;
 import com.FindMyRoom.utils.CurrentDate;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
-    private final UserRepository userRepository;
+    private final UserRepository repo;
 
-    @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserServiceImpl(UserRepository repo) {
+        this.repo = repo;
     }
 
     @Override
     public List<String> getAllEmails() {
-        return userRepository.getEmails();
+        return repo.getEmails();
     }
 
     @Override
     public UserDTO getUserDTOByEmail(String email) {
-        Users users = userRepository.getByEmail(email);
-        return convert(users);
+        Users users = repo.getByEmail(email);
+        return users == null ? null : convert(users);
     }
 
     @Override
     public void addAnNewAccount(@NotNull UserDTO userDTO) throws ParseException {
         userDTO.setCreatedDate(CurrentDate.getCurrentDate());
         userDTO.setStatus(true);
-        userRepository.save(convert(userDTO));
+//        base.save(convert(userDTO));
+        repo.save(convert(userDTO));
     }
 
     @Override
     public void updateUserDTO(@NotNull UserDTO userDTO) {
-        UserDTO user = convert(userRepository.getByEmail(userDTO.getEmail()));
+        UserDTO user = convert(repo.getByEmail(userDTO.getEmail()));
         user.setPhoneNumber(userDTO.getPhoneNumber());
         user.setEmail(userDTO.getEmail());
         user.setPassword(userDTO.getPassword());
-        userRepository.save(convert(user));
+//        base.save(convert(user));
+        repo.save(convert(userDTO));
     }
 
     @Override
-    public Optional<UserDTO> getAllUserDTOs() {
-        Iterable<Users> list = userRepository.findAll();
+    public Optional<UserDTO> getAllUserDTOs() throws Exception {
+//        Iterable<Users> list = base.findAll();
+        Iterable<Users> list = repo.findAll();
+        if (!list.iterator().hasNext()) {
+            throw new Exception("No results");
+        }
         Optional<UserDTO> optionalUser = Optional.empty();
         for (Users user : list) {
             optionalUser = Optional.of(convert(user));
@@ -72,6 +74,7 @@ public class UserServiceImpl implements UserService {
                 .imgURL(user.getImgURL())
                 .phoneNumber(String.valueOf(user.getPhoneNumber()))
                 .status(user.getStatus())
+                .role(user.getRole())
                 .build();
     }
 
@@ -86,6 +89,7 @@ public class UserServiceImpl implements UserService {
                 .imgURL(user.getImgURL())
                 .phoneNumber(String.valueOf(user.getPhoneNumber()))
                 .status(user.getStatus())
+                .role(user.getRole())
                 .build();
     }
 
