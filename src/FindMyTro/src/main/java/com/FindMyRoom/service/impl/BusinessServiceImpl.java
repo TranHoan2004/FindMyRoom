@@ -2,8 +2,8 @@ package com.FindMyRoom.service.impl;
 
 import com.FindMyRoom.dto.BusinessDTO;
 import com.FindMyRoom.model.Business;
-import com.FindMyRoom.repository.BaseRepository;
 import com.FindMyRoom.repository.BusinessRepository;
+import com.FindMyRoom.repository.impl.BusinessRepositoryImpl;
 import com.FindMyRoom.service.BusinessService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
@@ -13,26 +13,20 @@ import java.util.Optional;
 @Service
 public class BusinessServiceImpl implements BusinessService {
     private final BusinessRepository repo;
-//    private final BaseRepository<Business, Long> base;
 
-//    public BusinessServiceImpl(BusinessRepository repo, BaseRepository<Business, Long> base) {
-//        this.repo = repo;
-//        this.base = base;
-//    }
-    public BusinessServiceImpl(BusinessRepository repo) {
+    public BusinessServiceImpl(BusinessRepositoryImpl repo) {
         this.repo = repo;
     }
 
     @Override
     public Optional<BusinessDTO> getAllBusinessAccount() {
-//        Iterable<Business> business = base.findAll();
-//        Optional<BusinessDTO> optional = Optional.empty();
-//        while (business.iterator().hasNext()) {
-//            Business b = business.iterator().next();
-//            optional = Optional.of(convert(b));
-//        }
-//        return optional;
-        return Optional.empty();
+        Iterable<Business> business = repo.findAll();
+        Optional<BusinessDTO> optional = Optional.empty();
+        while (business.iterator().hasNext()) {
+            Business b = business.iterator().next();
+            optional = Optional.of(convert(b));
+        }
+        return optional;
     }
 
     private BusinessDTO convert(@NotNull Business business) {

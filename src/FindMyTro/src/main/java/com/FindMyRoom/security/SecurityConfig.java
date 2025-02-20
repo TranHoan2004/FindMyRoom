@@ -1,44 +1,26 @@
 package com.FindMyRoom.security;
 
-import com.FindMyRoom.dto.AdminDTO;
-import com.FindMyRoom.dto.BusinessDTO;
-import com.FindMyRoom.dto.EmployeeDTO;
 import com.FindMyRoom.dto.UserDTO;
-import com.FindMyRoom.service.AdminService;
-import com.FindMyRoom.service.BusinessService;
-import com.FindMyRoom.service.EmployeeService;
 import com.FindMyRoom.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import java.util.Optional;
+import java.util.*;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    private final AdminService adminService;
-
-    private final BusinessService businessService;
-
-    private final UserService userService;
-
-    private final EmployeeService employeeService;
-
-    public SecurityConfig(AdminService adminService, BusinessService businessService, UserService userService, EmployeeService employeeService) {
-        this.adminService = adminService;
-        this.businessService = businessService;
-        this.userService = userService;
-        this.employeeService = employeeService;
-    }
 
     @Bean
     public SecurityFilterChain generalConfiguration(HttpSecurity http) throws Exception {
@@ -74,38 +56,29 @@ public class SecurityConfig {
         return http.build();
     }
 
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-//        Optional<UserDTO> userDTOs = userService.getAllUserDTOs();
-//        Optional<AdminDTO> adminDTOs = adminService.getAllAdminDTOs();
-//        Optional<BusinessDTO> businessDTOs = businessService.getAllBusinessAccount();
-//        Optional<EmployeeDTO> employeeDTOs = employeeService.getAllEmployeeDTOs();
-//
-//        userDTOs.stream().map(userDTO -> User.builder()
-//                .roles("USER")
-//                .username(userDTO.getEmail())
-//                .password(userDTO.getPassword())
-//                .build()
-//        ).forEach(manager::createUser);
-//        adminDTOs.stream().map(adminDTO -> User.builder()
-//                .roles("ADMIN")
-//                .username(adminDTO.getUser().getEmail())
-//                .password(adminDTO.getUser().getPassword())
-//                .build()
-//        ).forEach(manager::createUser);
-//        businessDTOs.stream().map(businessDTO -> User.builder()
-//                .roles("BUSINESSMAN")
-//                .username(businessDTO.getEmail())
-//                .password(businessDTO.getPassword())
-//                .build()
-//        ).forEach(manager::createUser);
-//        employeeDTOs.stream().map(employeeDTO -> User.builder()
-//                .roles("EMPLOYEE")
-//                .username(employeeDTO.getEmail())
-//                .password(employeeDTO.getPassword())
-//                .build()
-//        ).forEach(manager::createUser);
-//        return manager;
-//    }
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    /**
+     * If we want to configure faster, do not need to use loadUserByUsername() in UserServiceImpl.<br/>
+     * In fact, we can hold 2 methods but spring security will priorities bean method.
+     * But be careful, because if we use loadUserByUsername (LUBU) manually and bean method or bean method uses API's data and LUBU uses db, there will have some conflicts.<br/>
+     * If we want to priority LUBU, please use annotation @Primary
+     * @param service
+     * @return new User (org.springframework.security.core.userdetails)
+     */
+    @Bean
+    public UserDetailsService userDetailsService(UserService service) {
+        return email -> {
+            UserDTO dto = service.getUserDTOByEmail(email);
+            if (dto == null) {
+                throw new UsernameNotFoundException("User not found");
+            }
+            List<GrantedAuthority> authorities = new ArrayList<>();
+            authorities.add(new SimpleGrantedAuthority(dto.getRole().name()));
+            return new User(dto.getEmail(), dto.getPassword(), authorities);
+        };
+    }
 }

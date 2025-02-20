@@ -3,21 +3,31 @@ package com.FindMyRoom.service.impl;
 import com.FindMyRoom.dto.UserDTO;
 import com.FindMyRoom.model.Users;
 import com.FindMyRoom.repository.UserRepository;
+import com.FindMyRoom.repository.impl.UserRepositoryImpl;
 import com.FindMyRoom.service.UserService;
 import com.FindMyRoom.utils.CurrentDate;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository repo;
+    private final BCryptPasswordEncoder encoder;
 
-    public UserServiceImpl(UserRepository repo) {
+    public UserServiceImpl(UserRepositoryImpl repo, BCryptPasswordEncoder encoder) {
         this.repo = repo;
+        this.encoder = encoder;
     }
 
     @Override
@@ -35,7 +45,7 @@ public class UserServiceImpl implements UserService {
     public void addAnNewAccount(@NotNull UserDTO userDTO) throws ParseException {
         userDTO.setCreatedDate(CurrentDate.getCurrentDate());
         userDTO.setStatus(true);
-//        base.save(convert(userDTO));
+        userDTO.setPassword(encoder.encode(userDTO.getPassword()));
         repo.save(convert(userDTO));
     }
 
@@ -45,13 +55,11 @@ public class UserServiceImpl implements UserService {
         user.setPhoneNumber(userDTO.getPhoneNumber());
         user.setEmail(userDTO.getEmail());
         user.setPassword(userDTO.getPassword());
-//        base.save(convert(user));
         repo.save(convert(userDTO));
     }
 
     @Override
     public Optional<UserDTO> getAllUserDTOs() throws Exception {
-//        Iterable<Users> list = base.findAll();
         Iterable<Users> list = repo.findAll();
         if (!list.iterator().hasNext()) {
             throw new Exception("No results");
@@ -63,6 +71,18 @@ public class UserServiceImpl implements UserService {
         return optionalUser;
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        UserDTO users = getUserDTOByEmail(email);
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        if (users == null) {
+            throw new UsernameNotFoundException("Email is not existing");
+        }
+        authorities.add(new SimpleGrantedAuthority(users.getRole().name()));
+        return new User(users.getEmail(), users.getPassword(), authorities);
+    }
+
+    // <editor-fold> desc="convert entity"
     private UserDTO convert(@NotNull Users user) {
         return UserDTO.builder()
                 .id(user.getId())
@@ -92,5 +112,5 @@ public class UserServiceImpl implements UserService {
                 .role(user.getRole())
                 .build();
     }
-
+    // </editor-fold>
 }

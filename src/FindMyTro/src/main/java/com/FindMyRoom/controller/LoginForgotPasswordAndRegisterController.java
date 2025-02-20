@@ -35,27 +35,6 @@ public class LoginForgotPasswordAndRegisterController {
         return "login-forgot-register/login";
     }
 
-//    @PostMapping("/login")
-//    public String login(@ModelAttribute("user") UserDTO user, Model model, HttpSession session) {
-//        List<String> emails;
-//        UserDTO userDTO;
-//        try {
-//            emails = userService.getAllEmails();
-//            if (!emails.contains(user.getEmail())) {
-//                throw new Exception("This email is not existing");
-//            }
-//            userDTO = userService.getUserDTOByEmail(user.getEmail());
-//            if (!user.getPassword().equals(userDTO.getPassword())) {
-//                throw new Exception("Wrong password");
-//            }
-//            session.setAttribute("user", userDTO);
-//        } catch (Exception e) {
-//            Logger.getLogger(LoginForgotPasswordAndRegisterController.class.getName()).log(Level.ALL, e.getMessage(), e);
-//            model.addAttribute("error", e.getMessage());
-//        }
-//        return "home";
-//    }
-
     @GetMapping("/createAccount")
     public String redirectToRegister(Model model) {
         model.addAttribute("user", userDTO);
@@ -163,11 +142,6 @@ public class LoginForgotPasswordAndRegisterController {
     }
     // </editor-fold>
 
-//    public String logout(@NotNull HttpSession session) {
-//        session.invalidate();
-//        return "login-forgot-register/login";
-//    }
-
     private void sendEmail(String email) {
         EmailService service = new EmailServiceImpl();
         randomCode = RandomCode.generateSixRandomCodes();
@@ -194,4 +168,30 @@ public class LoginForgotPasswordAndRegisterController {
         userDTO.setEmail(user.getEmail());
         sendEmail(user.getEmail());
     }
+
+//    public String logout(@NotNull HttpSession session) {
+//        session.invalidate();
+//        return "login-forgot-register/login";
+//    }
+//
+//    @PostMapping("/login")
+//    public String login(@ModelAttribute("user") UserDTO user, Model model, HttpSession session) {
+//        List<String> emails;
+//        UserDTO userDTO;
+//        try {
+//            emails = userService.getAllEmails();
+//            if (!emails.contains(user.getEmail())) {
+//                throw new Exception("This email is not existing");
+//            }
+//            userDTO = userService.getUserDTOByEmail(user.getEmail());
+//            if (!user.getPassword().equals(userDTO.getPassword())) {
+//                throw new Exception("Wrong password");
+//            }
+//            session.setAttribute("user", userDTO);
+//        } catch (Exception e) {
+//            Logger.getLogger(LoginForgotPasswordAndRegisterController.class.getName()).log(Level.ALL, e.getMessage(), e);
+//            model.addAttribute("error", e.getMessage());
+//        }
+//        return "home";
+//    }
 }
