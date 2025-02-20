@@ -66,7 +66,6 @@ public class SecurityConfig {
      * In fact, we can hold 2 methods but spring security will priorities bean method.
      * But be careful, because if we use loadUserByUsername (LUBU) manually and bean method or bean method uses API's data and LUBU uses db, there will have some conflicts.<br/>
      * If we want to priority LUBU, please use annotation @Primary
-     * @param service
      * @return new User (org.springframework.security.core.userdetails)
      */
     @Bean
