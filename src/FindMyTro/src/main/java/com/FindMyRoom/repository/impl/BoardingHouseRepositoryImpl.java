@@ -1,8 +1,8 @@
 package com.FindMyRoom.repository.impl;
 
-import com.FindMyRoom.model.Admin;
 import com.FindMyRoom.model.BoardingHouse;
 import com.FindMyRoom.repository.BoardingHouseRepository;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,33 +13,38 @@ import java.util.Optional;
 @Transactional(propagation = Propagation.REQUIRED)
 public class BoardingHouseRepositoryImpl implements BoardingHouseRepository {
 
+    @NotNull
     @Override
-    public <S extends BoardingHouse> S save(S entity) {
+    public <S extends BoardingHouse> S save(@NotNull S entity) {
         return null;
     }
 
+    @NotNull
     @Override
-    public <S extends BoardingHouse> Iterable<S> saveAll(Iterable<S> entities) {
+    public <S extends BoardingHouse> Iterable<S> saveAll(@NotNull Iterable<S> entities) {
         return null;
     }
 
+    @NotNull
     @Override
-    public Optional<BoardingHouse> findById(Long aLong) {
+    public Optional<BoardingHouse> findById(@NotNull Long aLong) {
         return Optional.empty();
     }
 
     @Override
-    public boolean existsById(Long aLong) {
+    public boolean existsById(@NotNull Long aLong) {
         return false;
     }
 
+    @NotNull
     @Override
     public Iterable<BoardingHouse> findAll() {
         return null;
     }
 
+    @NotNull
     @Override
-    public Iterable<BoardingHouse> findAllById(Iterable<Long> longs) {
+    public Iterable<BoardingHouse> findAllById(@NotNull Iterable<Long> longs) {
         return null;
     }
 
@@ -49,22 +54,22 @@ public class BoardingHouseRepositoryImpl implements BoardingHouseRepository {
     }
 
     @Override
-    public void deleteById(Long aLong) {
+    public void deleteById(@NotNull Long aLong) {
 
     }
 
     @Override
-    public void delete(BoardingHouse entity) {
+    public void delete(@NotNull BoardingHouse entity) {
 
     }
 
     @Override
-    public void deleteAllById(Iterable<? extends Long> longs) {
+    public void deleteAllById(@NotNull Iterable<? extends Long> longs) {
 
     }
 
     @Override
-    public void deleteAll(Iterable<? extends BoardingHouse> entities) {
+    public void deleteAll(@NotNull Iterable<? extends BoardingHouse> entities) {
 
     }
 

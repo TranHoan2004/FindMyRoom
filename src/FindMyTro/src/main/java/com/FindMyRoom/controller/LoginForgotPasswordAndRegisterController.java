@@ -29,16 +29,19 @@ public class LoginForgotPasswordAndRegisterController {
         this.userService = userService;
     }
 
-    @GetMapping("/login")
-    public String redirectToLogin(Model model) {
-        model.addAttribute("user", new UserDTO());
-        return "login-forgot-register/login";
-    }
-
     @GetMapping("/createAccount")
     public String redirectToRegister(Model model) {
         model.addAttribute("user", userDTO);
-        return "login-forgot-register/register";
+        return "register";
+    }
+
+    @GetMapping("/login")
+    public String redirectToLogin(Model model, @RequestParam(value = "error", required = false) boolean error) {
+        model.addAttribute("user", new UserDTO());
+        if (error) {
+            model.addAttribute("error", "Wrong username or password");
+        }
+        return "login";
     }
 
     @GetMapping("/forgotPassword")
@@ -48,7 +51,7 @@ public class LoginForgotPasswordAndRegisterController {
         model.addAttribute("message", null);
         model.addAttribute("error", null);
         model.addAttribute("isEmailVerified", null);
-        return "login-forgot-register/forgot-password";
+        return "forgot-password";
     }
 
     // <editor-fold desc="Register screen">
@@ -61,7 +64,7 @@ public class LoginForgotPasswordAndRegisterController {
             Logger.getLogger(LoginForgotPasswordAndRegisterController.class.getName()).log(Level.ALL, e.getMessage(), e);
             model.addAttribute("error", e.getMessage());
         }
-        return "login-forgot-register/register";
+        return "register";
     }
 
     @PostMapping("/validateCode")
@@ -81,7 +84,7 @@ public class LoginForgotPasswordAndRegisterController {
             Logger.getLogger(LoginForgotPasswordAndRegisterController.class.getName()).log(Level.ALL, e.getMessage(), e);
             model.addAttribute("error", e.getMessage());
         }
-        return "login-forgot-register/register";
+        return "register";
     }
 
     @PostMapping("/create")
@@ -92,7 +95,7 @@ public class LoginForgotPasswordAndRegisterController {
                 userDTO.setPhoneNumber(user.getPhoneNumber());
                 userService.addAnNewAccount(userDTO);
                 resetUserDTOAttributes();
-                return "login-forgot-register/login";
+                return "login";
             } else {
                 throw new Exception("Rewrite password and password are not match");
             }
@@ -101,7 +104,7 @@ public class LoginForgotPasswordAndRegisterController {
             model.addAttribute("error", e.getMessage());
             model.addAttribute("verifyCode", true);
             model.addAttribute("user", new UserDTO());
-            return "login-forgot-register/register";
+            return "register";
         }
     }
     // </editor-fold>
@@ -117,7 +120,7 @@ public class LoginForgotPasswordAndRegisterController {
             Logger.getLogger(LoginForgotPasswordAndRegisterController.class.getName()).log(Level.ALL, e.getMessage(), e);
             model.addAttribute("error", e.getMessage());
         }
-        return "login-forgot-register/forgot-password";
+        return "forgot-password";
     }
 
     @PostMapping("/verifyPassword")
@@ -128,7 +131,7 @@ public class LoginForgotPasswordAndRegisterController {
                 userDTO.setPhoneNumber(user.getPhoneNumber());
                 userService.updateUserDTO(userDTO);
                 resetUserDTOAttributes();
-                return "login-forgot-register/login";
+                return "login";
             } else {
                 throw new Exception("Rewrite password and password are not match");
             }
@@ -137,7 +140,7 @@ public class LoginForgotPasswordAndRegisterController {
             model.addAttribute("error", e.getMessage());
             model.addAttribute("verifyCode", true);
             model.addAttribute("user", new UserDTO());
-            return "login-forgot-register/forgot-password";
+            return "forgot-password";
         }
     }
     // </editor-fold>
@@ -169,29 +172,4 @@ public class LoginForgotPasswordAndRegisterController {
         sendEmail(user.getEmail());
     }
 
-//    public String logout(@NotNull HttpSession session) {
-//        session.invalidate();
-//        return "login-forgot-register/login";
-//    }
-//
-//    @PostMapping("/login")
-//    public String login(@ModelAttribute("user") UserDTO user, Model model, HttpSession session) {
-//        List<String> emails;
-//        UserDTO userDTO;
-//        try {
-//            emails = userService.getAllEmails();
-//            if (!emails.contains(user.getEmail())) {
-//                throw new Exception("This email is not existing");
-//            }
-//            userDTO = userService.getUserDTOByEmail(user.getEmail());
-//            if (!user.getPassword().equals(userDTO.getPassword())) {
-//                throw new Exception("Wrong password");
-//            }
-//            session.setAttribute("user", userDTO);
-//        } catch (Exception e) {
-//            Logger.getLogger(LoginForgotPasswordAndRegisterController.class.getName()).log(Level.ALL, e.getMessage(), e);
-//            model.addAttribute("error", e.getMessage());
-//        }
-//        return "home";
-//    }
 }

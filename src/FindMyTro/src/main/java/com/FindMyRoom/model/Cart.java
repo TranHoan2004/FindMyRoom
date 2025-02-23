@@ -1,13 +1,15 @@
 package com.FindMyRoom.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -15,8 +17,11 @@ import javax.validation.constraints.Min;
 @Table(name = "Cart")
 public class Cart {
     @Id
+    private long id;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
+    @MapsId
     private Users user;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

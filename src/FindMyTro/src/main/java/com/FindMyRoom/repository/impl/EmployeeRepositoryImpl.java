@@ -3,9 +3,7 @@ package com.FindMyRoom.repository.impl;
 import com.FindMyRoom.model.Employee;
 import com.FindMyRoom.repository.EmployeeRepository;
 import jakarta.persistence.EntityManager;
-import org.hibernate.Session;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,32 +20,37 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
     }
 
     @Override
-    public <S extends Employee> S save(S entity) {
+    @NotNull
+    public <S extends Employee> S save(@NotNull S entity) {
         return null;
     }
 
     @Override
-    public <S extends Employee> Iterable<S> saveAll(Iterable<S> entities) {
+    @NotNull
+    public <S extends Employee> Iterable<S> saveAll(@NotNull Iterable<S> entities) {
         return null;
     }
 
     @Override
-    public Optional<Employee> findById(Long aLong) {
+    @NotNull
+    public Optional<Employee> findById(@NotNull Long aLong) {
         return Optional.empty();
     }
 
     @Override
-    public boolean existsById(Long aLong) {
+    public boolean existsById(@NotNull Long aLong) {
         return false;
     }
 
     @Override
+    @NotNull
     public Iterable<Employee> findAll() {
         return null;
     }
 
     @Override
-    public Iterable<Employee> findAllById(Iterable<Long> longs) {
+    @NotNull
+    public Iterable<Employee> findAllById(@NotNull Iterable<Long> longs) {
         return null;
     }
 
@@ -57,22 +60,22 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
     }
 
     @Override
-    public void deleteById(Long aLong) {
+    public void deleteById(@NotNull Long aLong) {
 
     }
 
     @Override
-    public void delete(Employee entity) {
+    public void delete(@NotNull Employee entity) {
 
     }
 
     @Override
-    public void deleteAllById(Iterable<? extends Long> longs) {
+    public void deleteAllById(@NotNull Iterable<? extends Long> longs) {
 
     }
 
     @Override
-    public void deleteAll(Iterable<? extends Employee> entities) {
+    public void deleteAll(@NotNull Iterable<? extends Employee> entities) {
 
     }
 

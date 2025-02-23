@@ -3,6 +3,7 @@ package com.FindMyRoom.repository.impl;
 import com.FindMyRoom.model.Admin;
 import com.FindMyRoom.repository.AdminRepository;
 import jakarta.persistence.EntityManager;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +22,7 @@ public class AdminRepositoryImpl implements AdminRepository {
 
     @Override
     public List<String> getEmails() {
-        return null;
+        return List.of();
     }
 
     @Override
@@ -34,33 +35,38 @@ public class AdminRepositoryImpl implements AdminRepository {
         return null;
     }
 
+    @NotNull
     @Override
-    public <S extends Admin> S save(S entity) {
+    public <S extends Admin> S save(@NotNull S entity) {
         return null;
     }
 
+    @NotNull
     @Override
-    public <S extends Admin> Iterable<S> saveAll(Iterable<S> entities) {
+    public <S extends Admin> Iterable<S> saveAll(@NotNull Iterable<S> entities) {
         return null;
     }
 
+    @NotNull
     @Override
-    public Optional<Admin> findById(Long aLong) {
+    public Optional<Admin> findById(@NotNull Long id) {
         return Optional.empty();
     }
 
     @Override
-    public boolean existsById(Long aLong) {
+    public boolean existsById(@NotNull Long id) {
         return false;
     }
 
+    @NotNull
     @Override
     public Iterable<Admin> findAll() {
         return null;
     }
 
+    @NotNull
     @Override
-    public Iterable<Admin> findAllById(Iterable<Long> longs) {
+    public Iterable<Admin> findAllById(@NotNull Iterable<Long> id) {
         return null;
     }
 
@@ -70,22 +76,22 @@ public class AdminRepositoryImpl implements AdminRepository {
     }
 
     @Override
-    public void deleteById(Long aLong) {
+    public void deleteById(@NotNull Long id) {
 
     }
 
     @Override
-    public void delete(Admin entity) {
+    public void delete(@NotNull Admin entity) {
 
     }
 
     @Override
-    public void deleteAllById(Iterable<? extends Long> longs) {
+    public void deleteAllById(@NotNull Iterable<? extends Long> id) {
 
     }
 
     @Override
-    public void deleteAll(Iterable<? extends Admin> entities) {
+    public void deleteAll(@NotNull Iterable<? extends Admin> entities) {
 
     }
 

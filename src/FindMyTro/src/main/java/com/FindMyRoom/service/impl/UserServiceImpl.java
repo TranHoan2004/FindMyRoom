@@ -7,16 +7,10 @@ import com.FindMyRoom.repository.impl.UserRepositoryImpl;
 import com.FindMyRoom.service.UserService;
 import com.FindMyRoom.utils.CurrentDate;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -71,16 +65,17 @@ public class UserServiceImpl implements UserService {
         return optionalUser;
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        UserDTO users = getUserDTOByEmail(email);
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        if (users == null) {
-            throw new UsernameNotFoundException("Email is not existing");
-        }
-        authorities.add(new SimpleGrantedAuthority(users.getRole().name()));
-        return new User(users.getEmail(), users.getPassword(), authorities);
-    }
+//    @Override
+//    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+//        UserDTO users = getUserDTOByEmail(email);
+//        List<GrantedAuthority> authorities = new ArrayList<>();
+//        if (users == null) {
+//            throw new UsernameNotFoundException("Email is not existing");
+//        }
+//        System.out.println(users.toString());
+//        authorities.add(new SimpleGrantedAuthority(users.getRole().name()));
+//        return new User(users.getEmail(), users.getPassword(), authorities);
+//    }
 
     // <editor-fold> desc="convert entity"
     private UserDTO convert(@NotNull Users user) {

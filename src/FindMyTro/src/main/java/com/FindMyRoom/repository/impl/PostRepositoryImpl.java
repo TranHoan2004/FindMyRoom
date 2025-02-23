@@ -1,8 +1,8 @@
 package com.FindMyRoom.repository.impl;
 
-import com.FindMyRoom.model.Admin;
 import com.FindMyRoom.model.Post;
 import com.FindMyRoom.repository.PostRepository;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,32 +14,37 @@ import java.util.Optional;
 public class PostRepositoryImpl implements PostRepository {
 
     @Override
-    public <S extends Post> S save(S entity) {
+    @NotNull
+    public <S extends Post> S save(@NotNull S entity) {
         return null;
     }
 
     @Override
-    public <S extends Post> Iterable<S> saveAll(Iterable<S> entities) {
+    @NotNull
+    public <S extends Post> Iterable<S> saveAll(@NotNull Iterable<S> entities) {
         return null;
     }
 
     @Override
-    public Optional<Post> findById(Long aLong) {
+    @NotNull
+    public Optional<Post> findById(@NotNull Long aLong) {
         return Optional.empty();
     }
 
     @Override
-    public boolean existsById(Long aLong) {
+    public boolean existsById(@NotNull Long aLong) {
         return false;
     }
 
     @Override
+    @NotNull
     public Iterable<Post> findAll() {
         return null;
     }
 
     @Override
-    public Iterable<Post> findAllById(Iterable<Long> longs) {
+    @NotNull
+    public Iterable<Post> findAllById(@NotNull Iterable<Long> longs) {
         return null;
     }
 
@@ -49,22 +54,22 @@ public class PostRepositoryImpl implements PostRepository {
     }
 
     @Override
-    public void deleteById(Long aLong) {
+    public void deleteById(@NotNull Long aLong) {
 
     }
 
     @Override
-    public void delete(Post entity) {
+    public void delete(@NotNull Post entity) {
 
     }
 
     @Override
-    public void deleteAllById(Iterable<? extends Long> longs) {
+    public void deleteAllById(@NotNull Iterable<? extends Long> longs) {
 
     }
 
     @Override
-    public void deleteAll(Iterable<? extends Post> entities) {
+    public void deleteAll(@NotNull Iterable<? extends Post> entities) {
 
     }
 

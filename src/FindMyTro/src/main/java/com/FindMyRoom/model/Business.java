@@ -14,8 +14,11 @@ import java.util.List;
 @Table(name = "Business")
 public class Business {
     @Id
+    private long id;
+
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
+    @MapsId
     private Users user;
 
     @Column(nullable = false)

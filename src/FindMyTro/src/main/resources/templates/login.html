@@ -25,14 +25,14 @@
             <div class="login100-pic js-tilt" data-tilt>
                 <img th:src="@{/images/img-01.png}" alt="IMG">
             </div>
-            <form class="form-signin" th:action="@{/login}" th:method="POST" th:object="${user}">
+            <form class="form-signin" th:action="@{/login}" th:method="POST">
                 <span class="login100-form-title">
                     Login in here
                 </span>
                 <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
                     <label for="inputEmail">
-                        <input class="input100 form-control" type="text" th:field="${user.email}"
-                               id="inputEmail"
+                        <input class="input100 form-control" type="text"
+                               id="inputEmail" name="username"
                                placeholder="Username" required="" autofocus="">
                     </label>
                     <span class="focus-input100"></span>
@@ -43,7 +43,7 @@
 
                 <div class="wrap-input100 validate-input" data-validate="Password is required">
                     <label for="inputPassword">
-                        <input class="input100 form-control" type="password" th:field="${user.password}"
+                        <input class="input100 form-control" type="password" name="password"
                                id="inputPassword" placeholder="Password" required="">
                     </label>
                     <span class="focus-input100"></span>
@@ -56,6 +56,8 @@
                     <input name="remember" value="1" type="checkbox" class="form-check-input" id="exampleCheck1">
                     <label class="form-check-label" for="exampleCheck1">Remember me</label>
                 </div>
+
+                <p th:text="${error}" style="color: red"></p>
 
                 <div class="container-login100-form-btn">
                     <button class="login100-form-btn" type="submit">

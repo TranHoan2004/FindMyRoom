@@ -62,6 +62,7 @@ public class Users {
 
     @Setter
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Role role;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")

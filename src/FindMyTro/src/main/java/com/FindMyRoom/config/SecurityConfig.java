@@ -1,4 +1,4 @@
-package com.FindMyRoom.security;
+package com.FindMyRoom.config;
 
 import com.FindMyRoom.dto.UserDTO;
 import com.FindMyRoom.service.UserService;
@@ -16,7 +16,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -25,10 +26,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain generalConfiguration(HttpSecurity http) throws Exception {
         http
+                .securityMatcher("/users/**", "/admin/**")
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                        .requestMatchers("/user-features/**").hasAnyRole("USER", "BUSINESSMAN")
-                        .requestMatchers("/admin-features/**").hasAnyRole("ADMIN", "EMPLOYEE")
+                        .requestMatchers("/users/**").hasAnyRole("USER", "BUSINESSMAN")
+                        .requestMatchers("/admin/**").hasAnyRole("ADMIN", "EMPLOYEE")
                         .anyRequest().authenticated()
                 ).httpBasic(Customizer.withDefaults());
         return http.build();
@@ -37,6 +39,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain loginLogoutConfiguration(HttpSecurity http) throws Exception {
         http
+                .securityMatcher("/login", "/forgotPassword", "/register")
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/register").hasRole("USER")
@@ -44,6 +47,7 @@ public class SecurityConfig {
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
+                        .loginProcessingUrl("/login")
                         .defaultSuccessUrl("/home", true)
                         .failureUrl("/login?error=true")
                         .permitAll()
@@ -62,10 +66,11 @@ public class SecurityConfig {
     }
 
     /**
-     * If we want to configure faster, do not need to use loadUserByUsername() in UserServiceImpl.<br/>
-     * In fact, we can hold 2 methods but spring security will priorities bean method.
-     * But be careful, because if we use loadUserByUsername (LUBU) manually and bean method or bean method uses API's data and LUBU uses db, there will have some conflicts.<br/>
-     * If we want to priority LUBU, please use annotation @Primary
+     * If we want to configure faster, do not need to use loadUserByUsername() in UserServiceImpl.<br/> In fact, we can
+     * hold 2 methods but spring security will priorities bean method. But be careful, because if we use
+     * loadUserByUsername (LUBU) manually and bean method or bean method uses API's data and LUBU uses db, there will
+     * have some conflicts.<br/> If we want to priority LUBU, please use annotation @Primary
+     *
      * @return new User (org.springframework.security.core.userdetails)
      */
     @Bean

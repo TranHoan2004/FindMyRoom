@@ -4,6 +4,7 @@ import com.FindMyRoom.model.Users;
 import com.FindMyRoom.repository.UserRepository;
 import jakarta.persistence.EntityManager;
 import org.hibernate.Session;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,41 +31,44 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Users getByEmail(String email) {
-        Session session = em.unwrap(Session.class);
-        Users user = session.createQuery("select u from Users u where u.email=:email", Users.class)
+        List<Users> list = em.createQuery("SELECT u FROM Users u WHERE u.email=:email", Users.class)
                 .setParameter("email", email)
-                .getSingleResult();
-        session.close();
-        return user;
+                .getResultList();
+        return list.isEmpty() ? null : list.getFirst();
     }
 
     @Override
-    public <S extends Users> S save(S entity) {
+    @NotNull
+    public <S extends Users> S save(@NotNull S entity) {
         return null;
     }
 
     @Override
-    public <S extends Users> Iterable<S> saveAll(Iterable<S> entities) {
+    @NotNull
+    public <S extends Users> Iterable<S> saveAll(@NotNull Iterable<S> entities) {
         return null;
     }
 
     @Override
-    public Optional<Users> findById(Long aLong) {
+    @NotNull
+    public Optional<Users> findById(@NotNull Long aLong) {
         return Optional.empty();
     }
 
     @Override
-    public boolean existsById(Long aLong) {
+    public boolean existsById(@NotNull Long aLong) {
         return false;
     }
 
     @Override
+    @NotNull
     public Iterable<Users> findAll() {
         return null;
     }
 
+    @NotNull
     @Override
-    public Iterable<Users> findAllById(Iterable<Long> longs) {
+    public Iterable<Users> findAllById(@NotNull Iterable<Long> longs) {
         return null;
     }
 
@@ -74,22 +78,22 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void deleteById(Long aLong) {
+    public void deleteById(@NotNull Long aLong) {
 
     }
 
     @Override
-    public void delete(Users entity) {
+    public void delete(@NotNull Users entity) {
 
     }
 
     @Override
-    public void deleteAllById(Iterable<? extends Long> longs) {
+    public void deleteAllById(@NotNull Iterable<? extends Long> longs) {
 
     }
 
     @Override
-    public void deleteAll(Iterable<? extends Users> entities) {
+    public void deleteAll(@NotNull Iterable<? extends Users> entities) {
 
     }
 

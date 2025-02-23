@@ -20,7 +20,7 @@ public class BoardingHouse {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "special_items", columnDefinition = "VARBINARY(MAX)")
+    @Column(name = "special_items")
     private String specialItem;
 
     @Column(nullable = false)

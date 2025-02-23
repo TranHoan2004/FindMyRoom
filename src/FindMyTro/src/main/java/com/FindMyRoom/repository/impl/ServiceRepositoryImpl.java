@@ -1,8 +1,8 @@
 package com.FindMyRoom.repository.impl;
 
-import com.FindMyRoom.model.Admin;
 import com.FindMyRoom.model.Service;
 import com.FindMyRoom.repository.ServiceRepository;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,32 +14,37 @@ import java.util.Optional;
 public class ServiceRepositoryImpl implements ServiceRepository {
 
     @Override
-    public <S extends Service> S save(S entity) {
+    @NotNull
+    public <S extends Service> S save(@NotNull S entity) {
         return null;
     }
 
     @Override
-    public <S extends Service> Iterable<S> saveAll(Iterable<S> entities) {
+    @NotNull
+    public <S extends Service> Iterable<S> saveAll(@NotNull Iterable<S> entities) {
         return null;
     }
 
     @Override
-    public Optional<Service> findById(Long aLong) {
+    @NotNull
+    public Optional<Service> findById(@NotNull Long aLong) {
         return Optional.empty();
     }
 
     @Override
-    public boolean existsById(Long aLong) {
+    public boolean existsById(@NotNull Long aLong) {
         return false;
     }
 
     @Override
+    @NotNull
     public Iterable<Service> findAll() {
         return null;
     }
 
     @Override
-    public Iterable<Service> findAllById(Iterable<Long> longs) {
+    @NotNull
+    public Iterable<Service> findAllById(@NotNull Iterable<Long> longs) {
         return null;
     }
 
@@ -49,22 +54,22 @@ public class ServiceRepositoryImpl implements ServiceRepository {
     }
 
     @Override
-    public void deleteById(Long aLong) {
+    public void deleteById(@NotNull Long aLong) {
 
     }
 
     @Override
-    public void delete(Service entity) {
+    public void delete(@NotNull Service entity) {
 
     }
 
     @Override
-    public void deleteAllById(Iterable<? extends Long> longs) {
+    public void deleteAllById(@NotNull Iterable<? extends Long> longs) {
 
     }
 
     @Override
-    public void deleteAll(Iterable<? extends Service> entities) {
+    public void deleteAll(@NotNull Iterable<? extends Service> entities) {
 
     }
 

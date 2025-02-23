@@ -1,8 +1,8 @@
 package com.FindMyRoom.repository.impl;
 
-import com.FindMyRoom.model.Admin;
 import com.FindMyRoom.model.Review;
 import com.FindMyRoom.repository.ReviewRepository;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,32 +14,37 @@ import java.util.Optional;
 public class ReviewRepositoryImpl implements ReviewRepository {
 
     @Override
-    public <S extends Review> S save(S entity) {
+    @NotNull
+    public <S extends Review> S save(@NotNull S entity) {
         return null;
     }
 
     @Override
-    public <S extends Review> Iterable<S> saveAll(Iterable<S> entities) {
+    @NotNull
+    public <S extends Review> Iterable<S> saveAll(@NotNull Iterable<S> entities) {
         return null;
     }
 
     @Override
-    public Optional<Review> findById(Long aLong) {
+    @NotNull
+    public Optional<Review> findById(@NotNull Long aLong) {
         return Optional.empty();
     }
 
     @Override
-    public boolean existsById(Long aLong) {
+    public boolean existsById(@NotNull Long aLong) {
         return false;
     }
 
     @Override
+    @NotNull
     public Iterable<Review> findAll() {
         return null;
     }
 
     @Override
-    public Iterable<Review> findAllById(Iterable<Long> longs) {
+    @NotNull
+    public Iterable<Review> findAllById(@NotNull Iterable<Long> longs) {
         return null;
     }
 
@@ -49,22 +54,22 @@ public class ReviewRepositoryImpl implements ReviewRepository {
     }
 
     @Override
-    public void deleteById(Long aLong) {
+    public void deleteById(@NotNull Long aLong) {
 
     }
 
     @Override
-    public void delete(Review entity) {
+    public void delete(@NotNull Review entity) {
 
     }
 
     @Override
-    public void deleteAllById(Iterable<? extends Long> longs) {
+    public void deleteAllById(@NotNull Iterable<? extends Long> longs) {
 
     }
 
     @Override
-    public void deleteAll(Iterable<? extends Review> entities) {
+    public void deleteAll(@NotNull Iterable<? extends Review> entities) {
 
     }
 
