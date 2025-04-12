@@ -3,7 +3,7 @@ package com.FindMyRoom.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -28,8 +28,8 @@ public class Business {
     private String permissionNumber;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "business")
-    private List<BoardingHouse> boardingHouseList;
+    private Set<BoardingHouse> boardingHouseList;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "business")
-    private List<Post> posts;
+    private Set<Post> posts;
 }

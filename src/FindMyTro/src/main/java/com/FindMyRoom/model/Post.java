@@ -5,7 +5,7 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.FutureOrPresent;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -41,7 +41,7 @@ public class Post {
     @FutureOrPresent
     @DateTimeFormat(pattern = "yyyy-MM-dd", fallbackPatterns = {"yyyy/MM/dd", "dd-MM-yyyy", "dd/MM/yyyy"})
     @Temporal(TemporalType.DATE)
-    private Date createdDate;
+    private LocalDate createdDate;
 
     @Column(nullable = false)
     private Boolean status;

@@ -6,7 +6,7 @@ import lombok.*;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -53,12 +53,12 @@ public class BoardingHouse {
     private int numberOfStar;
 
     @OneToMany(mappedBy = "house", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Review> reviews;
+    private Set<Review> reviews;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "business_id")
     private Business business;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "boardingHouse")
-    private List<Booking> bookings;
+    private Set<Booking> bookings;
 }

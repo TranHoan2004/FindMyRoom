@@ -3,23 +3,23 @@ package com.FindMyRoom.service.impl;
 import com.FindMyRoom.dto.UserDTO;
 import com.FindMyRoom.model.Users;
 import com.FindMyRoom.repository.UserRepository;
-import com.FindMyRoom.repository.impl.UserRepositoryImpl;
 import com.FindMyRoom.service.UserService;
-import com.FindMyRoom.utils.CurrentDate;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository repo;
     private final BCryptPasswordEncoder encoder;
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
 
-    public UserServiceImpl(UserRepositoryImpl repo, BCryptPasswordEncoder encoder) {
+    public UserServiceImpl(UserRepository repo, BCryptPasswordEncoder encoder) {
         this.repo = repo;
         this.encoder = encoder;
     }
@@ -36,8 +36,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void addAnNewAccount(@NotNull UserDTO userDTO) throws ParseException {
-        userDTO.setCreatedDate(CurrentDate.getCurrentDate());
+    public void addAnNewAccount(@NotNull UserDTO userDTO) {
+        userDTO.setCreatedDate(LocalDate.now());
         userDTO.setStatus(true);
         userDTO.setPassword(encoder.encode(userDTO.getPassword()));
         repo.save(convert(userDTO));
@@ -64,18 +64,6 @@ public class UserServiceImpl implements UserService {
         }
         return optionalUser;
     }
-
-//    @Override
-//    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-//        UserDTO users = getUserDTOByEmail(email);
-//        List<GrantedAuthority> authorities = new ArrayList<>();
-//        if (users == null) {
-//            throw new UsernameNotFoundException("Email is not existing");
-//        }
-//        System.out.println(users.toString());
-//        authorities.add(new SimpleGrantedAuthority(users.getRole().name()));
-//        return new User(users.getEmail(), users.getPassword(), authorities);
-//    }
 
     // <editor-fold> desc="convert entity"
     private UserDTO convert(@NotNull Users user) {

@@ -3,7 +3,7 @@ package com.FindMyRoom.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -26,5 +26,5 @@ public class Employee {
     private Admin admin;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "author")
-    private List<Slider> sliders;
+    private Set<Slider> sliders;
 }

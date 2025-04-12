@@ -5,7 +5,6 @@ import com.FindMyRoom.dto.UserDTO;
 import com.FindMyRoom.model.Admin;
 import com.FindMyRoom.model.Users;
 import com.FindMyRoom.repository.AdminRepository;
-import com.FindMyRoom.repository.impl.AdminRepositoryImpl;
 import com.FindMyRoom.service.AdminService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -18,7 +17,7 @@ import java.util.Optional;
 public class AdminServiceImpl implements AdminService {
     private final AdminRepository repo;
 
-    public AdminServiceImpl(AdminRepositoryImpl repo) {
+    public AdminServiceImpl(AdminRepository repo) {
         this.repo = repo;
     }
 

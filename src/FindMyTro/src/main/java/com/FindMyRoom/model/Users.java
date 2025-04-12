@@ -8,8 +8,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -58,7 +58,7 @@ public class Users {
     @DateTimeFormat(pattern = "yyyy-MM-dd", fallbackPatterns = {"yyyy/MM/dd", "dd-MM-yyyy", "dd/MM/yyyy"})
     @Temporal(TemporalType.DATE)
     @Setter
-    private Date createdDate;
+    private LocalDate createdDate;
 
     @Setter
     @Enumerated(EnumType.STRING)
@@ -66,22 +66,22 @@ public class Users {
     private Role role;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
-    private List<Admin> admins;
+    private Set<Admin> admins;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
-    private List<Employee> employees;
+    private Set<Employee> employees;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
-    private List<Business> businesses;
+    private Set<Business> businesses;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
-    private List<Post> posts;
+    private Set<Post> posts;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
-    private List<Review> reviews;
+    private Set<Review> reviews;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
-    private List<Booking> bookings;
+    private Set<Booking> bookings;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
     private Cart cart;

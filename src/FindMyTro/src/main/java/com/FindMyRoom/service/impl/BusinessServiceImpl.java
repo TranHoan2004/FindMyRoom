@@ -3,7 +3,6 @@ package com.FindMyRoom.service.impl;
 import com.FindMyRoom.dto.BusinessDTO;
 import com.FindMyRoom.model.Business;
 import com.FindMyRoom.repository.BusinessRepository;
-import com.FindMyRoom.repository.impl.BusinessRepositoryImpl;
 import com.FindMyRoom.service.BusinessService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
@@ -14,7 +13,7 @@ import java.util.Optional;
 public class BusinessServiceImpl implements BusinessService {
     private final BusinessRepository repo;
 
-    public BusinessServiceImpl(BusinessRepositoryImpl repo) {
+    public BusinessServiceImpl(BusinessRepository repo) {
         this.repo = repo;
     }
 

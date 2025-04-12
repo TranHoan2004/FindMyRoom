@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -22,6 +22,6 @@ public class UserDTO {
     private Boolean gender;
     private byte[] imgURL;
     private Boolean status;
-    private Date createdDate;
+    private LocalDate createdDate;
     private Role role;
 }

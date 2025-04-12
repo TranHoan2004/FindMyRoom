@@ -4,7 +4,7 @@ import com.FindMyRoom.model.utils.AdminID;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -23,8 +23,8 @@ public class Admin {
     private Users user;
 
     @OneToMany(mappedBy = "admin", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Employee> employees;
+    private Set<Employee> employees;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "admin")
-    private List<Service> services;
+    private Set<Services> services;
 }
