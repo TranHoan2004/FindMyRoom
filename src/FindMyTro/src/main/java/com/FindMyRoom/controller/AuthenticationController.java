@@ -39,9 +39,7 @@ public class AuthenticationController {
     public String redirectToLogin(Model model,
                                   @RequestParam(value = "error", required = false) boolean error) {
         model.addAttribute("user", new UserDTO());
-        if (error) {
-            model.addAttribute("error", "Wrong username or password");
-        }
+        if (error) model.addAttribute("error", "Wrong username or password");
         return "login-register-forgot-features/login";
     }
 
