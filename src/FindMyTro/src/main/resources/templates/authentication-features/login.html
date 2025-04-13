@@ -14,7 +14,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/vendor/css-hamburgers/hamburgers.min.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/vendor/select2/select2.min.css}">
     <link th:href="@{/css/login.css}" rel="stylesheet" type="text/css"/>
-    <title>Log in</title>
+    <title th:text="${login_title}"></title>
 </head>
 <body>
 <div class="limiter">
@@ -24,14 +24,14 @@
                 <img th:src="@{/images/img-01.png}" alt="IMG">
             </div>
             <form class="form-signin" th:action="@{/login}" th:method="POST">
-                <span class="login100-form-title">
-                    Login in here
-                </span>
+                <span class="login100-form-title" th:text="${login_here_title}"></span>
+
+                <!-- Email -->
                 <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
                     <label for="inputEmail">
                         <input class="input100 form-control" type="text"
                                id="inputEmail" name="username"
-                               placeholder="Username" required="" autofocus="">
+                               th:placeholder="${username_title}" required="" autofocus="">
                     </label>
                     <span class="focus-input100"></span>
                     <span class="symbol-input100">
@@ -39,10 +39,11 @@
                     </span>
                 </div>
 
+                <!-- Password -->
                 <div class="wrap-input100 validate-input" data-validate="Password is required">
                     <label for="inputPassword">
                         <input class="input100 form-control" type="password" name="password"
-                               id="inputPassword" placeholder="Password" required="">
+                               id="inputPassword" th:placeholder="${password_title}" required="">
                     </label>
                     <span class="focus-input100"></span>
                     <span class="symbol-input100">
@@ -52,23 +53,40 @@
 
                 <div class="form-group form-check">
                     <input name="remember-me" value="1" type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">Remember me</label>
+                    <label class="form-check-label" for="exampleCheck1" th:text="${remember_me_title}"></label>
                 </div>
 
                 <p th:text="${error}" style="color: red"></p>
 
                 <div class="container-login100-form-btn">
-                    <button class="login100-form-btn" type="submit">
-                        Login
-                    </button>
-                    <a href="/oauth2/authorization/google">Đăng nhập với Google</a>
+                    <button class="login100-form-btn" type="submit" th:text="${login_title}"></button>
+<!--                    <a href="/oauth2/authorization/google" th:text="${}">Đăng nhập với Google</a>-->
                 </div>
                 <hr>
+
+                <p th:text="${sign_in_with_other_method}"></p>
+
+                <div class="container-login100-form-btn">
+                    <button class="login100-form-btn" type="submit"
+                            style="background: #ffffff; color: #0022ff; border-style: solid; border-color: black;border-width: 1px;">
+                        <img th:src="@{/images/Facebook_Logo_(2019).png}" alt="IMG" width="20" height="20" />&nbsp;
+                        Facebook
+                    </button>
+                </div>
+
+                <div class="container-login100-form-btn">
+                    <button class="login100-form-btn" onclick="location.href='/oauth2/authorization/google'"
+                            style="background: #ffffff; color: #ff0000; border-style: solid; border-color: black; border-width: 1px;">
+                        <img th:src="@{/images/Google.png}" alt="IMG" width="20" height="20" />&nbsp;
+                        Google
+                    </button>
+                </div>
+
                 <div class="text-center p-t-136">
-                    <a class="txt2" th:href="@{/forgotPassword}">Forgot your password?</a><br>
-                    <p class="txt2">----------- or -----------</p>
+                    <a class="txt2" th:href="@{/forgotPassword}" th:text="${forgot_pass}"></a><br>
+                    <p class="txt2" th:text="${or_title}"></p>
                     <a class="txt2" th:href="@{/createAccount}">
-                        Create your Account
+                        <span th:text="${create_account}"></span>
                         <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
                     </a>
                 </div>

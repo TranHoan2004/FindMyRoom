@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Trang chủ</title>
+    <title th:text="${}">Trang chủ</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap">
@@ -111,7 +111,7 @@
                 <div class="post-box">
                     <label for="post"></label>
                     <textarea id="post" class="form-control mb-2" rows="3" placeholder="Bạn muốn đăng gì?"></textarea>
-                    <button class="btn btn-success btn-sm float-end">Đăng bài</button>
+                    <button class="btn btn-success btn-sm float-end" th:text="${}">Đăng bài</button>
                     <div class="clearfix"></div>
                 </div>
 
@@ -129,7 +129,7 @@
 
             <!-- News -->
             <div class="col-md-2">
-                <h5 class="mb-3">Tin tức nổi bật</h5>
+                <h5 class="mb-3" th:text="${}">Tin tức nổi bật</h5>
                 <ul class="list-group">
                     <li class="list-group-item">💡 Xu hướng thuê trọ 2025</li>
                     <li class="list-group-item">🏠 Top 10 nhà trọ đáng sống</li>
@@ -140,43 +140,14 @@
         </div>
     </div>
 
+    <!-- Footer -->
     <div th:replace="~{components-features/footer::footer}"></div>
 
     <!-- Modal đăng xuất -->
-    <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="settingsModalLabel">Đăng xuất</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Bạn có chắc chắn sẽ đăng xuất hay không?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-primary">Đăng xuất</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div th:replace="~{authentication-features/logout::logout}"></div>
 
     <!-- Thông báo -->
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="notificationCanvas"
-        aria-labelledby="notificationCanvasLabel">
-        <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="notificationCanvasLabel">Thông báo</h5>
-            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
-            <div class="alert alert-info" role="alert">
-                🔔 Bạn có 2 bài đăng mới cần duyệt
-            </div>
-            <div class="alert alert-success" role="alert">
-                🔔 Có tin nhắn mới từ chủ trọ
-            </div>
-        </div>
-    </div>
+    <div th:replace="~{notification-features/notification::notification}"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
