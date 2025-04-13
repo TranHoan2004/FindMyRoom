@@ -5,7 +5,19 @@ import com.FindMyRoom.service.UserService;
 import com.FindMyRoom.utils.RandomCode;
 import com.FindMyRoom.utils.email.EmailService;
 import com.FindMyRoom.utils.email.EmailServiceImpl;
+import jakarta.servlet.http.HttpSession;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +34,7 @@ public class AuthenticationController {
     private final UserService userService;
     private static String randomCode;
     private final UserDTO userDTO;
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     public AuthenticationController(UserService userService) {
         AuthenticationController.randomCode = null;
@@ -32,7 +45,7 @@ public class AuthenticationController {
     @GetMapping("/createAccount")
     public String redirectToRegister(Model model) {
         model.addAttribute("user", userDTO);
-        return "login-register-forgot-features/register";
+        return "authentication-features/register";
     }
 
     @GetMapping("/login")
@@ -40,7 +53,13 @@ public class AuthenticationController {
                                   @RequestParam(value = "error", required = false) boolean error) {
         model.addAttribute("user", new UserDTO());
         if (error) model.addAttribute("error", "Wrong username or password");
-        return "login-register-forgot-features/login";
+        return "authentication-features/login";
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity<String> profile(OAuth2AuthenticationToken token, HttpSession session) {
+        Object obj = session.getAttribute("SPRING_SECURITY_CONTEXT");
+        return ResponseEntity.ok(obj.toString());
     }
 
     @GetMapping("/forgotPassword")
@@ -50,7 +69,7 @@ public class AuthenticationController {
         model.addAttribute("message", null);
         model.addAttribute("error", null);
         model.addAttribute("isEmailVerified", null);
-        return "login-register-forgot-features/forgot-password";
+        return "authentication-features/forgot-password";
     }
 
     // <editor-fold desc="Register screen">
@@ -63,7 +82,7 @@ public class AuthenticationController {
             Logger.getLogger(AuthenticationController.class.getName()).log(Level.ALL, e.getMessage(), e);
             model.addAttribute("error", e.getMessage());
         }
-        return "login-register-forgot-features/register";
+        return "authentication-features/register";
     }
 
     @PostMapping("/validateCode")
@@ -83,27 +102,31 @@ public class AuthenticationController {
             Logger.getLogger(AuthenticationController.class.getName()).log(Level.ALL, e.getMessage(), e);
             model.addAttribute("error", e.getMessage());
         }
-        return "login-register-forgot-features/register";
+        return "authentication-features/register";
     }
 
     @PostMapping("/create")
-    public String createAccount(Model model, @ModelAttribute("user") UserDTO user) {
+    public String createAccount(Model model,
+                                @ModelAttribute("user") UserDTO user,
+                                HttpSession session) {
         try {
-            if (user.getPassword().equals(user.getRewritePassword())) {
-                userDTO.setPassword(user.getPassword());
-                userDTO.setPhoneNumber(user.getPhoneNumber());
-                userService.addAnNewAccount(userDTO);
-                resetUserDTOAttributes();
-                return "login-register-forgot-features/login";
-            } else {
+            if (!user.getPassword().equals(user.getRewritePassword())) {
                 throw new Exception("Rewrite password and password are not match");
             }
+            userDTO.setPassword(user.getPassword());
+            userDTO.setPhoneNumber(user.getPhoneNumber());
+            userService.addAnNewAccount(userDTO);
+
+            setAttributeForSecurityContext(userDTO, session);
+            logger.info("User has been created: " + session.getAttribute("SPRING_SECURITY_CONTEXT").toString());
+            resetUserDTOAttributes();
+            return "authentication-features/login";
         } catch (Exception e) {
             Logger.getLogger(AuthenticationController.class.getName()).log(Level.ALL, e.getMessage(), e);
             model.addAttribute("error", e.getMessage());
             model.addAttribute("verifyCode", true);
             model.addAttribute("user", new UserDTO());
-            return "login-register-forgot-features/register";
+            return "authentication-features/register";
         }
     }
     // </editor-fold>
@@ -119,7 +142,7 @@ public class AuthenticationController {
             Logger.getLogger(AuthenticationController.class.getName()).log(Level.ALL, e.getMessage(), e);
             model.addAttribute("error", e.getMessage());
         }
-        return "login-register-forgot-features/forgot-password";
+        return "authentication-features/forgot-password";
     }
 
     @PostMapping("/verifyPassword")
@@ -130,7 +153,7 @@ public class AuthenticationController {
                 userDTO.setPhoneNumber(user.getPhoneNumber());
                 userService.updateUserDTO(userDTO);
                 resetUserDTOAttributes();
-                return "login-register-forgot-features/login";
+                return "authentication-features/login";
             } else {
                 throw new Exception("Rewrite password and password are not match");
             }
@@ -139,11 +162,12 @@ public class AuthenticationController {
             model.addAttribute("error", e.getMessage());
             model.addAttribute("verifyCode", true);
             model.addAttribute("user", new UserDTO());
-            return "login-register-forgot-features/forgot-password";
+            return "authentication-features/forgot-password";
         }
     }
     // </editor-fold>
 
+    // <editor-fold> desc="Private methods"
     private void sendEmail(String email) {
         EmailService service = new EmailServiceImpl();
         randomCode = RandomCode.generateSixRandomCodes();
@@ -171,4 +195,17 @@ public class AuthenticationController {
         sendEmail(user.getEmail());
     }
 
+    private void setAttributeForSecurityContext(@NotNull UserDTO userDTO, @NotNull HttpSession session) {
+        SecurityContext context = SecurityContextHolder.getContext();
+        GrantedAuthority authority = new SimpleGrantedAuthority(userDTO.getRole().name());
+        UserDetails details = new User(
+                userDTO.getEmail(),
+                userDTO.getPassword(),
+                List.of(authority)
+        );
+        Authentication authentication = new UsernamePasswordAuthenticationToken(details, userDTO.getPassword(), List.of(authority));
+        context.setAuthentication(authentication);
+        session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
+    }
+    // </editor-fold>
 }

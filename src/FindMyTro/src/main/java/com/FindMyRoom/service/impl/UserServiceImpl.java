@@ -30,9 +30,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO getUserDTOByEmail(String email) {
+    public UserDTO getUserDTOByEmail(String email) throws Exception {
         Users users = repo.getByEmail(email);
-        return users == null ? null : convert(users);
+        if (users == null) {
+            throw new Exception("User not found");
+        }
+        return convert(users);
     }
 
     @Override

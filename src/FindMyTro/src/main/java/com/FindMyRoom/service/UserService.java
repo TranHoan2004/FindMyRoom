@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface UserService {
     List<String> getAllEmails();
 
-    UserDTO getUserDTOByEmail(String email);
+    UserDTO getUserDTOByEmail(String email) throws Exception;
 
     void addAnNewAccount(UserDTO userDTO) throws ParseException;
 

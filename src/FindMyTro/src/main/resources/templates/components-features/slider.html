@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel" data-bs-interval="2000" th:fragment="slider">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="/images/img-01.png" class="d-block w-100" alt="..." width="1000" height="300">
+        </div>
+        <div class="carousel-item">
+            <img src="/images/img-01.png" class="d-block w-100" alt="..." width="1000" height="300">
+        </div>
+        <div class="carousel-item">
+            <img src="/images/img-01.png" class="d-block w-100" alt="..." width="1000" height="300">
+        </div>
+    </div>
+    <button class="carousel-control-prev custom-control" type="button" data-bs-target="#carouselExampleAutoplaying"
+            data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next custom-control" type="button" data-bs-target="#carouselExampleAutoplaying"
+            data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+</body>
+</html>

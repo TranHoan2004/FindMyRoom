@@ -1,10 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4" th:fragment="header">
+    <a class="navbar-brand" href="#">Find My Trọ</a>
 
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item mx-2"><a class="nav-link" href="#">Trang chủ</a></li>
+            <li class="nav-item mx-2"><a class="nav-link" href="#">Giới thiệu</a></li>
+            <li class="nav-item mx-2"><a class="nav-link" href="#">Dịch vụ</a></li>
+            <li class="nav-item mx-2"><a class="nav-link" href="#">Liên hệ</a></li>
+        </ul>
+    </div>
+
+    <div class="d-flex align-items-center gap-3 text-white">
+        <i class="fas fa-cog" style="cursor: pointer;" title="Cài đặt" data-bs-toggle="tooltip"></i>
+        <i class="fas fa-bell" style="cursor: pointer;" title="Thông báo" data-bs-toggle="offcanvas"
+           data-bs-target="#notificationCanvas"></i>
+        <div class="dropdown">
+            <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+               data-bs-toggle="dropdown">
+                <i class="fas fa-user-circle fs-5 me-1"></i>
+                <span>Nguyễn Văn A</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="#">Hồ sơ</a></li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item text-danger fw-bold" href="#" data-bs-toggle="modal"
+                       data-bs-target="#settingsModal">Đăng xuất</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
 </body>
 </html>

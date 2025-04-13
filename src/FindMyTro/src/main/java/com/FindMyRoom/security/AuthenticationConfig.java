@@ -21,7 +21,6 @@ import org.springframework.security.web.authentication.rememberme.JdbcTokenRepos
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 import javax.sql.DataSource;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -32,25 +31,25 @@ public class AuthenticationConfig implements Constants.Role {
 
     @Bean
     public SecurityFilterChain commonConfiguration(HttpSecurity http, UserDetailsService service,
-                                                   DataSource source) throws Exception {
+            DataSource source) throws Exception {
         return http
                 .securityMatcher(
-                        "/login/**", "/forgotPassword",
-                        "/register", "/home", "oauth2/**"
-                )
+                        "/login", "/forgotPassword",
+                        "/register", "/home", "/oauth2/**")
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/register", "/home", "oauth2/**")
+                        .requestMatchers("/register",
+                                "/home",
+                                "/oauth2/**",
+                                "/login")
                         .permitAll()
 
                         .requestMatchers("/forgotPassword")
                         .hasAnyRole(
                                 ROLE_ADMIN, ROLE_BUSINESSMAN,
-                                ROLE_EMPLOYEE, ROLE_USER
-                        )
+                                ROLE_EMPLOYEE, ROLE_USER)
 
-                        .anyRequest().authenticated()
-                )
+                        .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
@@ -58,12 +57,13 @@ public class AuthenticationConfig implements Constants.Role {
                         .failureUrl("/login?error=true")
                         .successHandler((request, response, authentication) -> {
                             logger.info("User has logged in: " + authentication.getName());
+                            response.sendRedirect("/home");
                         })
                         .failureHandler((request, response, authentication) -> {
                             logger.info(request.getRequestURI() + " failed, " + authentication.getMessage());
+                            response.sendRedirect("/login?error=true");
                         })
-                        .permitAll()
-                )
+                        .permitAll())
                 .oauth2Login(o -> o
                         .loginPage("/login")
                         .defaultSuccessUrl("/home", true)
@@ -74,8 +74,7 @@ public class AuthenticationConfig implements Constants.Role {
                         .successHandler((request, response, authentication) -> {
                             logger.info("User has logged in: " + authentication.getName());
                             response.sendRedirect("/home");
-                        })
-                )
+                        }))
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login")
@@ -95,45 +94,34 @@ public class AuthenticationConfig implements Constants.Role {
                         .key("ahadfcxvjweiosnaogp0913414#")
                         .alwaysRemember(false))
                 .exceptionHandling(ex -> ex
-                        .authenticationEntryPoint((request, response, authException) ->
-                                response.sendRedirect("/login"))
+                        .authenticationEntryPoint((request, response, authException) -> response.sendRedirect("/login"))
                         .accessDeniedHandler((request, response, accessDeniedException) -> {
-                            logger.warning("Error happens when exeptionHandling is working: " + accessDeniedException.getMessage());
+                            logger.warning("Error happens when exeptionHandling is working: "
+                                    + accessDeniedException.getMessage());
                             logger.info("request uri: " + request.getRequestURI());
-                        })
-                )
+                        }))
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                        .maximumSessions(1) // 1 user can access with only 1 device, if he/she try to use with 2 or more, the previous session will immediately be canceled.
-                        .expiredUrl("/login")
-                )
+                        .maximumSessions(1) // 1 user can access with only 1 device, if he/she try to use with 2 or
+                                            // more, the previous session will immediately be canceled.
+                        .expiredUrl("/login"))
                 .httpBasic(Customizer.withDefaults())
                 .build();
     }
 
     @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    /**
-     * If we want to configure faster, do not need to use loadUserByUsername() in UserServiceImpl.<br/> In fact, we can
-     * hold 2 methods but spring security will priorities bean method. But be careful, because if we use
-     * loadUserByUsername (LUBU) manually and bean method or bean method uses API's data and LUBU uses db, there will
-     * have some conflicts.<br/> If we want to priority LUBU, please use annotation @Primary
-     *
-     * @return new User (org.springframework.security.core.userdetails)
-     */
-    @Bean
     public UserDetailsService userDetailsService(UserService service) {
+        logger.info("check username and password");
         return email -> {
-            UserDTO dto = service.getUserDTOByEmail(email);
-            if (dto == null) {
+            UserDTO dto;
+            try {
+                dto = service.getUserDTOByEmail(email);
+                logger.info(dto.getPassword() + " " + dto.getEmail());
+            } catch (Exception e) {
                 throw new UsernameNotFoundException("User not found");
             }
-            List<GrantedAuthority> authorities = new ArrayList<>();
-            authorities.add(new SimpleGrantedAuthority(dto.getRole().name()));
-            return new User(dto.getEmail(), dto.getPassword(), authorities);
+            GrantedAuthority authorities = new SimpleGrantedAuthority(dto.getRole().name());
+            return new User(dto.getEmail(), dto.getPassword(), List.of(authorities));
         };
     }
 
@@ -142,5 +130,10 @@ public class AuthenticationConfig implements Constants.Role {
         JdbcTokenRepositoryImpl repo = new JdbcTokenRepositoryImpl();
         repo.setDataSource(dataSource);
         return repo;
+    }
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }
