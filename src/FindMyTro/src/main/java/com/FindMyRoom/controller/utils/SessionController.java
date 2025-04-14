@@ -4,11 +4,13 @@ import com.FindMyRoom.dto.UserDTO;
 import com.FindMyRoom.service.UserService;
 import com.FindMyRoom.service.impl.UserServiceImpl;
 import jakarta.servlet.http.HttpSession;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 
 import java.util.logging.Level;
@@ -23,14 +25,17 @@ public class SessionController {
         this.service = service;
     }
 
-    public String getEmailFromSession(HttpSession session) {
+    public String getEmailFromSession(@NotNull HttpSession session) {
         String email = "";
-        SecurityContext context = SecurityContextHolder.getContext();
+        SecurityContext context = (SecurityContext) session.getAttribute("SPRING_SECURITY_CONTEXT");
         if (context != null) {
             logger.info("context: " + (context.getAuthentication() != null ? "null" : context.getAuthentication()));
             Authentication authentication = context.getAuthentication();
             if (authentication != null && authentication.getPrincipal() instanceof UserDetails userDetails) {
                 email = userDetails.getUsername();
+            } else if (authentication != null && authentication.getPrincipal() instanceof OAuth2User userDetails) {
+                email = userDetails.getAttribute("email");
+                logger.info(email);
             }
         } else {
             logger.log(Level.WARNING, "No SecurityContext found in session");
@@ -38,7 +43,6 @@ public class SessionController {
         return email;
     }
 
-    @Bean
     public UserDTO getEntityFromSession(HttpSession session) throws Exception {
         String email = getEmailFromSession(session);
         logger.info("Get email from session: " + email);

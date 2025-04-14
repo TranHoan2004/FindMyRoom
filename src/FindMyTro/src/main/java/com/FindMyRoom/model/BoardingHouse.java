@@ -30,7 +30,7 @@ public class BoardingHouse {
     @Column(nullable = false)
     private String address;
 
-    @Column(columnDefinition = "VARCHAR(MAX)", name = "available_room")
+    @Column(columnDefinition = "LONGTEXT", name = "available_room")
     private String availableRoom;
 
     @Column(nullable = false, name = "total_rooms")
@@ -44,7 +44,7 @@ public class BoardingHouse {
     @Max(100)
     private int area;
 
-    @Column(nullable = false, columnDefinition = "VARCHAR(MAX)")
+    @Column(nullable = false, columnDefinition = "LONGTEXT")
     private String media;
 
     @Column(nullable = false, name = "star", columnDefinition = "INT DEFAULT 0")

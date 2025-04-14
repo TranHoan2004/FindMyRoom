@@ -66,7 +66,7 @@ public class AuthenticationConfig implements Constants.Role {
                         .permitAll())
                 .oauth2Login(o -> o
                         .loginPage("/login")
-                        .defaultSuccessUrl("/home", true)
+                        .defaultSuccessUrl("/verify", true)
                         .failureHandler((request, response, authentication) -> {
                             logger.info(request.getRequestURI() + " failed, " + authentication.getMessage());
                             response.sendRedirect("/login?error=true");

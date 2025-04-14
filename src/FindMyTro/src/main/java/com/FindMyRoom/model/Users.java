@@ -45,7 +45,7 @@ public class Users {
     @Setter
     private Boolean gender;
 
-    @Column(name = "image_url", columnDefinition = "VARBINARY(MAX)")
+    @Column(name = "image_url", columnDefinition = "LONGTEXT")
     @Setter
     private byte[] imgURL;
 
@@ -85,5 +85,4 @@ public class Users {
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
     private Cart cart;
-
 }

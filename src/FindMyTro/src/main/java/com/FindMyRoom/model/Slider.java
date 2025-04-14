@@ -15,7 +15,7 @@ public class Slider {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false, columnDefinition = "VARBINARY(MAX)", name = "image_url")
+    @Column(nullable = false, columnDefinition = "LONGTEXT", name = "image_url")
     private byte[] imgURL;
 
     @Column(nullable = false)

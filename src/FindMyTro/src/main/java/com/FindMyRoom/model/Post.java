@@ -28,13 +28,13 @@ public class Post {
     @Column(nullable = false)
     private String address;
 
-    @Column(nullable = false, columnDefinition = "VARBINARY(MAX)", name = "thumbnai_url")
+    @Column(nullable = false, columnDefinition = "LONGTEXT", name = "thumbnai_url")
     private byte[] thumbnailURL;
 
     @Column(name = "special_items", nullable = false)
     private String specialItem;
 
-    @Column(columnDefinition = "VARCHAR(MAX)", nullable = false)
+    @Column(columnDefinition = "LONGTEXT", nullable = false)
     private String media;
 
     @Column(name = "created_date", nullable = false)

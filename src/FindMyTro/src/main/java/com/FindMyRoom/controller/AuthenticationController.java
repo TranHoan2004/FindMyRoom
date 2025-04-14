@@ -17,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,6 +41,17 @@ public class AuthenticationController {
         AuthenticationController.randomCode = null;
         this.userDTO = new UserDTO();
         this.userService = userService;
+    }
+
+    @GetMapping("/verify")
+    public ResponseEntity<String> verifyGoogleEmail(OAuth2AuthenticationToken token) {
+        logger.info(token.getPrincipal().getName());
+        OAuth2User user = token.getPrincipal();
+        String email = user.getAttribute("email");
+        if (email != null && !email.equals("hoana5k44nknd@gmail.com")) {
+            return ResponseEntity.ok("Email not found");
+        }
+        return ResponseEntity.ok("Email verified");
     }
 
     @GetMapping("/createAccount")

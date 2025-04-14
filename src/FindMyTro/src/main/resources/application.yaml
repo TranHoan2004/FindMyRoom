@@ -1,16 +1,15 @@
 spring:
   datasource:
-    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-    url: jdbc:sqlserver://LAPTOP-H0L0INL8\\SQLEXPRESS:1433;databaseName=FindMyRoom;encrypt=false;
-    username: sa
-    password: 123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username:
+    password:
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.SQLServerDialect
+        dialect: org.hibernate.dialect.MySQLDialect
         format_sql: true
         hbm2ddl:
           auto: update
@@ -25,5 +24,3 @@ spring:
       client:
         registration:
           google:
-            client-id: 
-            client-secret: 
