@@ -2,8 +2,7 @@ package com.FindMyRoom.dto;
 
 import lombok.*;
 
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -17,8 +16,8 @@ public class PostDTO {
     private String address;
     private byte[] thumbnailURL;
     private String specialItem;
-    private List<String> media;
-    private Date createdDate;
+    private String media;
+    private LocalDate createdDate;
     private Boolean status;
     private long view;
 }

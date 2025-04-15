@@ -5,17 +5,18 @@
     <title>Title</title>
 </head>
 <body>
-<div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel" data-bs-interval="2000" th:fragment="slider">
-    <div class="carousel-inner">
-        <div class="carousel-item active">
-            <img src="/images/img-01.png" class="d-block w-100" alt="..." width="1000" height="300">
-        </div>
-        <div class="carousel-item">
-            <img src="/images/img-01.png" class="d-block w-100" alt="..." width="1000" height="300">
-        </div>
-        <div class="carousel-item">
-            <img src="/images/img-01.png" class="d-block w-100" alt="..." width="1000" height="300">
-        </div>
+<div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel" data-bs-interval="2000"
+     th:fragment="slider">
+    <div class="carousel-inner" id="image-container">
+        <!--        <div class="carousel-item active">-->
+        <!--            <img src="/images/img-01.png" class="d-block w-100" alt="..." width="1000" height="300">-->
+        <!--        </div>-->
+        <!--        <div class="carousel-item">-->
+        <!--            <img src="/images/img-01.png" class="d-block w-100" alt="..." width="1000" height="300">-->
+        <!--        </div>-->
+        <!--        <div class="carousel-item">-->
+        <!--            <img src="/images/img-01.png" class="d-block w-100" alt="..." width="1000" height="300">-->
+        <!--        </div>-->
     </div>
     <button class="carousel-control-prev custom-control" type="button" data-bs-target="#carouselExampleAutoplaying"
             data-bs-slide="prev">
@@ -27,6 +28,24 @@
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden" th:text="${next_label}"></span>
     </button>
+    <script>
+        fetch('/slider/list')
+            .then(response => response.json())
+            .then(data => {
+                const container = document.getElementById('image-container')
+                const div = document.createElement('div')
+                let content = ''
+                data.forEach((img, index) => {
+                    content += `
+                            <div class="carousel-item ${index === 0 ? 'active' : ''}">
+                                <img src="${img}" class="d-block w-100" alt="..." height="400">
+                            </div>`;
+                })
+                div.innerHTML = content
+                container.appendChild(div)
+            })
+            .catch(err => console.error('err when loading images ', err))
+    </script>
 </div>
 </body>
 </html>

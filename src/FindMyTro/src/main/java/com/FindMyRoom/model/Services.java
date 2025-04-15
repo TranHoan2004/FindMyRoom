@@ -18,7 +18,7 @@ import java.time.LocalDate;
 public class Services {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(nullable = false)
     private String name;

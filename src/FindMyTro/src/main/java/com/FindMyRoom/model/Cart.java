@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -17,16 +18,20 @@ import javax.validation.constraints.Min;
 @Table(name = "Cart")
 public class Cart {
     @Id
-    private long id;
+    private Long id;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     @MapsId
     private Users user;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "post_id")
-    private Post post;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "post_cart",
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "cart_id")
+    )
+    private Set<Post> post;
 
     @Column(nullable = false)
     @Min(0)

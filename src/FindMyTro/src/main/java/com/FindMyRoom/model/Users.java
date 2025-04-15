@@ -20,7 +20,7 @@ import java.util.Set;
 public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(nullable = false, length = 30, unique = true)
     @Pattern(regexp = "^[A-Za-z](.*)(@)(.{2,})(\\\\.)(.{2,})", message = "Must follow the format <name>@<domain>")

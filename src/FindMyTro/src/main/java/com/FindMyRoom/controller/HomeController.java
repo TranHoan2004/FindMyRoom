@@ -2,6 +2,7 @@ package com.FindMyRoom.controller;
 
 import com.FindMyRoom.controller.utils.SessionController;
 import com.FindMyRoom.dto.UserDTO;
+import com.FindMyRoom.service.SliderService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,6 +29,11 @@ public class HomeController {
     public String home(HttpSession session) {
         throwSessionData(session);
         return "common-features/home";
+    }
+
+    @GetMapping("/setting")
+    public String settingPage() {
+        return "common-features/setting";
     }
 
     private void throwSessionData(HttpSession session) {

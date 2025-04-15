@@ -31,21 +31,23 @@ public class AuthenticationConfig implements Constants.Role {
 
     @Bean
     public SecurityFilterChain commonConfiguration(HttpSecurity http, UserDetailsService service,
-            DataSource source) throws Exception {
+                                                   DataSource source) throws Exception {
         return http
                 .securityMatcher(
-                        "/login/**", "/forgotPassword",
-                        "/register", "/home", "/oauth2/**")
+                        "/login/**", "/forgotPassword", "/logout",
+                        "/register", "/home", "/oauth2/**",
+                        "/setting")
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/register",
-                                "/home",
                                 "/oauth2/**",
-                                "/login/**")
-                        .permitAll()
+                                "/login/**"
+                        ).permitAll()
 
-                        .requestMatchers("/forgotPassword")
-                        .hasAnyRole(
+                        .requestMatchers(
+                                "/forgotPassword",
+                                "/home", "/setting"
+                        ).hasAnyRole(
                                 ROLE_ADMIN, ROLE_BUSINESSMAN,
                                 ROLE_EMPLOYEE, ROLE_USER)
 
@@ -63,8 +65,7 @@ public class AuthenticationConfig implements Constants.Role {
                         .failureHandler((request, response, authentication) -> {
                             logger.info(request.getRequestURI() + " failed, " + authentication.getMessage());
                             response.sendRedirect("/login?error=true");
-                        })
-                        .permitAll())
+                        }).permitAll())
                 .oauth2Login(o -> o
                         .loginPage("/login")
                         .failureHandler((request, response, authentication) -> {
@@ -77,12 +78,12 @@ public class AuthenticationConfig implements Constants.Role {
                         }))
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login")
                         .invalidateHttpSession(true)
                         .logoutSuccessHandler((request, response, authentication) -> {
                             if (authentication != null) {
                                 logger.info("User has logged out: " + authentication.getName());
                             }
+                            response.sendRedirect("/login");
                         })
                         .deleteCookies("JSESSIONID", "remember-me")
                         .permitAll())
@@ -97,13 +98,13 @@ public class AuthenticationConfig implements Constants.Role {
                         .authenticationEntryPoint((request, response, authException) -> response.sendRedirect("/login"))
                         .accessDeniedHandler((request, response, accessDeniedException) -> {
                             logger.warning("Error happens when exeptionHandling is working: "
-                                    + accessDeniedException.getMessage());
+                                           + accessDeniedException.getMessage());
                             logger.info("request uri: " + request.getRequestURI());
                         }))
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                         .maximumSessions(1) // 1 user can access with only 1 device, if he/she try to use with 2 or
-                                            // more, the previous session will immediately be canceled.
+                        // more, the previous session will immediately be canceled.
                         .expiredUrl("/login"))
                 .httpBasic(Customizer.withDefaults())
                 .build();

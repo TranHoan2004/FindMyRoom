@@ -13,7 +13,7 @@ import lombok.*;
 public class Slider {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(nullable = false, columnDefinition = "LONGTEXT", name = "image_url")
     private byte[] imgURL;

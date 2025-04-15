@@ -18,7 +18,7 @@ import java.util.Set;
 public class BoardingHouse {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "special_items")
     private String specialItem;

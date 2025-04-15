@@ -19,7 +19,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                         th:text="${cancel_btn}"></button>
-                <button type="button" class="btn btn-primary" th:text="${logout_title}"></button>
+                <button onclick="window.location.href='/logout'" class="btn btn-primary" th:text="${logout_title}"></button>
             </div>
         </div>
     </div>

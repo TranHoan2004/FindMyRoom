@@ -2,10 +2,14 @@ package com.FindMyRoom.model.utils;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Objects;
 
+@Getter
+@Setter
 @Embeddable
 public class AdminID implements Serializable {
     @Column(name = "admin_id")

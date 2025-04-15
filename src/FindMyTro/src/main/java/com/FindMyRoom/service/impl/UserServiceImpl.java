@@ -1,6 +1,7 @@
 package com.FindMyRoom.service.impl;
 
 import com.FindMyRoom.dto.UserDTO;
+import com.FindMyRoom.mapping.UserMapping;
 import com.FindMyRoom.model.Users;
 import com.FindMyRoom.repository.UserRepository;
 import com.FindMyRoom.service.UserService;
@@ -17,11 +18,13 @@ import java.util.logging.Logger;
 public class UserServiceImpl implements UserService {
     private final UserRepository repo;
     private final BCryptPasswordEncoder encoder;
+    private final UserMapping mapping;
     private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     public UserServiceImpl(UserRepository repo, BCryptPasswordEncoder encoder) {
         this.repo = repo;
         this.encoder = encoder;
+        this.mapping = new UserMapping();
     }
 
     @Override
@@ -31,39 +34,47 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getUserDTOByEmail(String email) throws Exception {
+        logger.info("getUserDTOByEmail");
         Users users = repo.getByEmail(email);
         if (users == null) {
             throw new Exception("User not found");
         }
-        return convert(users);
+        return mapping.convert(users);
     }
 
     @Override
     public void addAnNewAccount(@NotNull UserDTO userDTO) {
+        logger.info("addAnNewAccount");
         userDTO.setCreatedDate(LocalDate.now());
         userDTO.setStatus(true);
         userDTO.setPassword(encoder.encode(userDTO.getPassword()));
-        repo.save(convert(userDTO));
+        repo.save(mapping.convert(userDTO));
     }
 
     @Override
     public void updateUserDTO(@NotNull UserDTO userDTO) {
-        UserDTO user = convert(repo.getByEmail(userDTO.getEmail()));
-        user.setPhoneNumber(userDTO.getPhoneNumber());
-        user.setEmail(userDTO.getEmail());
-        user.setPassword(userDTO.getPassword());
-        repo.save(convert(userDTO));
+        logger.info("updateUserDTO");
+        Users users = repo.getByEmail(userDTO.getEmail());
+
+        // update users information
+        users.setPhoneNumber(userDTO.getPhoneNumber());
+        users.setEmail(userDTO.getEmail());
+        users.setPassword(userDTO.getPassword());
+
+        // update
+        repo.save(users);
     }
 
     @Override
     public Optional<UserDTO> getAllUserDTOs() throws Exception {
+        logger.info("getAllUserDTOs");
         Iterable<Users> list = repo.findAll();
         if (!list.iterator().hasNext()) {
             throw new Exception("No results");
         }
         Optional<UserDTO> optionalUser = Optional.empty();
         for (Users user : list) {
-            optionalUser = Optional.of(convert(user));
+            optionalUser = Optional.of(mapping.convert(user));
         }
         return optionalUser;
     }
@@ -73,36 +84,4 @@ public class UserServiceImpl implements UserService {
         logger.info("is email existing?");
         return repo.existsByEmail(email);
     }
-
-    // <editor-fold> desc="convert entity"
-    private UserDTO convert(@NotNull Users user) {
-        return UserDTO.builder()
-                .id(user.getId())
-                .email(user.getEmail())
-                .password(user.getPassword())
-                .createdDate(user.getCreatedDate())
-                .fullname(user.getFullname())
-                .gender(user.getGender())
-                .imgURL(user.getImgURL())
-                .phoneNumber(String.valueOf(user.getPhoneNumber()))
-                .status(user.getStatus())
-                .role(user.getRole())
-                .build();
-    }
-
-    private Users convert(@NotNull UserDTO user) {
-        return Users.builder()
-                .id(user.getId())
-                .email(user.getEmail())
-                .password(user.getPassword())
-                .createdDate(user.getCreatedDate())
-                .fullname(user.getFullname())
-                .gender(user.getGender())
-                .imgURL(user.getImgURL())
-                .phoneNumber(String.valueOf(user.getPhoneNumber()))
-                .status(user.getStatus())
-                .role(user.getRole())
-                .build();
-    }
-    // </editor-fold>
 }

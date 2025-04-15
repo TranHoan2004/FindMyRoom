@@ -6,6 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.FutureOrPresent;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -17,7 +18,7 @@ import java.time.LocalDate;
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(nullable = false)
     private String title;
@@ -47,15 +48,11 @@ public class Post {
     private Boolean status;
 
     @Column(nullable = false, columnDefinition = "bigint default 0", name = "view_count")
-    private long view;
+    private Long view;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private Users user;
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "cart_id")
-    private Cart cart;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "business_id")

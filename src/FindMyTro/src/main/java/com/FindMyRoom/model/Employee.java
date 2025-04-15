@@ -14,7 +14,7 @@ import java.util.Set;
 @Table(name = "Employee")
 public class Employee {
     @Id
-    private long id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "employee_id")
