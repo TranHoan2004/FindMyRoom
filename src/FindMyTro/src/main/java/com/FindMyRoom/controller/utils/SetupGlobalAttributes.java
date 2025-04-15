@@ -29,5 +29,50 @@ public class SetupGlobalAttributes {
         model.addAttribute("create_account", messageSource.getMessage("create_account", null, locale));
     }
 
+    public void setupHomePage(@NotNull Model model, Locale locale) {
+        model.addAttribute("home_page_title", messageSource.getMessage("home_page_title", null, locale));
+        model.addAttribute("create_a_post", messageSource.getMessage("create_a_post", null, locale));
+        model.addAttribute("what_you_want_to_post", messageSource.getMessage("what_you_want_to_post", null, locale));
+        model.addAttribute("special_news", messageSource.getMessage("special_news", null, locale));
+        model.addAttribute("filter_title", messageSource.getMessage("filter_title", null, locale));
+    }
+
+    public void setupFooter(@NotNull Model model, Locale locale) {
+        model.addAttribute("contact_title", messageSource.getMessage("contact_title", null, locale));
+    }
+
+    public void setupLogout(@NotNull Model model, Locale locale) {
+        model.addAttribute("logout_title", messageSource.getMessage("logout_title", null, locale));
+        model.addAttribute("logout_alert", messageSource.getMessage("logout_alert", null, locale));
+        model.addAttribute("cancel_btn", messageSource.getMessage("cancel_btn", null, locale));
+    }
+
+    public void setupSearchPage(@NotNull Model model, Locale locale) {
+        model.addAttribute("search_title", messageSource.getMessage("search_title", null, locale));
+        model.addAttribute("search_placeholder", messageSource.getMessage("search_placeholder", null, locale));
+    }
+
+    public void setupStory(@NotNull Model model, Locale locale) {
+        model.addAttribute("news_events", messageSource.getMessage("news_events", null, locale));
+    }
+
+    public void setupSlider(@NotNull Model model, Locale locale) {
+        model.addAttribute("previous_label", messageSource.getMessage("previous_label", null, locale));
+        model.addAttribute("next_label", messageSource.getMessage("next_label", null, locale));
+    }
+
+    public void setupHeader(@NotNull Model model, Locale locale) {
+        model.addAttribute("web_name", messageSource.getMessage("web_name", null, locale));
+        model.addAttribute("about_title", messageSource.getMessage("about_title", null, locale));
+        model.addAttribute("services_title", messageSource.getMessage("services_title", null, locale));
+        model.addAttribute("profile_title", messageSource.getMessage("profile_title", null, locale));
+        model.addAttribute("setting_title", messageSource.getMessage("setting_title", null, locale));
+    }
+    // </editor-fold>
+
+    // <editor-fold> desc="Notification"
+    public void setupNotificationPopup(@NotNull Model model, Locale locale) {
+        model.addAttribute("notification_title", messageSource.getMessage("notification_title", null, locale));
+    }
     // </editor-fold>
 }

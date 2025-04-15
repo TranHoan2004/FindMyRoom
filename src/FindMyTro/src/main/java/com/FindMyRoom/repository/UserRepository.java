@@ -21,4 +21,6 @@ public interface UserRepository extends CrudRepository<Users, Long> {
             WHERE u.email = :email
             """)
     Users getByEmail(@Param("email") String email);
+
+    boolean existsByEmail(String email);
 }

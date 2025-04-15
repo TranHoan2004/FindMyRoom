@@ -5,19 +5,21 @@
     <title>Title</title>
 </head>
 <body>
-<div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true" th:fragment="logout">
+<div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true"
+     th:fragment="logout">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="settingsModalLabel">Đăng xuất</h5>
+                <h5 class="modal-title" id="settingsModalLabel" th:text="${logout_title}"></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Bạn có chắc chắn sẽ đăng xuất hay không?</p>
+                <p th:text="${logout_alert}"></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                <button type="button" class="btn btn-primary">Đăng xuất</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                        th:text="${cancel_btn}"></button>
+                <button type="button" class="btn btn-primary" th:text="${logout_title}"></button>
             </div>
         </div>
     </div>

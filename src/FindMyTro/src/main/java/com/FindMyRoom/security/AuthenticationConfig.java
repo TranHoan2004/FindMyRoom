@@ -34,14 +34,14 @@ public class AuthenticationConfig implements Constants.Role {
             DataSource source) throws Exception {
         return http
                 .securityMatcher(
-                        "/login", "/forgotPassword",
+                        "/login/**", "/forgotPassword",
                         "/register", "/home", "/oauth2/**")
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/register",
                                 "/home",
                                 "/oauth2/**",
-                                "/login")
+                                "/login/**")
                         .permitAll()
 
                         .requestMatchers("/forgotPassword")
@@ -49,7 +49,8 @@ public class AuthenticationConfig implements Constants.Role {
                                 ROLE_ADMIN, ROLE_BUSINESSMAN,
                                 ROLE_EMPLOYEE, ROLE_USER)
 
-                        .anyRequest().authenticated())
+                        .anyRequest().authenticated()
+                )
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
@@ -66,14 +67,13 @@ public class AuthenticationConfig implements Constants.Role {
                         .permitAll())
                 .oauth2Login(o -> o
                         .loginPage("/login")
-                        .defaultSuccessUrl("/verify", true)
                         .failureHandler((request, response, authentication) -> {
                             logger.info(request.getRequestURI() + " failed, " + authentication.getMessage());
                             response.sendRedirect("/login?error=true");
                         })
                         .successHandler((request, response, authentication) -> {
                             logger.info("User has logged in: " + authentication.getName());
-                            response.sendRedirect("/home");
+                            response.sendRedirect("/verify");
                         }))
                 .logout(logout -> logout
                         .logoutUrl("/logout")

@@ -1,8 +1,6 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username:
-    password:
   jpa:
     hibernate:
       ddl-auto: update
@@ -24,3 +22,11 @@ spring:
       client:
         registration:
           google:
+            scope:
+              - email
+              - profile
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo

@@ -19,27 +19,15 @@ import java.util.logging.Logger;
 @ControllerAdvice
 public class GlobalAttributesController {
     private final SetupGlobalAttributes attr;
-    private final SessionController sc;
     private final Logger logger = Logger.getLogger(this.getClass().getName());
 
-    public GlobalAttributesController(SetupGlobalAttributes attr, SessionController session) {
+    public GlobalAttributesController(SetupGlobalAttributes attr) {
         this.attr = attr;
-        this.sc = session;
-    }
-
-    private void throwSessionData(HttpSession session) {
-        try {
-            UserDTO user = sc.getEntityFromSession(session);
-            session.setAttribute("account", user);
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, e.getMessage(), e);
-        }
     }
 
     @ModelAttribute
     public void addAttributes(Model model, Locale locale, HttpSession session) {
         logger.info("Setup global attributes");
-        throwSessionData(session);
         Map<String, Consumer<Model>> map = createAttributes(model, locale);
         for (Map.Entry<String, Consumer<Model>> key : map.entrySet()) {
             key.getValue().accept(model);
@@ -49,7 +37,18 @@ public class GlobalAttributesController {
     @NotNull
     private Map<String, Consumer<Model>> createAttributes(Model model, Locale locale) {
         Map<String, Consumer<Model>> map = new HashMap<>();
+        // common
         map.put("loginPage", m -> attr.setupLoginPage(model, locale));
+        map.put("homepage", m -> attr.setupHomePage(model, locale));
+        map.put("footer", m -> attr.setupFooter(model, locale));
+        map.put("logout", m -> attr.setupLogout(model, locale));
+        map.put("searchPage", m -> attr.setupSearchPage(model, locale));
+        map.put("story", m -> attr.setupStory(model, locale));
+        map.put("slider", m -> attr.setupSlider(model, locale));
+        map.put("header", m -> attr.setupHeader(model, locale));
+
+        // notification
+        map.put("notification", m -> attr.setupNotificationPopup(model, locale));
 
         return map;
     }

@@ -16,4 +16,6 @@ public interface UserService {
     void updateUserDTO(UserDTO userDTO);
 
     Optional<UserDTO> getAllUserDTOs() throws Exception;
+
+    boolean isEmailExist(String email);
 }

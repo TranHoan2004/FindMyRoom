@@ -7,7 +7,7 @@
 <body>
 <div class="container mt-3" th:fragment="story">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"/>
-    <h5 class="mb-2">📢 Tin mới & Sự kiện</h5>
+    <h5 class="mb-2" th:text="'📢 ' + ${news_events}"></h5>
     <div class="swiper mySwiper">
         <div class="swiper-wrapper">
             <div class="swiper-slide text-center">

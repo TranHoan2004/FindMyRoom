@@ -6,7 +6,8 @@
 </head>
 <body>
 <footer class="bg-dark text-white text-center py-3 mt-5 footer" th:fragment="footer">
-    <p>Liên hệ:
+    <p>
+        <span th:text="${contact_title} + ':'"></span>
         <a href="tel:0989999999" class="text-light">0989 999 999</a> | Email:
         <a href="mailto:lienhe@nhatro247.vn" class="text-light">lienhe@nhatro247.vn</a>
     </p>

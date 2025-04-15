@@ -68,6 +68,12 @@ public class UserServiceImpl implements UserService {
         return optionalUser;
     }
 
+    @Override
+    public boolean isEmailExist(String email) {
+        logger.info("is email existing?");
+        return repo.existsByEmail(email);
+    }
+
     // <editor-fold> desc="convert entity"
     private UserDTO convert(@NotNull Users user) {
         return UserDTO.builder()

@@ -1,5 +1,6 @@
 package com.FindMyRoom.controller;
 
+import com.FindMyRoom.controller.utils.SessionController;
 import com.FindMyRoom.dto.UserDTO;
 import com.FindMyRoom.service.UserService;
 import com.FindMyRoom.utils.RandomCode;
@@ -7,6 +8,7 @@ import com.FindMyRoom.utils.email.EmailService;
 import com.FindMyRoom.utils.email.EmailServiceImpl;
 import jakarta.servlet.http.HttpSession;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,23 +38,24 @@ public class AuthenticationController {
     private final UserService userService;
     private static String randomCode;
     private final UserDTO userDTO;
+    private final SessionController sc;
     private final Logger logger = Logger.getLogger(this.getClass().getName());
 
-    public AuthenticationController(UserService userService) {
+    public AuthenticationController(UserService userService, SessionController sc) {
         AuthenticationController.randomCode = null;
         this.userDTO = new UserDTO();
         this.userService = userService;
+        this.sc = sc;
     }
 
     @GetMapping("/verify")
-    public ResponseEntity<String> verifyGoogleEmail(OAuth2AuthenticationToken token) {
-        logger.info(token.getPrincipal().getName());
-        OAuth2User user = token.getPrincipal();
-        String email = user.getAttribute("email");
-        if (email != null && !email.equals("hoana5k44nknd@gmail.com")) {
-            return ResponseEntity.ok("Email not found");
+    public String verifyGoogleEmail(HttpSession session, Model model) {
+        String email = sc.getEmailFromSession(session);
+        if (!userService.isEmailExist(email)) {
+            model.addAttribute("error", "This email is not existing");
+            return "authentication-features/login";
         }
-        return ResponseEntity.ok("Email verified");
+        return "common-features/home";
     }
 
     @GetMapping("/createAccount")
@@ -69,7 +73,7 @@ public class AuthenticationController {
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<String> profile(OAuth2AuthenticationToken token, HttpSession session) {
+    public ResponseEntity<String> profile(HttpSession session) {
         Object obj = session.getAttribute("SPRING_SECURITY_CONTEXT");
         return ResponseEntity.ok(obj.toString());
     }
@@ -91,7 +95,7 @@ public class AuthenticationController {
             verifyEmailAndSendVerificationCode(true, user);
             model.addAttribute("verifyCode", false);
         } catch (Exception e) {
-            Logger.getLogger(AuthenticationController.class.getName()).log(Level.ALL, e.getMessage(), e);
+            logger.log(Level.ALL, e.getMessage(), e);
             model.addAttribute("error", e.getMessage());
         }
         return "authentication-features/register";
@@ -100,18 +104,16 @@ public class AuthenticationController {
     @PostMapping("/validateCode")
     public String validateCode(Model model, @RequestParam("code") String code) {
         try {
-            if (code != null) {
-                if (code.equals(randomCode)) {
-                    model.addAttribute("verifyCode", true);
-                    model.addAttribute("user", userDTO);
-                } else {
-                    throw new Exception("Invalid code");
-                }
-            } else {
+            if (code == null) {
                 throw new Exception("Must fill out the field");
             }
+            if (!code.equals(randomCode)) {
+                throw new Exception("Invalid code");
+            }
+            model.addAttribute("verifyCode", true);
+            model.addAttribute("user", userDTO);
         } catch (Exception e) {
-            Logger.getLogger(AuthenticationController.class.getName()).log(Level.ALL, e.getMessage(), e);
+            logger.log(Level.ALL, e.getMessage(), e);
             model.addAttribute("error", e.getMessage());
         }
         return "authentication-features/register";
@@ -125,21 +127,28 @@ public class AuthenticationController {
             if (!user.getPassword().equals(user.getRewritePassword())) {
                 throw new Exception("Rewrite password and password are not match");
             }
-            userDTO.setPassword(user.getPassword());
-            userDTO.setPhoneNumber(user.getPhoneNumber());
-            userService.addAnNewAccount(userDTO);
+//            userDTO.setPassword(user.getPassword());
+//            userDTO.setPhoneNumber(user.getPhoneNumber());
+//            userService.addAnNewAccount(userDTO);
 
-            setAttributeForSecurityContext(userDTO, session);
+            setAttributeForSecurityContext(createNewAccount(user), session);
             logger.info("User has been created: " + session.getAttribute("SPRING_SECURITY_CONTEXT").toString());
             resetUserDTOAttributes();
             return "authentication-features/login";
         } catch (Exception e) {
-            Logger.getLogger(AuthenticationController.class.getName()).log(Level.ALL, e.getMessage(), e);
+            logger.log(Level.ALL, e.getMessage(), e);
             model.addAttribute("error", e.getMessage());
             model.addAttribute("verifyCode", true);
             model.addAttribute("user", new UserDTO());
             return "authentication-features/register";
         }
+    }
+
+    private UserDTO createNewAccount(@NotNull UserDTO user) throws ParseException {
+        userDTO.setPassword(user.getPassword());
+        userDTO.setPhoneNumber(user.getPhoneNumber());
+        userService.addAnNewAccount(userDTO);
+        return userDTO;
     }
     // </editor-fold>
 
@@ -151,7 +160,7 @@ public class AuthenticationController {
             model.addAttribute("verifyCode", false);
             model.addAttribute("isEmailVerified", 0);
         } catch (Exception e) {
-            Logger.getLogger(AuthenticationController.class.getName()).log(Level.ALL, e.getMessage(), e);
+            logger.log(Level.ALL, e.getMessage(), e);
             model.addAttribute("error", e.getMessage());
         }
         return "authentication-features/forgot-password";
@@ -160,17 +169,16 @@ public class AuthenticationController {
     @PostMapping("/verifyPassword")
     public String checkPassword(Model model, @ModelAttribute("user") UserDTO user) {
         try {
-            if (user.getPassword().equals(user.getRewritePassword())) {
-                userDTO.setPassword(user.getPassword());
-                userDTO.setPhoneNumber(user.getPhoneNumber());
-                userService.updateUserDTO(userDTO);
-                resetUserDTOAttributes();
-                return "authentication-features/login";
-            } else {
+            if (!user.getPassword().equals(user.getRewritePassword())) {
                 throw new Exception("Rewrite password and password are not match");
             }
+            userDTO.setPassword(user.getPassword());
+            userDTO.setPhoneNumber(user.getPhoneNumber());
+            userService.updateUserDTO(userDTO);
+            resetUserDTOAttributes();
+            return "authentication-features/login";
         } catch (Exception e) {
-            Logger.getLogger(AuthenticationController.class.getName()).log(Level.ALL, e.getMessage(), e);
+            logger.log(Level.ALL, e.getMessage(), e);
             model.addAttribute("error", e.getMessage());
             model.addAttribute("verifyCode", true);
             model.addAttribute("user", new UserDTO());
@@ -184,6 +192,7 @@ public class AuthenticationController {
         EmailService service = new EmailServiceImpl();
         randomCode = RandomCode.generateSixRandomCodes();
         service.sendEmail(email, "[Find My Room] Verify Code", randomCode);
+        logger.info("Send email successfully");
     }
 
     private void resetUserDTOAttributes() {
@@ -205,9 +214,11 @@ public class AuthenticationController {
         }
         userDTO.setEmail(user.getEmail());
         sendEmail(user.getEmail());
+        logger.info("Send email successfully");
     }
 
     private void setAttributeForSecurityContext(@NotNull UserDTO userDTO, @NotNull HttpSession session) {
+        logger.info("setAttributeForSecurityContext");
         SecurityContext context = SecurityContextHolder.getContext();
         GrantedAuthority authority = new SimpleGrantedAuthority(userDTO.getRole().name());
         UserDetails details = new User(

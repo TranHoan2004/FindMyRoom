@@ -75,11 +75,16 @@
                     </div>
 
                     <div class="container-login100-form-btn">
-                        <button class="login100-form-btn" onclick="location.href='/oauth2/authorization/google'"
-                            style="background: #ffffff; color: #ff0000; border-style: solid; border-color: black; border-width: 1px;">
+                        <a class="login100-form-btn" onclick="redirect()"
+                            style="background: #ffffff; color: #ff0000; border-style: solid; border-color: black; border-width: 1px; cursor: pointer">
                             <img th:src="@{/images/Google.png}" alt="IMG" width="20" height="20" />&nbsp;
                             Google
-                        </button>
+                        </a>
+                        <script>
+                            function redirect() {
+                                window.location.href='/oauth2/authorization/google'
+                            }
+                        </script>
                     </div>
 
                     <div class="text-center p-t-136">
