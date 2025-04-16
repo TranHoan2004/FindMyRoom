@@ -5,6 +5,7 @@ import com.FindMyRoom.mapping.PostMapping;
 import com.FindMyRoom.model.Post;
 import com.FindMyRoom.repository.PostRepository;
 import com.FindMyRoom.service.PostService;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -32,6 +33,19 @@ public class PostServiceImpl implements PostService {
         Pageable pageable = PageRequest.of(page, size);
         Page<Post> posts = repo.findAll(pageable);
         long count = repo.count();
+        return getPostDTOs(pageable, posts, count);
+    }
+
+    @Override
+    public Page<PostDTO> getAllFilteredPostDTOsByPage(int page, int size, @NotNull String string) throws Exception {
+        logger.info("getAllFilteredPostDTOsByPage");
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Post> posts = repo.findAllWithFilter(pageable, "%" + string.toLowerCase() + "%");
+        return getPostDTOs(pageable, posts, posts.getTotalPages());
+    }
+
+    @NotNull
+    private Page<PostDTO> getPostDTOs(Pageable pageable, @NotNull Page<Post> posts, long count) throws Exception {
         if (posts.isEmpty()) {
             throw new Exception("No posts");
         }
