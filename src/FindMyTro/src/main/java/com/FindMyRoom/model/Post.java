@@ -6,7 +6,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.FutureOrPresent;
 import java.time.LocalDate;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -40,7 +39,7 @@ public class Post {
 
     @Column(name = "created_date", nullable = false)
     @FutureOrPresent
-    @DateTimeFormat(pattern = "yyyy-MM-dd", fallbackPatterns = {"yyyy/MM/dd", "dd-MM-yyyy", "dd/MM/yyyy"})
+    @DateTimeFormat(pattern = "yyyy-MM-dd", fallbackPatterns = { "yyyy/MM/dd", "dd-MM-yyyy", "dd/MM/yyyy" })
     @Temporal(TemporalType.DATE)
     private LocalDate createdDate;
 

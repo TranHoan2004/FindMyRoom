@@ -32,19 +32,22 @@
         <div class="d-flex justify-content-center">
             <ul class="nav nav-tabs" id="myTab">
                 <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/posts/list?page=1">Tất cả</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="#">Phòng đơn</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Phòng đôi</a>
+                    <a class="nav-link" href="#">Phòng có gác xép</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Phòng có máy lạnh</a>
+                    <a class="nav-link" href="#">Nhà nguyên căn</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Gần trường</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Giá rẻ</a>
+                    <a class="nav-link" href="#">Ở ghép</a>
                 </li>
             </ul>
         </div>
@@ -115,7 +118,8 @@
             <div class="col-md-8">
                 <div class="post-box">
                     <label for="post"></label>
-                    <textarea id="post" class="form-control mb-2" rows="3" th:placeholder="${what_you_want_to_post}"></textarea>
+                    <textarea id="post" class="form-control mb-2" rows="3"
+                        th:placeholder="${what_you_want_to_post}"></textarea>
                     <button class="btn btn-success btn-sm float-end" th:text="${create_a_post}"></button>
                     <div class="clearfix"></div>
                 </div>
