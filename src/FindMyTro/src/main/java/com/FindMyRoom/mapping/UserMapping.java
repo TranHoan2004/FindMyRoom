@@ -25,6 +25,7 @@ public class UserMapping {
                 .createdDate(users.getCreatedDate())
                 .gender(users.getGender())
                 .role(role)
+                .systemRole(users.getRole())
                 .build();
     }
 
