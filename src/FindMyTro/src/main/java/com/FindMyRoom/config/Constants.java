@@ -4,8 +4,8 @@ public interface Constants {
     interface MailProperties {
         String HOST_NAME = "smtp.gmail.com";
         int PORT = 465;
-        String APP_EMAIL = "myemail";
-        String APP_PASSWORD = "mypassword";
+        String APP_EMAIL = "hoana5k44nknd@gmail.com";
+        String APP_PASSWORD = "gmol nvte nlri ziru";
         // get app password from 2 steps verification of Google
     }
 

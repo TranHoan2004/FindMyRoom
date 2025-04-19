@@ -1,6 +1,7 @@
 package com.FindMyRoom.controller.utils;
 
 import com.FindMyRoom.dto.UserDTO;
+import com.FindMyRoom.dto.response.UserResponseDTO;
 import com.FindMyRoom.service.UserService;
 import com.FindMyRoom.service.impl.UserServiceImpl;
 import jakarta.servlet.http.HttpSession;
@@ -29,13 +30,13 @@ public class SessionController {
         String email = "";
         SecurityContext context = (SecurityContext) session.getAttribute("SPRING_SECURITY_CONTEXT");
         if (context != null) {
-            logger.info("context: " + (context.getAuthentication() != null ? "null" : context.getAuthentication()));
+            logger.info("context: " + (context.getAuthentication() != null ? context.getAuthentication() : "null"));
             Authentication authentication = context.getAuthentication();
             if (authentication != null && authentication.getPrincipal() instanceof UserDetails userDetails) {
                 email = userDetails.getUsername();
             } else if (authentication != null && authentication.getPrincipal() instanceof OAuth2User userDetails) {
                 email = userDetails.getAttribute("email");
-                logger.info(email);
+                logger.info("getEmailFromSession: " + email);
             }
         } else {
             logger.log(Level.WARNING, "No SecurityContext found in session");
@@ -43,10 +44,10 @@ public class SessionController {
         return email;
     }
 
-    public UserDTO getEntityFromSession(HttpSession session) throws Exception {
+    public UserResponseDTO getEntityFromSession(HttpSession session) throws Exception {
         String email = getEmailFromSession(session);
         logger.info("Get email from session: " + email);
-        UserDTO userDTO = new UserDTO();
+        UserResponseDTO userDTO = new UserResponseDTO();
         if (!email.isEmpty()) {
             userDTO = service.getUserDTOByEmail(email);
             if (userDTO == null) {

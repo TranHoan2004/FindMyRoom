@@ -1,4 +1,4 @@
-import {GetData} from "./api/ExportPost.js";
+import { GetData } from "./api/ExportPost.js";
 
 document.addEventListener('DOMContentLoaded', () => {
     renderPosts(null, null).catch(e => console.error(e));
@@ -65,7 +65,7 @@ function getButton(currentPage, totalPage, index, title, filter) {
                    <span aria-hidden="true">${arrow}</span>
                 </a>
             </li>`
-}
+} z
 
 /////////////////////////////////////////////////////////////////
 // xử lý bộ lọc và trình bày post theo bộ lọc

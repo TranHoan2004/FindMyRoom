@@ -2,6 +2,7 @@ package com.FindMyRoom.security;
 
 import com.FindMyRoom.config.Constants;
 import com.FindMyRoom.dto.UserDTO;
+import com.FindMyRoom.dto.response.UserResponseDTO;
 import com.FindMyRoom.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -98,7 +99,7 @@ public class AuthenticationConfig implements Constants.Role {
                         .authenticationEntryPoint((request, response, authException) -> response.sendRedirect("/login"))
                         .accessDeniedHandler((request, response, accessDeniedException) -> {
                             logger.warning("Error happens when exeptionHandling is working: "
-                                           + accessDeniedException.getMessage());
+                                    + accessDeniedException.getMessage());
                             logger.info("request uri: " + request.getRequestURI());
                         }))
                 .sessionManagement(session -> session
@@ -114,7 +115,7 @@ public class AuthenticationConfig implements Constants.Role {
     public UserDetailsService userDetailsService(UserService service) {
         logger.info("check username and password");
         return email -> {
-            UserDTO dto;
+            UserResponseDTO dto;
             try {
                 dto = service.getUserDTOByEmail(email);
                 logger.info(dto.getPassword() + " " + dto.getEmail());

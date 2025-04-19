@@ -1,12 +1,13 @@
 package com.FindMyRoom.mapping;
 
-import com.FindMyRoom.dto.UserDTO;
+import com.FindMyRoom.dto.request.UserRequestDTO;
+import com.FindMyRoom.dto.response.UserResponseDTO;
 import com.FindMyRoom.model.Users;
 import org.jetbrains.annotations.NotNull;
 
 public class UserMapping {
-    public UserDTO convert(@NotNull Users users) {
-        return UserDTO.builder()
+    public UserResponseDTO convert(@NotNull Users users) {
+        return UserResponseDTO.builder()
                 .id(users.getId())
                 .email(users.getEmail())
                 .password(users.getPassword())
@@ -20,18 +21,11 @@ public class UserMapping {
                 .build();
     }
 
-    public Users convert(@NotNull UserDTO dto) {
+    public Users convert(@NotNull UserRequestDTO dto) {
         return Users.builder()
-                .id(dto.getId())
                 .email(dto.getEmail())
                 .password(dto.getPassword())
-                .fullname(dto.getFullname())
                 .phoneNumber(dto.getPhoneNumber())
-                .imgURL(dto.getImgURL())
-                .status(dto.getStatus())
-                .createdDate(dto.getCreatedDate())
-                .gender(dto.getGender())
-                .role(dto.getRole())
                 .build();
     }
 }

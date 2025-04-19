@@ -2,6 +2,7 @@ package com.FindMyRoom.controller;
 
 import com.FindMyRoom.controller.utils.SessionController;
 import com.FindMyRoom.dto.UserDTO;
+import com.FindMyRoom.dto.response.UserResponseDTO;
 import com.FindMyRoom.service.SliderService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,7 @@ public class HomeController {
 
     private void throwSessionData(HttpSession session) {
         try {
-            UserDTO user = sc.getEntityFromSession(session);
+            UserResponseDTO user = sc.getEntityFromSession(session);
             session.setAttribute("account", user);
         } catch (Exception e) {
             logger.log(Level.SEVERE, e.getMessage(), e);

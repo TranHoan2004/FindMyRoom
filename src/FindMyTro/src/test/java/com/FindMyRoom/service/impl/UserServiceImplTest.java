@@ -18,7 +18,6 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class UserServiceImplTest {
-
     @Mock
     private UserRepository repo;
 
@@ -33,7 +32,12 @@ class UserServiceImplTest {
     @Test
     void getAllEmails() {
         when(repo.getEmails()).thenReturn(List.of("email1", "email2", "email3"));
-        List<String> list = service.getAllEmails();
+        List<String> list = null;
+        try {
+            list = service.getAllEmails();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
         System.out.println(list);
     }
 }

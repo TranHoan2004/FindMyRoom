@@ -1,7 +1,6 @@
 package com.FindMyRoom.controller.utils;
 
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
@@ -67,6 +66,21 @@ public class SetupGlobalAttributes {
         model.addAttribute("services_title", messageSource.getMessage("services_title", null, locale));
         model.addAttribute("profile_title", messageSource.getMessage("profile_title", null, locale));
         model.addAttribute("setting_title", messageSource.getMessage("setting_title", null, locale));
+    }
+
+    public void setupRegisterPage(@NotNull Model model, Locale locale) {
+        model.addAttribute("register_title", messageSource.getMessage("register_title", null, locale));
+        model.addAttribute("create_new_account", messageSource.getMessage("create_new_account", null, locale));
+        model.addAttribute("email_title", messageSource.getMessage("email_title", null, locale));
+        model.addAttribute("question_have_an_account", messageSource.getMessage("question_have_an_account", null, locale));
+        model.addAttribute("verify_email", messageSource.getMessage("verify_email", null, locale));
+        model.addAttribute("verify_code", messageSource.getMessage("verify_code", null, locale));
+        model.addAttribute("your_info", messageSource.getMessage("your_info", null, locale));
+        model.addAttribute("phone_number", messageSource.getMessage("phone_number", null, locale));
+        model.addAttribute("rewrite_password", messageSource.getMessage("rewrite_password", null, locale));
+        model.addAttribute("send_verify_code", messageSource.getMessage("send_verify_code", null, locale));
+        model.addAttribute("check_btn", messageSource.getMessage("check_btn", null, locale));
+        model.addAttribute("create_account_btn", messageSource.getMessage("create_account_btn", null, locale));
     }
     // </editor-fold>
 

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
@@ -13,24 +14,20 @@
     <link rel="stylesheet" type="text/css" th:href="@{/vendor/animate/animate.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/vendor/css-hamburgers/hamburgers.min.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/vendor/select2/select2.min.css}">
-    <link th:href="@{/css/login.css}" rel="stylesheet" type="text/css"/>
-    <title>Register</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}"/>
+    <title th:text="${register_title}"></title>
 </head>
 <body>
 <div class="limiter">
     <div class="container-login100">
         <div class="wrap-login100">
             <!--First part-->
-            <div class="form-step active" id="step1" th:if="${verifyCode == null}">
-                <form class="login100-form validate-form" th:action="@{/email}" th:method="POST" th:object="${user}">
-                    <span class="login100-form-title"> Create new account </span>
+            <div class="form-step active" id="step1">
+                <div class="login100-form validate-form">
+                    <span class="login100-form-title" th:text="${create_new_account}"></span>
 
                     <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
-                        <label>
-                            <input class="input100" type="text"
-                                   placeholder="Email"
-                                   th:field="${user.email}"/>
-                        </label>
+                        <input class="input100" id="email" type="text" name="email"/>
                         <span class="focus-input100"></span>
                         <span class="symbol-input100">
                             <i class="fa fa-envelope" aria-hidden="true"></i>
@@ -38,99 +35,96 @@
                     </div>
 
                     <div class="wrap-input100">
-                        <p class="text-center" style="color: red" th:if="${error != null}" th:text="${error}"></p>
-                        <p style="color: green" class="text-center" th:if="${message != null}" th:text="${message}"></p>
+                        <p class="text-center" style="color: red" id="err1"></p>
                     </div>
 
                     <div class="container-login100-form-btn">
-                        <input type="submit" class="login100-form-btn" value="Get verify code"/>
+                        <button type="submit" class="login100-form-btn getCode" th:text="${send_verify_code}"></button>
                     </div>
 
                     <div class="text-center p-t-136">
                         <a id="loginBtn" class="txt2" th:href="@{/login}">
-                            Have an account?
+                            <span th:text="${question_have_an_account}"></span>
                             <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
                         </a>
                     </div>
-                </form>
+                </div>
+                <script th:src="@{/js/RegisterAccount.js}" type="module"></script>
             </div>
 
             <!--Second part-->
-            <div class="form-step active" id="step2" th:if="${verifyCode == false}">
-                <form th:action="@{/validateCode}" th:method="POST">
-                    <span class="login100-form-title"> Verify Email </span>
+            <div class="form-step active" id="step2" hidden>
+                <span class="login100-form-title" th:text="${verify_email}"></span>
 
-                    <div class="wrap-input100 validate-input" data-validate="Code is required">
-                        <label>
-                            <input class="input100" type="password"
-                                   placeholder="Verify Code"
-                                   name="code"/>
-                        </label>
-                        <span class="focus-input100"></span>
-                        <span class="symbol-input100">
+                <div class="wrap-input100 validate-input" data-validate="Code is required">
+                    <input class="input100" type="password"
+                           th:placeholder="${verify_code}"
+                           name="code" id="code"/>
+                    <span class="focus-input100"></span>
+                    <span class="symbol-input100">
                              <i class="fa fa-long-arrow-alt-right" aria-hidden="true"></i>
-                        </span>
-                    </div>
+                    </span>
+                </div>
 
-                    <div class="wrap-input100">
-                        <p class="text-center" style="color: red" th:if="${error != null}" th:text="${error}"></p>
-                    </div>
+                <div class="wrap-input100">
+                    <p class="text-center" id="err2" style="color: red"></p>
+                </div>
 
-                    <div class="container-login100-form-btn">
-                        <input type="submit" class="login100-form-btn" value="Check"/>
-                    </div>
-                </form>
+                <div class="container-login100-form-btn">
+                    <button type="submit" class="login100-form-btn getCode1" th:text="${check_btn}"></button>
+                </div>
             </div>
 
             <!--Third part-->
-            <div class="form-step active" id="step3" th:if="${verifyCode == true}">
-                <form th:action="@{/create}" th:method="POST" th:object="${user}">
-                    <span class="login100-form-title"> Your information </span>
+            <div class="form-step active" id="step3" hidden>
+                <span class="login100-form-title" th:text="${your_info}"></span>
 
-                    <div class="wrap-input100 validate-input">
-                        <label>
-                            <input type="text" class="input100"
-                                   placeholder="Phone Number"
-                                   th:field="${user.phoneNumber}">
-                        </label>
-                        <span class="focus-input100"></span>
-                        <span class="symbol-input100">
-                            <i class="fa-solid fa-phone" aria-hidden="true"></i>
-                        </span>
-                    </div>
+                <!-- Phone Number -->
+                <div class="wrap-input100 validate-input">
+                    <label>
+                        <input type="text" class="input100"
+                               th:placeholder="${phone_number}"
+                               name="phone-number" id="phone-number">
+                    </label>
+                    <span class="focus-input100"></span>
+                    <span class="symbol-input100">
+                        <i class="fa-solid fa-phone" aria-hidden="true"></i>
+                    </span>
+                </div>
 
-                    <div class="wrap-input100 validate-input" data-validate="Password is required">
-                        <label>
-                            <input class="input100" type="password"
-                                   placeholder="Password"
-                                   th:field="${user.password}"/>
-                        </label>
-                        <span class="focus-input100"></span>
-                        <span class="symbol-input100">
-                            <i class="fa fa-lock" aria-hidden="true"></i>
-                        </span>
-                    </div>
+                <!-- Password -->
+                <div class="wrap-input100 validate-input" data-validate="Password is required">
+                    <label>
+                        <input class="input100" type="password"
+                               th:placeholder="${password_title}"
+                               name="password" id="password"/>
+                    </label>
+                    <span class="focus-input100"></span>
+                    <span class="symbol-input100">
+                        <i class="fa fa-lock" aria-hidden="true"></i>
+                    </span>
+                </div>
 
-                    <div class="wrap-input100 validate-input" data-validate="Password is required">
-                        <label>
-                            <input class="input100" type="password"
-                                   placeholder="Rewrite Password"
-                                   th:field="${user.rewritePassword}"/>
-                        </label>
-                        <span class="focus-input100"></span>
-                        <span class="symbol-input100">
-                            <i class="fa fa-lock" aria-hidden="true"></i>
-                        </span>
-                    </div>
+                <!-- Rewrite Password -->
+                <div class="wrap-input100 validate-input" data-validate="Password is required">
+                    <label>
+                        <input class="input100" type="password"
+                               th:placeholder="${rewrite_password}"
+                               name="rewrite-password" id="rewrite-password"/>
+                    </label>
+                    <span class="focus-input100"></span>
+                    <span class="symbol-input100">
+                        <i class="fa fa-lock" aria-hidden="true"></i>
+                    </span>
+                </div>
 
-                    <div class="wrap-input100">
-                        <p class="text-center" style="color: red" th:if="${error != null}" th:text="${error}"></p>
-                    </div>
+                <div class="wrap-input100">
+                    <p class="text-center" style="color: red" id="err3"></p>
+                </div>
 
-                    <div class="container-login100-form-btn">
-                        <input type="submit" class="login100-form-btn" value="Create your account"/>
-                    </div>
-                </form>
+                <div class="container-login100-form-btn">
+                    <button type="submit" class="login100-form-btn create-account" th:text="${create_account_btn}"></button>
+                </div>
             </div>
         </div>
     </div>
@@ -149,3 +143,161 @@
 <script th:src="@{/js/main.js}"></script>
 </body>
 </html>
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta http-equiv="X-UA-Compatible" content="ie=edge">-->
+<!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"-->
+<!--          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">-->
+<!--    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"-->
+<!--          integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">-->
+<!--    <link rel="icon" type="image/png" th:href="@{/images/icons/favicon.ico}"/>-->
+<!--    <link rel="stylesheet" type="text/css" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}">-->
+<!--    <link rel="stylesheet" type="text/css" th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}">-->
+<!--    <link rel="stylesheet" type="text/css" th:href="@{/vendor/animate/animate.css}">-->
+<!--    <link rel="stylesheet" type="text/css" th:href="@{/vendor/css-hamburgers/hamburgers.min.css}">-->
+<!--    <link rel="stylesheet" type="text/css" th:href="@{/vendor/select2/select2.min.css}">-->
+<!--    <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}"/>-->
+<!--    <title th:text="${register_title}"></title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div class="limiter">-->
+<!--    <div class="container-login100">-->
+<!--        <div class="wrap-login100">-->
+<!--            &lt;!&ndash;First part&ndash;&gt;-->
+<!--            <div class="form-step active" id="step1" th:if="${verifyCode == null}">-->
+<!--                <form class="login100-form validate-form" th:action="@{/email}" th:method="POST" th:object="${user}">-->
+<!--                    <span class="login100-form-title" th:text="${create_new_account}"></span>-->
+
+<!--                    <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">-->
+<!--                        <label>-->
+<!--                            <input class="input100" type="text"-->
+<!--                                   th:placeholder="${email_title}"-->
+<!--                                   th:field="${user.email}" name="email"/>-->
+<!--                        </label>-->
+<!--                        <span class="focus-input100"></span>-->
+<!--                        <span class="symbol-input100">-->
+<!--                            <i class="fa fa-envelope" aria-hidden="true"></i>-->
+<!--                        </span>-->
+<!--                    </div>-->
+
+<!--                    <div class="wrap-input100">-->
+<!--                        <p class="text-center" style="color: red" th:if="${error != null}" th:text="${error}"></p>-->
+<!--                        <p style="color: green" class="text-center" th:if="${message != null}" th:text="${message}"></p>-->
+<!--                    </div>-->
+
+<!--                    <div class="container-login100-form-btn">-->
+<!--                        <input type="submit" class="login100-form-btn" value="Get verify code"/>-->
+<!--                    </div>-->
+
+<!--                    <div class="text-center p-t-136">-->
+<!--                        <a id="loginBtn" class="txt2" th:href="@{/login}">-->
+<!--                            <span th:text="${question_have_an_account}"></span>-->
+<!--                            <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>-->
+<!--                        </a>-->
+<!--                    </div>-->
+<!--                </form>-->
+<!--            </div>-->
+
+<!--            &lt;!&ndash;Second part&ndash;&gt;-->
+<!--            <div class="form-step active" id="step2" th:if="${verifyCode == false}">-->
+<!--                <form th:action="@{/validateCode}" th:method="POST">-->
+<!--                    <span class="login100-form-title" th:text="${verify_email}"></span>-->
+
+<!--                    <div class="wrap-input100 validate-input" data-validate="Code is required">-->
+<!--                        <label>-->
+<!--                            <input class="input100" type="password"-->
+<!--                                   th:placeholder="${verify_code}"-->
+<!--                                   name="code"/>-->
+<!--                        </label>-->
+<!--                        <span class="focus-input100"></span>-->
+<!--                        <span class="symbol-input100">-->
+<!--                             <i class="fa fa-long-arrow-alt-right" aria-hidden="true"></i>-->
+<!--                        </span>-->
+<!--                    </div>-->
+
+<!--                    <div class="wrap-input100">-->
+<!--                        <p class="text-center" style="color: red" th:if="${error != null}" th:text="${error}"></p>-->
+<!--                    </div>-->
+
+<!--                    <div class="container-login100-form-btn">-->
+<!--                        <input type="submit" class="login100-form-btn" value="Check"/>-->
+<!--                    </div>-->
+<!--                </form>-->
+<!--            </div>-->
+
+<!--            &lt;!&ndash;Third part&ndash;&gt;-->
+<!--            <div class="form-step active" id="step3" th:if="${verifyCode == true}">-->
+<!--                <form th:action="@{/create}" th:method="POST" th:object="${user}">-->
+<!--                    <span class="login100-form-title" th:text="${your_info}"></span>-->
+
+<!--                    &lt;!&ndash; Phone Number &ndash;&gt;-->
+<!--                    <div class="wrap-input100 validate-input">-->
+<!--                        <label>-->
+<!--                            <input type="text" class="input100"-->
+<!--                                   th:placeholder="${phone_number}"-->
+<!--                                   th:field="${user.phoneNumber}"-->
+<!--                                   name="phone-number">-->
+<!--                        </label>-->
+<!--                        <span class="focus-input100"></span>-->
+<!--                        <span class="symbol-input100">-->
+<!--                            <i class="fa-solid fa-phone" aria-hidden="true"></i>-->
+<!--                        </span>-->
+<!--                    </div>-->
+
+<!--                    &lt;!&ndash; Password &ndash;&gt;-->
+<!--                    <div class="wrap-input100 validate-input" data-validate="Password is required">-->
+<!--                        <label>-->
+<!--                            <input class="input100" type="password"-->
+<!--                                   th:placeholder="${password_title}"-->
+<!--                                   th:field="${user.password}"-->
+<!--                                   name="password"/>-->
+<!--                        </label>-->
+<!--                        <span class="focus-input100"></span>-->
+<!--                        <span class="symbol-input100">-->
+<!--                            <i class="fa fa-lock" aria-hidden="true"></i>-->
+<!--                        </span>-->
+<!--                    </div>-->
+
+<!--                    &lt;!&ndash; Rewrite Password &ndash;&gt;-->
+<!--                    <div class="wrap-input100 validate-input" data-validate="Password is required">-->
+<!--                        <label>-->
+<!--                            <input class="input100" type="password"-->
+<!--                                   th:placeholder="${rewrite_password}"-->
+<!--                                   th:field="${user.rewritePassword}"-->
+<!--                                   name="rewrite-password"/>-->
+<!--                        </label>-->
+<!--                        <span class="focus-input100"></span>-->
+<!--                        <span class="symbol-input100">-->
+<!--                            <i class="fa fa-lock" aria-hidden="true"></i>-->
+<!--                        </span>-->
+<!--                    </div>-->
+
+<!--                    <div class="wrap-input100">-->
+<!--                        <p class="text-center" style="color: red" th:if="${error != null}" th:text="${error}"></p>-->
+<!--                    </div>-->
+
+<!--                    <div class="container-login100-form-btn">-->
+<!--                        <input type="submit" class="login100-form-btn" value="Create your account"/>-->
+<!--                    </div>-->
+<!--                </form>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<script th:src="@{/vendor/jquery/jquery-3.2.1.min.js}"></script>-->
+<!--<script th:src="@{/vendor/bootstrap/js/popper.js}"></script>-->
+<!--<script th:src="@{/vendor/bootstrap/js/bootstrap.min.js}"></script>-->
+<!--<script th:src="@{/vendor/select2/select2.min.js}"></script>-->
+<!--<script th:src="@{/vendor/tilt/tilt.jquery.min.js}"></script>-->
+<!--<script>-->
+<!--    $(".js-tilt").tilt({-->
+<!--        scale: 1.1,-->
+<!--    });-->
+<!--</script>-->
+<!--<script th:src="@{/js/main.js}"></script>-->
+<!--</body>-->
+<!--</html>-->

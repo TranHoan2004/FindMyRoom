@@ -1,8 +1,11 @@
 package com.FindMyRoom.service.impl;
 
 import com.FindMyRoom.dto.UserDTO;
+import com.FindMyRoom.dto.request.UserRequestDTO;
+import com.FindMyRoom.dto.response.UserResponseDTO;
 import com.FindMyRoom.mapping.UserMapping;
 import com.FindMyRoom.model.Users;
+import com.FindMyRoom.model.utils.Role;
 import com.FindMyRoom.repository.UserRepository;
 import com.FindMyRoom.service.UserService;
 import org.jetbrains.annotations.NotNull;
@@ -28,12 +31,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<String> getAllEmails() {
-        return repo.getEmails();
+    public List<String> getAllEmails() throws Exception {
+        List<String> emails = repo.getEmails();
+        if (emails.isEmpty()) {
+            throw new Exception("Not found");
+        }
+        return emails;
     }
 
     @Override
-    public UserDTO getUserDTOByEmail(String email) throws Exception {
+    public UserResponseDTO getUserDTOByEmail(String email) throws Exception {
         logger.info("getUserDTOByEmail");
         Users users = repo.getByEmail(email);
         if (users == null) {
@@ -43,12 +50,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void addAnNewAccount(@NotNull UserDTO userDTO) {
+    public void addAnNewAccount(@NotNull UserRequestDTO userDTO) {
         logger.info("addAnNewAccount");
-        userDTO.setCreatedDate(LocalDate.now());
-        userDTO.setStatus(true);
-        userDTO.setPassword(encoder.encode(userDTO.getPassword()));
-        repo.save(mapping.convert(userDTO));
+        Users users = mapping.convert(userDTO);
+        users.setCreatedDate(LocalDate.now());
+        users.setPassword(encoder.encode(userDTO.getPassword()));
+        users.setStatus(true);
+        users.setRole(Role.ROLE_USER);
+        repo.save(users);
     }
 
     @Override
@@ -66,13 +75,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<UserDTO> getAllUserDTOs() throws Exception {
+    public Optional<UserResponseDTO> getAllUserDTOs() throws Exception {
         logger.info("getAllUserDTOs");
         Iterable<Users> list = repo.findAll();
         if (!list.iterator().hasNext()) {
             throw new Exception("No results");
         }
-        Optional<UserDTO> optionalUser = Optional.empty();
+        Optional<UserResponseDTO> optionalUser = Optional.empty();
         for (Users user : list) {
             optionalUser = Optional.of(mapping.convert(user));
         }
@@ -80,8 +89,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean isEmailExist(String email) {
-        logger.info("is email existing?");
-        return repo.existsByEmail(email);
+    public boolean isPhoneNumberExisting(String phoneNumber) {
+        logger.info("isPhoneNumberExisting");
+        return repo.existsByPhoneNumber(phoneNumber);
     }
 }
