@@ -8,7 +8,6 @@ import com.FindMyRoom.utils.RandomCode;
 import com.FindMyRoom.utils.email.EmailService;
 import com.FindMyRoom.utils.email.EmailServiceImpl;
 import jakarta.servlet.http.HttpSession;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -24,13 +23,11 @@ import java.util.logging.Logger;
 public class AuthenticationController {
     private final UserService uSrv;
     private static String randomCode;
-    private final UserDTO userDTO;
     private final SessionController sc;
     private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     public AuthenticationController(UserService userService, SessionController sc) {
         AuthenticationController.randomCode = null;
-        this.userDTO = new UserDTO();
         this.uSrv = userService;
         this.sc = sc;
     }
@@ -49,14 +46,12 @@ public class AuthenticationController {
     }
 
     @GetMapping("/createAccount")
-    public String redirectToRegister(Model model) {
-        model.addAttribute("user", userDTO);
+    public String redirectToRegister() {
         return "authentication-features/register";
     }
 
     @GetMapping("/login")
-    public String redirectToLogin(Model model,
-                                  @RequestParam(value = "error", required = false) boolean error) {
+    public String redirectToLogin(Model model, @RequestParam(value = "error", required = false) boolean error) {
         model.addAttribute("user", new UserDTO());
         if (error) model.addAttribute("error", "Wrong username or password");
         return "authentication-features/login";
@@ -69,31 +64,36 @@ public class AuthenticationController {
     }
 
     @GetMapping("/forgotPassword")
-    public String redirectToForgotPassword(Model model) {
-        resetUserDTOAttributes();
-        model.addAttribute("user", userDTO);
-        model.addAttribute("message", null);
-        model.addAttribute("error", null);
-        model.addAttribute("isEmailVerified", null);
+    public String redirectToForgotPassword() {
         return "authentication-features/forgot-password";
     }
 
-    // <editor-fold desc="Register screen">
     @PostMapping("/verify-email")
-    public ResponseEntity<Boolean> returnAllEmails(@RequestBody Map<String, String> payload) {
+    public ResponseEntity<String> returnAllEmails(@RequestBody Map<String, String> payload) {
         logger.info(payload.get("email"));
-        boolean status = false;
+        logger.info(payload.get("type"));
+        logger.info(String.valueOf(Boolean.parseBoolean(payload.get("type"))));
         try {
             List<String> emails = uSrv.getAllEmails();
             String email = payload.get("email");
-            if (!emails.contains(email)) {
-                status = true;
+            if (Boolean.parseBoolean(payload.get("type"))) {
+                // if true, we create a new account, this email should not be existing
+                if (!emails.contains(email)) {
+                    sendEmail(email);
+                    return ResponseEntity.status(HttpStatus.OK).body("Ready to create a new account");
+                }
+                return ResponseEntity.badRequest().body("This email is already existing");
             }
-            sendEmail(email);
+            if (emails.contains(email)) {
+                // if false, we reset password, this email should be existing
+                sendEmail(email);
+                return ResponseEntity.status(HttpStatus.OK).body("Ready to reset password");
+            }
+            return ResponseEntity.badRequest().body("Email not found");
         } catch (Exception e) {
             logger.warning(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-        return ResponseEntity.ok(status);
     }
 
     @PostMapping("/validate-code")
@@ -114,44 +114,20 @@ public class AuthenticationController {
         }
         return ResponseEntity.badRequest().body("Create account failed");
     }
-    // </editor-fold>
 
-    // <editor-fold desc="Forgot password screen">
-    @PostMapping("/validateEmail")
-    public String getEmailOfForgottenPasswordAccount(Model model, @ModelAttribute("user") UserDTO user) {
+    @PutMapping("/update")
+    public ResponseEntity<String> updateAccount(@RequestBody UserRequestDTO userDTO) {
+        logger.info("updateAccount");
         try {
-            verifyEmailAndSendVerificationCode(false, userDTO);
-            model.addAttribute("verifyCode", false);
-            model.addAttribute("isEmailVerified", 0);
+            logger.info(userDTO.toString());
+            uSrv.updateUserDTO(userDTO.getEmail(), userDTO.getPassword());
+            return ResponseEntity.status(HttpStatus.OK).body("Update account successfully");
         } catch (Exception e) {
-            logger.log(Level.ALL, e.getMessage(), e);
-            model.addAttribute("error", e.getMessage());
-        }
-        return "authentication-features/forgot-password";
-    }
-
-    @PostMapping("/verifyPassword")
-    public String checkPassword(Model model, @ModelAttribute("user") UserDTO user) {
-        try {
-            if (!user.getPassword().equals(user.getRewritePassword())) {
-                throw new Exception("Rewrite password and password are not match");
-            }
-            userDTO.setPassword(user.getPassword());
-            userDTO.setPhoneNumber(user.getPhoneNumber());
-            uSrv.updateUserDTO(userDTO);
-            resetUserDTOAttributes();
-            return "authentication-features/login";
-        } catch (Exception e) {
-            logger.log(Level.ALL, e.getMessage(), e);
-            model.addAttribute("error", e.getMessage());
-            model.addAttribute("verifyCode", true);
-            model.addAttribute("user", new UserDTO());
-            return "authentication-features/forgot-password";
+            logger.warning(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage() + ", update account failed");
         }
     }
-    // </editor-fold>
 
-    // <editor-fold> desc="Private methods"
     private void sendEmail(String email) {
         EmailService service = new EmailServiceImpl();
         randomCode = RandomCode.generateSixRandomCodes();
@@ -159,27 +135,4 @@ public class AuthenticationController {
         service.sendEmail(email, "[Find My Room] Verify Code", randomCode);
         logger.info("Send email successfully");
     }
-
-    private void resetUserDTOAttributes() {
-        userDTO.setStatus(false);
-        userDTO.setPhoneNumber("");
-        userDTO.setPassword("");
-        userDTO.setEmail("");
-    }
-
-    private void verifyEmailAndSendVerificationCode(boolean status, @NotNull UserDTO user) throws Exception {
-        List<String> emails = uSrv.getAllEmails();
-        if (emails.contains(user.getEmail())) {
-            // if status is true, throw an exception to notice that this email is existing. Using by register screen (for true status) and forgot password screen (for false status)
-            if (status) {
-                throw new Exception("This email is existing");
-            } else {
-                throw new Exception("This email is not existing");
-            }
-        }
-        userDTO.setEmail(user.getEmail());
-        sendEmail(user.getEmail());
-        logger.info("Send email successfully");
-    }
-    // </editor-fold>
 }

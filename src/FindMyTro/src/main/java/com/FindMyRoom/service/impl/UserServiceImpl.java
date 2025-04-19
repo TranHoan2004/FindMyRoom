@@ -1,6 +1,5 @@
 package com.FindMyRoom.service.impl;
 
-import com.FindMyRoom.dto.UserDTO;
 import com.FindMyRoom.dto.request.UserRequestDTO;
 import com.FindMyRoom.dto.response.UserResponseDTO;
 import com.FindMyRoom.mapping.UserMapping;
@@ -61,14 +60,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUserDTO(@NotNull UserDTO userDTO) {
+    public void updateUserDTO(String email, String password) throws Exception {
         logger.info("updateUserDTO");
-        Users users = repo.getByEmail(userDTO.getEmail());
-
+        Users users = repo.getByEmail(email);
+        if (users == null) {
+            throw new Exception("User not found");
+        }
         // update users information
-        users.setPhoneNumber(userDTO.getPhoneNumber());
-        users.setEmail(userDTO.getEmail());
-        users.setPassword(userDTO.getPassword());
+        users.setPassword(encoder.encode(password));
 
         // update
         repo.save(users);

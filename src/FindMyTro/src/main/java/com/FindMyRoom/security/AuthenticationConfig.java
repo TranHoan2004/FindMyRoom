@@ -1,7 +1,6 @@
 package com.FindMyRoom.security;
 
 import com.FindMyRoom.config.Constants;
-import com.FindMyRoom.dto.UserDTO;
 import com.FindMyRoom.dto.response.UserResponseDTO;
 import com.FindMyRoom.service.UserService;
 import org.springframework.context.annotation.Bean;
@@ -42,16 +41,15 @@ public class AuthenticationConfig implements Constants.Role {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/register",
                                 "/oauth2/**",
+                                "/forgotPassword",
                                 "/login/**"
                         ).permitAll()
 
                         .requestMatchers(
-                                "/forgotPassword",
                                 "/home", "/setting"
                         ).hasAnyRole(
                                 ROLE_ADMIN, ROLE_BUSINESSMAN,
                                 ROLE_EMPLOYEE, ROLE_USER)
-
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
