@@ -120,7 +120,7 @@ public class AuthenticationConfig implements Constants.Role {
             } catch (Exception e) {
                 throw new UsernameNotFoundException("User not found");
             }
-            GrantedAuthority authorities = new SimpleGrantedAuthority(dto.getRole().name());
+            GrantedAuthority authorities = new SimpleGrantedAuthority(dto.getRole());
             return new User(dto.getEmail(), dto.getPassword(), List.of(authorities));
         };
     }

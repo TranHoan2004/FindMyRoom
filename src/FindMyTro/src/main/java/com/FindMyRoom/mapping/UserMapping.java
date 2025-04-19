@@ -7,6 +7,13 @@ import org.jetbrains.annotations.NotNull;
 
 public class UserMapping {
     public UserResponseDTO convert(@NotNull Users users) {
+        String role = "";
+        switch (users.getRole()) {
+            case ROLE_ADMIN -> role = "Admin";
+            case ROLE_USER -> role = "User";
+            case ROLE_EMPLOYEE -> role = "Employee";
+            case ROLE_BUSINESSMAN -> role = "Business Manager";
+        }
         return UserResponseDTO.builder()
                 .id(users.getId())
                 .email(users.getEmail())
@@ -17,7 +24,7 @@ public class UserMapping {
                 .status(users.getStatus())
                 .createdDate(users.getCreatedDate())
                 .gender(users.getGender())
-                .role(users.getRole())
+                .role(role)
                 .build();
     }
 

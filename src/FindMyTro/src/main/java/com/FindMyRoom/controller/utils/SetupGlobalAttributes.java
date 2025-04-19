@@ -82,6 +82,11 @@ public class SetupGlobalAttributes {
         model.addAttribute("check_btn", messageSource.getMessage("check_btn", null, locale));
         model.addAttribute("create_account_btn", messageSource.getMessage("create_account_btn", null, locale));
     }
+
+    public void setupForgotPage(@NotNull Model model, Locale locale) {
+        model.addAttribute("forgot_pasword", messageSource.getMessage("forgot_pasword", null, locale));
+        model.addAttribute("your_password", messageSource.getMessage("your_password", null, locale));
+    }
     // </editor-fold>
 
     // <editor-fold> desc="Notification"

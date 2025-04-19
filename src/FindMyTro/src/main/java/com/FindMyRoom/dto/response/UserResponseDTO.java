@@ -1,6 +1,5 @@
 package com.FindMyRoom.dto.response;
 
-import com.FindMyRoom.model.utils.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,5 +22,5 @@ public class UserResponseDTO {
     private byte[] imgURL;
     private Boolean status;
     private LocalDate createdDate;
-    private Role role;
+    private String role;
 }

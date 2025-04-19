@@ -22,14 +22,19 @@
     </div>
 
     <div class="d-flex align-items-center gap-3 text-white">
-        <i class="fas fa-cog" style="cursor: pointer;" onclick="location.href='/setting'" th:title="${setting_title}" data-bs-toggle="tooltip"></i>
+        <i class="fas fa-cog" style="cursor: pointer;" onclick="location.href='/setting'" th:title="${setting_title}"
+           data-bs-toggle="tooltip"></i>
         <i class="fas fa-bell" style="cursor: pointer;" th:title="${notification_title}" data-bs-toggle="offcanvas"
            data-bs-target="#notificationCanvas"></i>
+        <i class="fas fa-adjust" id="themeToggle" title="Toggle Theme" style="cursor: pointer;"></i>
         <div class="dropdown">
             <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
                data-bs-toggle="dropdown">
-                <i class="fas fa-user-circle fs-5 me-1"></i>
-                <span th:text="${session.account.getFullname()}"></span>
+                <img src="/images/image1.png" alt="Avatar" class="rounded-circle user-avatar" width="32" height="32">
+                <div class="d-flex flex-column align-items-start ms-2">
+                    <span class="fw-semibold" style="line-height: 1.2;" th:text="${session.account.getFullname()}"></span>
+                    <span class="small text-light" style="font-size: 0.8rem;" th:text="${session.account.getRole()}"></span>
+                </div>
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
                 <li><a class="dropdown-item" th:href="@{/user/profile}" th:text="${profile_title}"></a></li>
@@ -43,6 +48,20 @@
             </ul>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggle = document.getElementById('themeToggle');
+            toggle.addEventListener('click', function () {
+                document.body.classList.toggle('dark-mode');
+                localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+            });
+
+            // Giữ chế độ khi reload
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-mode');
+            }
+        });
+    </script>
 </nav>
 </body>
 </html>

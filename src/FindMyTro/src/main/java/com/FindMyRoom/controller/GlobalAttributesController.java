@@ -43,6 +43,7 @@ public class GlobalAttributesController {
         map.put("slider", m -> attr.setupSlider(model, locale));
         map.put("header", m -> attr.setupHeader(model, locale));
         map.put("register", m -> attr.setupRegisterPage(model, locale));
+        map.put("forgot", m -> attr.setupForgotPage(model, locale));
 
         // notification
         map.put("notification", m -> attr.setupNotificationPopup(model, locale));

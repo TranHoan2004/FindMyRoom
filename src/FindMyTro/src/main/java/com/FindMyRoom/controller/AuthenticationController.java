@@ -132,7 +132,7 @@ public class AuthenticationController {
         EmailService service = new EmailServiceImpl();
         randomCode = RandomCode.generateSixRandomCodes();
         logger.info(randomCode);
-        service.sendEmail(email, "[Find My Room] Verify Code", randomCode);
+//        service.sendEmail(email, "[Find My Room] Verify Code", randomCode);
         logger.info("Send email successfully");
     }
 }
