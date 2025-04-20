@@ -64,7 +64,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/verify-email")
-    public ResponseEntity<String> verifyEmail(@RequestBody Map<String, String> payload, HttpSession session) {
+    public ResponseEntity<?> verifyEmail(@RequestBody Map<String, String> payload, HttpSession session) {
         logger.info("verifyEmail");
         try {
             List<String> emails = uSrv.getAllEmails();

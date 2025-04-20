@@ -18,24 +18,7 @@
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden" th:text="${next_label}"></span>
     </button>
-    <script>
-        fetch('/slider/list')
-            .then(response => response.json())
-            .then(data => {
-                const container = document.getElementById('image-container')
-                const div = document.createElement('div')
-                let content = ''
-                data.forEach((img, index) => {
-                    content += `
-                            <div class="carousel-item ${index === 0 ? 'active' : ''}">
-                                <img src="${img}" class="d-block w-100" alt="..." height="400">
-                            </div>`;
-                })
-                div.innerHTML = content
-                container.appendChild(div)
-            })
-            .catch(err => console.error('err when loading images ', err))
-    </script>
+    <script th:src="@{/js/slider/Slider.js}" type="module"></script>
 </div>
 </body>
 </html>

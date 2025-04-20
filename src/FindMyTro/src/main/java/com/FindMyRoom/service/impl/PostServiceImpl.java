@@ -1,6 +1,6 @@
 package com.FindMyRoom.service.impl;
 
-import com.FindMyRoom.dto.PostDTO;
+import com.FindMyRoom.dto.response.PostResponseDTO;
 import com.FindMyRoom.mapping.PostMapping;
 import com.FindMyRoom.model.Post;
 import com.FindMyRoom.repository.PostRepository;
@@ -28,7 +28,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Page<PostDTO> getAllPostDTOsByPage(int page, int size) throws Exception {
+    public Page<PostResponseDTO> getAllPostDTOsByPage(int page, int size) throws Exception {
         logger.info("getAllPostDTOs");
         Pageable pageable = PageRequest.of(page, size);
         Page<Post> posts = repo.findAll(pageable);
@@ -37,7 +37,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Page<PostDTO> getAllFilteredPostDTOsByPage(int page, int size, @NotNull String string) throws Exception {
+    public Page<PostResponseDTO> getAllFilteredPostDTOsByPage(int page, int size, @NotNull String string) throws Exception {
         logger.info("getAllFilteredPostDTOsByPage");
         Pageable pageable = PageRequest.of(page, size);
         Page<Post> posts = repo.findAllWithFilter(pageable, "%" + string.toLowerCase() + "%");
@@ -45,13 +45,13 @@ public class PostServiceImpl implements PostService {
     }
 
     @NotNull
-    private Page<PostDTO> getPostDTOs(Pageable pageable, @NotNull Page<Post> posts, long count) throws Exception {
+    private Page<PostResponseDTO> getPostDTOs(Pageable pageable, @NotNull Page<Post> posts, long count) throws Exception {
         if (posts.isEmpty()) {
             throw new Exception("No posts");
         }
 
         List<Post> postDTOs = posts.getContent();
-        List<PostDTO> postDTOList = new ArrayList<>();
+        List<PostResponseDTO> postDTOList = new ArrayList<>();
         postDTOs.forEach(p -> postDTOList.add(mapping.convert(p)));
 
         return new PageImpl<>(postDTOList, pageable, count);

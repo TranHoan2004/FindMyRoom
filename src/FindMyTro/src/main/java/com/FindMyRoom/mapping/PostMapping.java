@@ -1,17 +1,19 @@
 package com.FindMyRoom.mapping;
 
-import com.FindMyRoom.dto.PostDTO;
+import com.FindMyRoom.dto.response.PostResponseDTO;
 import com.FindMyRoom.model.Post;
 import org.jetbrains.annotations.NotNull;
 
+import java.nio.charset.StandardCharsets;
+
 public class PostMapping {
-    public PostDTO convert(@NotNull Post post) {
-        return PostDTO.builder()
+    public PostResponseDTO convert(@NotNull Post post) {
+        String filePath = new String(post.getThumbnailURL(), StandardCharsets.UTF_8);
+        return PostResponseDTO.builder()
                 .id(post.getId())
                 .title(post.getTitle())
                 .content(post.getContent())
-                .address(post.getAddress())
-                .thumbnailURL(post.getThumbnailURL())
+                .thumbnailURL(filePath)
                 .specialItem(post.getSpecialItem())
                 .media(post.getMedia())
                 .createdDate(post.getCreatedDate())

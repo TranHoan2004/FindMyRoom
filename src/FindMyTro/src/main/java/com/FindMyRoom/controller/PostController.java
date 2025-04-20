@@ -1,11 +1,12 @@
 package com.FindMyRoom.controller;
 
-import com.FindMyRoom.dto.PostDTO;
+import com.FindMyRoom.dto.response.PostResponseDTO;
 import com.FindMyRoom.service.PostService;
+import jakarta.servlet.http.HttpServletRequest;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.PagedModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,15 +26,22 @@ public class PostController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<PagedModel<EntityModel<PostDTO>>> renderPosts(
+    public ResponseEntity<?> renderPosts(
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "filter", required = false) String filterTitle,
-            PagedResourcesAssembler<PostDTO> assembler) {
+            PagedResourcesAssembler<PostResponseDTO> assembler,
+            HttpServletRequest request) {
         try {
+            logger.info(String.valueOf(isForbiddenContent(request, "ExportPost.js")));
+            logger.info(request.getHeader("X-Requested-By"));
+            if (isForbiddenContent(request, "ExportPost.js")) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access Denied");
+            }
+
             logger.info(String.valueOf(page));
-            Page<PostDTO> postDTOs = ps.getAllPostDTOsByPage(page - 1, 2);
+            Page<PostResponseDTO> postDTOs = ps.getAllPostDTOsByPage(page - 1, 2);
             if (filterTitle != null) {
-                Page<PostDTO> list = ps.getAllFilteredPostDTOsByPage(page - 1, 2, filterTitle);
+                Page<PostResponseDTO> list = ps.getAllFilteredPostDTOsByPage(page - 1, 2, filterTitle);
                 if (list.hasContent()) {
                     return ResponseEntity.ok(assembler.toModel(list));
                 }
@@ -43,5 +51,10 @@ public class PostController {
             logger.warning(e.getMessage());
         }
         return ResponseEntity.noContent().build();
+    }
+
+    private boolean isForbiddenContent(@NotNull HttpServletRequest request, String key) {
+        String requestedBy = request.getHeader("X-Requested-By");
+        return requestedBy == null || !requestedBy.equals(key);
     }
 }

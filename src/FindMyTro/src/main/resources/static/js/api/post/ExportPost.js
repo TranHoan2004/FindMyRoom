@@ -10,6 +10,9 @@ export function GetData(page, filter) {
         $.ajax({
             url: url,
             type: 'GET',
+            headers: {
+                "X-Requested-By": "ExportPost.js"
+            },
             data: {},
             success: function (responseData) {
                 resolve(responseData)

@@ -13,8 +13,7 @@ public class PostResponseDTO {
     private long id;
     private String title;
     private String content;
-    private String address;
-    private byte[] thumbnailURL;
+    private String thumbnailURL;
     private String specialItem;
     private String media;
     private LocalDate createdDate;
