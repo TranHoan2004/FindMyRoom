@@ -87,6 +87,22 @@ public class SetupGlobalAttributes {
         model.addAttribute("forgot_pasword", messageSource.getMessage("forgot_pasword", null, locale));
         model.addAttribute("your_password", messageSource.getMessage("your_password", null, locale));
     }
+
+    public void setupAccessDeniedPage(@NotNull Model model, Locale locale) {
+        model.addAttribute("access_denied_title", messageSource.getMessage("access_denied_title", null, locale));
+        model.addAttribute("h1_title", messageSource.getMessage("h1_title", null, locale));
+        model.addAttribute("h3_title", messageSource.getMessage("h3_title", null, locale));
+        model.addAttribute("p_title", messageSource.getMessage("p_title", null, locale));
+        model.addAttribute("a_title", messageSource.getMessage("a_title", null, locale));
+    }
+
+    public void setup404ErrorPage(@NotNull Model model, Locale locale) {
+        model.addAttribute("error_404_title", messageSource.getMessage("404_error_title", null, locale));
+        model.addAttribute("error_404_h1", messageSource.getMessage("404_error_h1", null, locale));
+        model.addAttribute("error_404_h2", messageSource.getMessage("404_error_h2", null, locale));
+        model.addAttribute("error_404_p", messageSource.getMessage("404_error_p", null, locale));
+        model.addAttribute("error_404_a", messageSource.getMessage("404_error_a", null, locale));
+    }
     // </editor-fold>
 
     // <editor-fold> desc="Notification"

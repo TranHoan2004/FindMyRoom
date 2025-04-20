@@ -1,11 +1,8 @@
 package com.FindMyRoom.controller;
 
 import com.FindMyRoom.controller.utils.SessionController;
-import com.FindMyRoom.dto.UserDTO;
 import com.FindMyRoom.dto.response.UserResponseDTO;
-import com.FindMyRoom.service.SliderService;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -23,7 +20,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String index() {
-        return "redirect:/login";
+        return "redirect:/home";
     }
 
     @GetMapping("/home")
@@ -35,6 +32,11 @@ public class HomeController {
     @GetMapping("/setting")
     public String settingPage() {
         return "common-features/setting";
+    }
+
+    @GetMapping("/access-denied")
+    public String accessDeniedPage() {
+        return "common-features/access-denied";
     }
 
     private void throwSessionData(HttpSession session) {

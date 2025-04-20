@@ -8,6 +8,7 @@ import com.FindMyRoom.utils.RandomCode;
 import com.FindMyRoom.utils.email.EmailService;
 import com.FindMyRoom.utils.email.EmailServiceImpl;
 import jakarta.servlet.http.HttpSession;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,12 +23,12 @@ import java.util.logging.Logger;
 @Controller
 public class AuthenticationController {
     private final UserService uSrv;
-    private static String randomCode;
+    private String randomCode;
     private final SessionController sc;
     private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     public AuthenticationController(UserService userService, SessionController sc) {
-        AuthenticationController.randomCode = null;
+        this.randomCode = null;
         this.uSrv = userService;
         this.sc = sc;
     }
@@ -45,7 +46,7 @@ public class AuthenticationController {
         return "common-features/home";
     }
 
-    @GetMapping("/createAccount")
+    @GetMapping("/create-account")
     public String redirectToRegister() {
         return "authentication-features/register";
     }
@@ -57,36 +58,28 @@ public class AuthenticationController {
         return "authentication-features/login";
     }
 
-    @GetMapping("/profile")
-    public ResponseEntity<String> profile(HttpSession session) {
-        Object obj = session.getAttribute("SPRING_SECURITY_CONTEXT");
-        return ResponseEntity.ok(obj.toString());
-    }
-
-    @GetMapping("/forgotPassword")
+    @GetMapping("/forgot-password")
     public String redirectToForgotPassword() {
         return "authentication-features/forgot-password";
     }
 
     @PostMapping("/verify-email")
-    public ResponseEntity<String> returnAllEmails(@RequestBody Map<String, String> payload) {
-        logger.info(payload.get("email"));
-        logger.info(payload.get("type"));
-        logger.info(String.valueOf(Boolean.parseBoolean(payload.get("type"))));
+    public ResponseEntity<String> verifyEmail(@RequestBody Map<String, String> payload, HttpSession session) {
+        logger.info("verifyEmail");
         try {
             List<String> emails = uSrv.getAllEmails();
             String email = payload.get("email");
             if (Boolean.parseBoolean(payload.get("type"))) {
                 // if true, we create a new account, this email should not be existing
                 if (!emails.contains(email)) {
-                    sendEmail(email);
+                    sendEmail(email, session);
                     return ResponseEntity.status(HttpStatus.OK).body("Ready to create a new account");
                 }
                 return ResponseEntity.badRequest().body("This email is already existing");
             }
             if (emails.contains(email)) {
                 // if false, we reset password, this email should be existing
-                sendEmail(email);
+                sendEmail(email, session);
                 return ResponseEntity.status(HttpStatus.OK).body("Ready to reset password");
             }
             return ResponseEntity.badRequest().body("Email not found");
@@ -97,8 +90,8 @@ public class AuthenticationController {
     }
 
     @PostMapping("/validate-code")
-    public ResponseEntity<String> validateCode() {
-        return ResponseEntity.ok(randomCode);
+    public ResponseEntity<String> validateCode(HttpSession session) {
+        return ResponseEntity.ok((String) session.getAttribute("randomCode"));
     }
 
     @PostMapping("/create")
@@ -128,9 +121,10 @@ public class AuthenticationController {
         }
     }
 
-    private void sendEmail(String email) {
+    private void sendEmail(String email, @NotNull HttpSession session) {
         EmailService service = new EmailServiceImpl();
         randomCode = RandomCode.generateSixRandomCodes();
+        session.setAttribute("randomCode", randomCode);
         logger.info(randomCode);
 //        service.sendEmail(email, "[Find My Room] Verify Code", randomCode);
         logger.info("Send email successfully");

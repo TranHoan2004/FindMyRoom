@@ -30,23 +30,26 @@ public class AuthenticationConfig implements Constants.Role {
     private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     @Bean
-    public SecurityFilterChain commonConfiguration(HttpSecurity http, UserDetailsService service,
-                                                   DataSource source) throws Exception {
+    public SecurityFilterChain authenticationConfiguration(HttpSecurity http, UserDetailsService service,
+                                                           DataSource source) throws Exception {
         return http
                 .securityMatcher(
-                        "/login/**", "/forgotPassword", "/logout",
-                        "/register", "/home", "/oauth2/**",
-                        "/setting")
+                        "/login/**", "/forgot-password", "/logout",
+                        "/home", "/oauth2/**", "/create-account",
+                        "/verify", "/validate-code", "/verify-email",
+                        "/create", "/access-denied", "/update")
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/register",
-                                "/oauth2/**",
-                                "/forgotPassword",
-                                "/login/**"
+                        .requestMatchers(
+                                "/oauth2/**", "/access-denied",
+                                "/forgot-password", "/update",
+                                "/create-account", "/create",
+                                "/login/**", "/validate-code",
+                                "/verify", "/verify-email"
                         ).permitAll()
 
                         .requestMatchers(
-                                "/home", "/setting"
+                                "/home"
                         ).hasAnyRole(
                                 ROLE_ADMIN, ROLE_BUSINESSMAN,
                                 ROLE_EMPLOYEE, ROLE_USER)
@@ -99,6 +102,7 @@ public class AuthenticationConfig implements Constants.Role {
                             logger.warning("Error happens when exeptionHandling is working: "
                                     + accessDeniedException.getMessage());
                             logger.info("request uri: " + request.getRequestURI());
+                            response.sendRedirect("/access-denied");
                         }))
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
