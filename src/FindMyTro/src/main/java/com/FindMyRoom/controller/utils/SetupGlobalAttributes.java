@@ -103,6 +103,26 @@ public class SetupGlobalAttributes {
         model.addAttribute("error_404_p", messageSource.getMessage("404_error_p", null, locale));
         model.addAttribute("error_404_a", messageSource.getMessage("404_error_a", null, locale));
     }
+
+    public void setupSettingPage(@NotNull Model model, Locale locale) {
+        model.addAttribute("setting_page", messageSource.getMessage("setting_page", null, locale));
+        model.addAttribute("display_language", messageSource.getMessage("display_language", null, locale));
+        model.addAttribute("select_language", messageSource.getMessage("select_language", null, locale));
+        model.addAttribute("display_mode", messageSource.getMessage("display_mode", null, locale));
+        model.addAttribute("dark_mode", messageSource.getMessage("dark_mode", null, locale));
+        model.addAttribute("associate_bank_account", messageSource.getMessage("associate_bank_account", null, locale));
+        model.addAttribute("associate_bank_account_content", messageSource.getMessage("associate_bank_account_content", null, locale));
+        model.addAttribute("association_manage", messageSource.getMessage("association_manage", null, locale));
+        model.addAttribute("activity_log", messageSource.getMessage("activity_log", null, locale));
+        model.addAttribute("activity_log_content", messageSource.getMessage("activity_log_content", null, locale));
+        model.addAttribute("view_log", messageSource.getMessage("view_log", null, locale));
+        model.addAttribute("community_policy", messageSource.getMessage("community_policy", null, locale));
+        model.addAttribute("community_policy_content", messageSource.getMessage("community_policy_content", null, locale));
+        model.addAttribute("view_detail", messageSource.getMessage("view_detail", null, locale));
+        model.addAttribute("delete_account", messageSource.getMessage("delete_account", null, locale));
+        model.addAttribute("delete_account_content", messageSource.getMessage("delete_account_content", null, locale));
+//        model.addAttribute("", messageSource.getMessage("", null, locale));
+    }
     // </editor-fold>
 
     // <editor-fold> desc="Notification"

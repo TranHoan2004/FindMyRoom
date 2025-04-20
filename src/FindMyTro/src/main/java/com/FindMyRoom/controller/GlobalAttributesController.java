@@ -46,6 +46,7 @@ public class GlobalAttributesController {
         map.put("forgot", m -> attr.setupForgotPage(model, locale));
         map.put("accessDenied", m -> attr.setupAccessDeniedPage(model, locale));
         map.put("page404", m -> attr.setup404ErrorPage(model, locale));
+        map.put("setting", m -> attr.setupSettingPage(model, locale));
 
         // notification
         map.put("notification", m -> attr.setupNotificationPopup(model, locale));

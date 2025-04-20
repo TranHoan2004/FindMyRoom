@@ -25,7 +25,6 @@ async function renderPosts(page, filter) {
             const pad = n => n.toString().padStart(2, '0');
             const today = `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
             data.forEach(post => {
-                console.log(post)
                 html += renderAllThePosts(post, today)
             });
 
@@ -104,6 +103,20 @@ document.addEventListener('click', function (e) {
     }
 });
 
+/////////////////////////////////////////////////////////////////
+document.addEventListener('DOMContentLoaded', function () {
+    const toggle = document.getElementById('themeToggle');
+
+    // Giữ chế độ khi reload
+    if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark-mode');
+        toggle.checked = true
+    }
+    toggle.addEventListener('click', function () {
+        document.body.classList.toggle('dark-mode');
+        localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+    });
+});
 /////////////////////////////////////////////////////////////////
 // Phương thức hỗ trợ
 
