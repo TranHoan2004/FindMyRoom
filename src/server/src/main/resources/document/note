@@ -1,0 +1,3 @@
+post M-M cart
+kiem tra lai erd
+mysqldump -u root -p --no-create-info findmytro > data_script.sql

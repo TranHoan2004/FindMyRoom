@@ -1,0 +1,109 @@
+/* --- Color table --- */
+:root {
+    --primary-color: #667eea;
+    --secondary-color: #a8dadc;
+    --accent-color: #ffc857;
+    --text-color: #333;
+    --text-light: #555;
+    --bg-light: #f8f9fa;
+    --bg-white: #fff;
+    --border-color: #dee2e6;
+    --dark-bg: #1e1e2f;
+    --dark-surface: #2a2a40;
+    --dark-card: #32324a;
+    --dark-text: #e0e0e0;
+    --dark-muted: #aaa;
+    --dark-border: #444;
+}
+
+body.dark-mode {
+    background-color: var(--dark-bg);
+    color: var(--dark-text);
+}
+
+body.dark-mode .navbar {
+    background: linear-gradient(45deg, #2c2c54, #1e1e40) !important;
+}
+
+body.dark-mode .nav-link {
+    color: var(--dark-text);
+}
+
+body.dark-mode .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+body.dark-mode .dropdown-menu {
+    background-color: var(--dark-surface);
+    color: var(--dark-text);
+}
+
+body.dark-mode .dropdown-item {
+    color: var(--dark-text);
+}
+
+body.dark-mode .dropdown-item:hover {
+    background-color: #3c3c5a;
+    color: var(--accent-color);
+}
+
+body.dark-mode .post-box,
+body.dark-mode .card-post,
+body.dark-mode .list-group-item,
+body.dark-mode .modal-content,
+body.dark-mode .offcanvas {
+    background-color: var(--dark-card);
+    color: var(--bg-white);
+    border-color: var(--dark-border);
+}
+
+body.dark-mode .card-title,
+body.dark-mode .modal-title,
+body.dark-mode h5 {
+    color: var(--accent-color);
+}
+
+body.dark-mode .footer {
+    background-color: #111;
+    color: var(--dark-muted);
+}
+
+body.dark-mode .footer a {
+    color: var(--primary-color);
+}
+
+body.dark-mode .footer a:hover {
+    color: var(--accent-color);
+}
+
+body.dark-mode .card-post .card-text {
+    color: var(--bg-white);
+}
+
+body.dark-mode .card-header,
+body.dark-mode .card-footer {
+    background-color: var(--dark-surface);
+    border-color: var(--dark-border);
+}
+
+body.dark-mode .btn-post-action {
+    background-color: transparent;
+    color: var(--dark-text);
+    border: 1px solid var(--dark-border);
+}
+
+body.dark-mode .btn-post-action:hover {
+    background-color: var(--accent-color);
+    color: #000;
+    border-color: var(--accent-color);
+}
+
+body.dark-mode .btn,
+body.dark-mode .text-muted {
+    color: var(--bg-white) !important;
+}
+
+body.dark-mode .page-link.disabled {
+    background-color: var(--dark-muted);
+    border-color: var(--dark-muted);
+}
