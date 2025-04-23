@@ -31,7 +31,7 @@ public class GlobalAttributesController {
     }
 
     @NotNull
-    private Map<String, Consumer<Model>> createAttributes(Model model, Locale locale) {
+    private Map<String, Consumer<Model>> createAttributes(@NotNull Model model, @NotNull Locale locale) {
         model.addAttribute("lang", locale.getLanguage());
         Map<String, Consumer<Model>> map = new HashMap<>();
         // common
@@ -48,6 +48,9 @@ public class GlobalAttributesController {
         map.put("accessDenied", m -> attr.setupAccessDeniedPage(model, locale));
         map.put("page404", m -> attr.setup404ErrorPage(model, locale));
         map.put("setting", m -> attr.setupSettingPage(model, locale));
+
+        // user
+        map.put("deleteAccount", m -> attr.setupDeleteAccountPage(model, locale));
 
         // notification
         map.put("notification", m -> attr.setupNotificationPopup(model, locale));

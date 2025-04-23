@@ -125,6 +125,15 @@ public class SetupGlobalAttributes {
     }
     // </editor-fold>
 
+    // <editor-fold> desc="User"
+    public void setupDeleteAccountPage(@NotNull Model model, Locale locale) {
+        model.addAttribute("delete_title", messageSource.getMessage("delete_title", null, locale));
+        model.addAttribute("confirm_before_delete", messageSource.getMessage("confirm_before_delete", null, locale));
+        model.addAttribute("alert_before_delete", messageSource.getMessage("alert_before_delete", null, locale));
+        model.addAttribute("delete_label", messageSource.getMessage("delete_label", null, locale));
+    }
+    // </editor-fold>
+
     // <editor-fold> desc="Notification"
     public void setupNotificationPopup(@NotNull Model model, Locale locale) {
         model.addAttribute("notification_title", messageSource.getMessage("notification_title", null, locale));

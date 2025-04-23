@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -10,21 +10,17 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <!--                <h5 class="modal-title" id="settingsModalLabel" th:text="${logout_title}"></h5>-->
-                <h5 class="modal-title" id="settingsModalLabel">Delete account?</h5>
+                <h5 class="modal-title" id="settingsModalLabel" th:text="${delete_title} + '?'">Delete account?</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <!--                <p th:text="${logout_alert}"></p>-->
-                <p>Are you sure to delete your account?</p>
-                <p>Your action will not be rolled back.</p>
+                <p th:text="${confirm_before_delete}"></p>
+                <p th:text="${alert_before_delete}"></p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                         th:text="${cancel_btn}"></button>
-                <!--                <button onclick="window.location.href='/logout'" class="btn btn-primary"-->
-                <!--                        th:text="${logout_title}"></button>-->
-                <button id="deletebtn" class="btn btn-primary">Delete</button>
+                <button id="deletebtn" class="btn btn-primary" th:text="${delete_label}"></button>
             </div>
         </div>
     </div>
