@@ -20,8 +20,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String index() {
-//        return "redirect:/home";
-        return "test";
+        return "redirect:/home";
     }
 
     @GetMapping("/home")

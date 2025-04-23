@@ -82,7 +82,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <script>
     let stompClient = null;
-    let initialized = false;
 
     const socket = new SockJS('/ws');
     stompClient = Stomp.over(socket);
@@ -92,6 +91,11 @@
             const data = JSON.parse(frame.body);
             show(data);
             setTimeout(() => showNotification('New Notification', 'You have a new message!', 'info'), 10);
+        });
+
+        stompClient.subscribe('/topic/guess', function (frame) {
+            const data = JSON.parse(frame.body);
+            setTimeout(() => showNotification(data.title, data.message.content.thumbnail, 'info'), 10);
         });
     });
 
@@ -107,7 +111,8 @@
             },
             title: 'Notification'
         };
-        stompClient.send("/app/application", {}, JSON.stringify(payload));
+        // stompClient.send("/app/application", {}, JSON.stringify(payload));
+        stompClient.send("/app/get", {}, JSON.stringify(payload));
     }
 
     function show(message) {
