@@ -68,7 +68,7 @@
                     <button class="login100-form-btn" type="submit"
                             style="background: #ffffff; color: #0022ff; border-style: solid; border-color: black;border-width: 1px;">
                         <img th:src="@{/images/Facebook_Logo_(2019).png}" alt="IMG" width="20" height="20"/>&nbsp;
-                        Facebook
+                        <span th:text="${facebook_title}"></span>
                     </button>
                 </div>
 
@@ -76,7 +76,7 @@
                     <a class="login100-form-btn" onclick="redirect()"
                        style="background: #ffffff; color: #ff0000; border-style: solid; border-color: black; border-width: 1px; cursor: pointer">
                         <img th:src="@{/images/Google.png}" alt="IMG" width="20" height="20"/>&nbsp;
-                        Google
+                        <span th:text="${google_title}"></span>
                     </a>
                     <script>
                         function redirect() {
@@ -97,10 +97,8 @@
         </div>
     </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
 <script>
     function toggleResetPswd(e) {
         e.preventDefault();
@@ -122,8 +120,8 @@
         $('#logreg-forms #cancel_signup').click(toggleSignUp);
     })
 
-    var passwordInput = document.getElementById("inputPassword");
-    var showPasswordButton = document.getElementById("showPasswordButton");
+    let passwordInput = document.getElementById("inputPassword");
+    let showPasswordButton = document.getElementById("showPasswordButton");
 
     showPasswordButton.addEventListener("click", function () {
         if (passwordInput.type === "password") {

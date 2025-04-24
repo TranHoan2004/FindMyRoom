@@ -40,7 +40,7 @@
             </div>
 
             <!-- Cart -->
-            <div onclick="location.href='#'" class="cart-icon-wrapper">
+            <div onclick="location.href='#'" class="cart-icon-wrapper" th:if="${session.account != null}">
                 <i class="fas fa-shopping-cart"
                    style="cursor: pointer;"
                    data-bs-toggle="tooltip"
