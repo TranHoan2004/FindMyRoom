@@ -1,4 +1,4 @@
-import {CheckEmail, CheckCode, CreateAccount} from '../api/Register.js'
+import {CheckEmail, CheckCode, CreateAccount} from '../api/account/Register.js'
 
 const step1 = document.getElementById('step1')
 const step2 = document.getElementById('step2')

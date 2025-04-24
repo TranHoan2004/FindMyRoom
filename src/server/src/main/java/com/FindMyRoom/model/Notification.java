@@ -15,7 +15,7 @@ import lombok.experimental.SuperBuilder;
 // HoanTX
 public class Notification {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(nullable = false)

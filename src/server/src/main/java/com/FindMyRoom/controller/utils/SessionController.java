@@ -50,6 +50,8 @@ public class SessionController {
             if (userDTO == null) {
                 throw new Exception("Account not found");
             }
+        } else {
+            throw new Exception("No email found");
         }
         return userDTO;
     }

@@ -12,12 +12,19 @@
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
-        <div class="alert alert-info" role="alert">
-            🔔 Bạn có 2 bài đăng mới cần duyệt
+        <div th:if="${session.account != null}">
+            <div class="alert alert-info" role="alert">
+                🔔 Bạn có 2 bài đăng mới cần duyệt
+            </div>
+            <!--        <div class="alert alert-success" role="alert">-->
+            <!--            🔔 Có tin nhắn mới từ chủ trọ-->
+            <!--        </div>-->
         </div>
-<!--        <div class="alert alert-success" role="alert">-->
-<!--            🔔 Có tin nhắn mới từ chủ trọ-->
-<!--        </div>-->
+        <div th:if="${session.account == null}">
+            <div class="alert alert-warning">
+                Bạn cần phải đăng nhập hoặc đăng ký để xem thông báo
+            </div>
+        </div>
     </div>
 </div>
 </body>

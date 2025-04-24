@@ -97,3 +97,15 @@ function createToastElement(title, message, type) {
             <div class="toast-body">${message}</div>`
     return toast;
 }
+
+// tai thong bao
+import {GetAllNotification} from "./api/notification/GetAllNotification.js";
+
+window.addEventListener('load', () => {
+    const noti = document.getElementById('notificationAmount')
+    GetAllNotification().then(data => {
+        noti.innerHTML = data.length
+    }).catch(e => {
+        console.log(e.message)
+    })
+})

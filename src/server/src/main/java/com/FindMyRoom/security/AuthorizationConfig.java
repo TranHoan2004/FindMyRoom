@@ -7,11 +7,16 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+
+import java.util.logging.Logger;
 
 @Configuration
 @EnableWebSecurity
 public class AuthorizationConfig implements Constants.Role {
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
+
     @Bean
     public SecurityFilterChain generalConfiguration(HttpSecurity http) throws Exception {
         return http
@@ -20,7 +25,20 @@ public class AuthorizationConfig implements Constants.Role {
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                         .requestMatchers("/setting").hasAnyRole(ROLE_ADMIN, ROLE_USER, ROLE_BUSINESSMAN, ROLE_EMPLOYEE)
                         .anyRequest().authenticated()
-                ).httpBasic(Customizer.withDefaults())
+                )
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint((request, response, authException) -> response.sendRedirect("/login"))
+                        .accessDeniedHandler((request, response, accessDeniedException) -> {
+                            logger.warning("Error happens when exeptionHandling is working: "
+                                    + accessDeniedException.getMessage());
+                            logger.info("request uri: " + request.getRequestURI());
+                            response.sendRedirect("/access-denied");
+                        }))
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                        .maximumSessions(1)
+                        .expiredUrl("/login"))
+                .httpBasic(Customizer.withDefaults())
                 .build();
     }
 
@@ -32,7 +50,21 @@ public class AuthorizationConfig implements Constants.Role {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/user/**").hasAnyRole(ROLE_ADMIN, ROLE_USER, ROLE_BUSINESSMAN, ROLE_EMPLOYEE)
                         .anyRequest().authenticated()
-                ).httpBasic(Customizer.withDefaults())
+                )
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint((request, response, authException) -> response.sendRedirect("/login"))
+                        .accessDeniedHandler((request, response, accessDeniedException) -> {
+                            logger.warning("Error happens when exeptionHandling is working: "
+                                    + accessDeniedException.getMessage());
+                            logger.info("request uri: " + request.getRequestURI());
+                            response.sendRedirect("/access-denied");
+                        }))
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                        .maximumSessions(1) // 1 user can access with only 1 device, if he/she try to use with 2 or
+                        // more, the previous session will immediately be canceled.
+                        .expiredUrl("/login"))
+                .httpBasic(Customizer.withDefaults())
                 .build();
     }
 
@@ -40,14 +72,14 @@ public class AuthorizationConfig implements Constants.Role {
     public SecurityFilterChain storyAndSliderFeatureConfiguration(HttpSecurity http) throws Exception {
         return http
                 .securityMatcher("/story/**"
-//                        , "/slider/**"
+                        , "/slider/**"
                 )
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/story/list"
-//                                ,"/slider/list"
-                        ).hasAnyRole(ROLE_ADMIN, ROLE_USER, ROLE_BUSINESSMAN, ROLE_EMPLOYEE)
+                                , "/slider/list"
+                        ).permitAll()
 
                         .requestMatchers(
                                 "/story/create", "/slider/create",
@@ -55,7 +87,20 @@ public class AuthorizationConfig implements Constants.Role {
                                 "/story/delete", "/slider/update"
                         ).hasRole(ROLE_ADMIN)
                         .anyRequest().authenticated()
-                ).httpBasic(Customizer.withDefaults())
+                ).exceptionHandling(ex -> ex
+                        .authenticationEntryPoint((request, response, authException) -> response.sendRedirect("/login"))
+                        .accessDeniedHandler((request, response, accessDeniedException) -> {
+                            logger.warning("Error happens when exeptionHandling is working: "
+                                    + accessDeniedException.getMessage());
+                            logger.info("request uri: " + request.getRequestURI());
+                            response.sendRedirect("/access-denied");
+                        }))
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                        .maximumSessions(1) // 1 user can access with only 1 device, if he/she try to use with 2 or
+                        // more, the previous session will immediately be canceled.
+                        .expiredUrl("/login"))
+                .httpBasic(Customizer.withDefaults())
                 .build();
     }
 
@@ -72,6 +117,19 @@ public class AuthorizationConfig implements Constants.Role {
                         ).hasAnyRole(ROLE_BUSINESSMAN, ROLE_USER)
                         .anyRequest().authenticated()
                 )
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint((request, response, authException) -> response.sendRedirect("/login"))
+                        .accessDeniedHandler((request, response, accessDeniedException) -> {
+                            logger.warning("Error happens when exeptionHandling is working: "
+                                    + accessDeniedException.getMessage());
+                            logger.info("request uri: " + request.getRequestURI());
+                            response.sendRedirect("/access-denied");
+                        }))
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                        .maximumSessions(1) // 1 user can access with only 1 device, if he/she try to use with 2 or
+                        // more, the previous session will immediately be canceled.
+                        .expiredUrl("/login"))
                 .httpBasic(Customizer.withDefaults())
                 .build();
     }

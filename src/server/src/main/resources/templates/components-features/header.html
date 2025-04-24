@@ -27,14 +27,30 @@
             <i class="fas fa-cog" style="cursor: pointer;" onclick="location.href='/setting'"
                th:title="${setting_title}"
                data-bs-toggle="tooltip"></i>
+
             <!-- Thông báo -->
-            <i class="fas fa-bell" style="cursor: pointer;" th:title="${notification_title}" data-bs-toggle="offcanvas"
-               data-bs-target="#notificationCanvas"></i>
+            <div class="icon-wrapper">
+                <i class="fas fa-bell"
+                   style="cursor: pointer;"
+                   th:title="${notification_title}"
+                   data-bs-toggle="offcanvas"
+                   data-bs-target="#notificationCanvas">
+                </i>
+                <span id="notificationAmount" class="notification-badge">0</span>
+            </div>
+
             <!-- Cart -->
-            <i class="fas fa-shopping-cart" style="cursor: pointer;" data-bs-toggle="tooltip" title="Giỏ hàng"></i>
+            <div onclick="location.href='#'" class="cart-icon-wrapper">
+                <i class="fas fa-shopping-cart"
+                   style="cursor: pointer;"
+                   data-bs-toggle="tooltip"
+                   th:if="${session.account != null}"></i>
+                <span id="amountCart" class="cart-badge">0</span>
+            </div>
+
             <div class="dropdown">
                 <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
-                   data-bs-toggle="dropdown">
+                   data-bs-toggle="dropdown" th:if="${session.account != null}">
                     <img src="/images/image1.png" alt="Avatar" class="rounded-circle user-avatar" width="32"
                          height="32">
                     <div class="d-flex flex-column align-items-start ms-2">
@@ -44,6 +60,11 @@
                               th:text="${session.account.getRole()}"></span>
                     </div>
                 </a>
+                <div th:if="${session.account == null}">
+                    <a class="btn btn-close-white text-white" th:href="@{/login}" th:text="${login_title}"></a>
+                    <a class="btn btn-close-white text-white" th:href="@{/create-account}"
+                       th:text="${register_title}"></a>
+                </div>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li><a class="dropdown-item" th:href="@{/user/profile}" th:text="${profile_title}"></a></li>
                     <li>

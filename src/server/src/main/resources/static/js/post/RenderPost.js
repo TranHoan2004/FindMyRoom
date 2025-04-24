@@ -107,7 +107,6 @@ function getButton(currentPage, totalPage, index, title, filter) {
 }
 
 function renderAllThePosts(post, today) {
-    console.log(post)
     return `
                 <div class="card card-post shadow-sm mb-4"
                     style="border: none; border-radius: 12px; overflow: hidden;"

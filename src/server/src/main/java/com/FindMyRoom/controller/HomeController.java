@@ -1,6 +1,7 @@
 package com.FindMyRoom.controller;
 
 import com.FindMyRoom.controller.utils.SessionController;
+import com.FindMyRoom.controller.utils.URLIdEncoder;
 import com.FindMyRoom.dto.response.UserResponseDTO;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -42,8 +43,14 @@ public class HomeController {
     private void throwSessionData(HttpSession session) {
         try {
             UserResponseDTO user = sc.getEntityFromSession(session);
-            session.setAttribute("account", user);
+            UserResponseDTO newUser = UserResponseDTO.builder()
+                    .encodeId(URLIdEncoder.encodeId(user.getId()))
+                    .role(user.getRole())
+                    .fullname(user.getFullname())
+                    .build();
+            session.setAttribute("account", newUser);
         } catch (Exception e) {
+            session.setAttribute("account", null);
             logger.log(Level.SEVERE, e.getMessage(), e);
         }
     }

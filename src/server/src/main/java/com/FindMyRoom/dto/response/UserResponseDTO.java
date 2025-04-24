@@ -14,6 +14,7 @@ import java.time.LocalDate;
 @SuperBuilder
 public class UserResponseDTO {
     private long id;
+    private String encodeId;
     private String email;
     private String password;
     private String fullname;

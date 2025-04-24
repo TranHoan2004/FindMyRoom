@@ -3,6 +3,7 @@ package com.FindMyRoom.security;
 import com.FindMyRoom.config.Constants;
 import com.FindMyRoom.dto.response.UserResponseDTO;
 import com.FindMyRoom.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -45,15 +46,9 @@ public class AuthenticationConfig implements Constants.Role {
                                 "/forgot-password", "/update",
                                 "/create-account", "/create",
                                 "/login/**", "/validate-code",
-                                "/verify", "/verify-email"
-                        ).permitAll()
-
-                        .requestMatchers(
+                                "/verify", "/verify-email",
                                 "/home"
-                        ).hasAnyRole(
-                                ROLE_ADMIN, ROLE_BUSINESSMAN,
-                                ROLE_EMPLOYEE, ROLE_USER)
-                        .anyRequest().authenticated()
+                        ).permitAll()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
@@ -85,7 +80,12 @@ public class AuthenticationConfig implements Constants.Role {
                             if (authentication != null) {
                                 logger.info("User has logged out: " + authentication.getName());
                             }
-                            response.sendRedirect("/login");
+
+                            HttpSession session = request.getSession(false);
+                            if (session != null) {
+                                session.invalidate();
+                            }
+                            response.sendRedirect("/home");
                         })
                         .deleteCookies("JSESSIONID", "remember-me")
                         .permitAll())
