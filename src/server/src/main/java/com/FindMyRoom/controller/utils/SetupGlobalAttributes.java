@@ -26,6 +26,8 @@ public class SetupGlobalAttributes {
         model.addAttribute("forgot_pass", messageSource.getMessage("forgot_pass", null, locale));
         model.addAttribute("or_title", messageSource.getMessage("or_title", null, locale));
         model.addAttribute("create_account", messageSource.getMessage("create_account", null, locale));
+        model.addAttribute("google_title", messageSource.getMessage("google_title", null, locale));
+        model.addAttribute("facebook_title", messageSource.getMessage("facebook_title", null, locale));
     }
 
     public void setupHomePage(@NotNull Model model, Locale locale) {

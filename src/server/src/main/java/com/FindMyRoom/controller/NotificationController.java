@@ -35,11 +35,13 @@ public class NotificationController {
     @GetMapping("/list")
     public ResponseEntity<?> returnAllNotifications(HttpSession session) {
         UserResponseDTO user = (UserResponseDTO) session.getAttribute("account");
-        user.setId(URLIdEncoder.decodeId(user.getEncodeId()));
-        try {
-            return ResponseEntity.ok(nSrv.getAllNotificationsByUserId(user.getId()));
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, e.getMessage());
+        if (user != null) {
+            user.setId(URLIdEncoder.decodeId(user.getEncodeId()));
+            try {
+                return ResponseEntity.ok(nSrv.getAllNotificationsByUserId(user.getId()));
+            } catch (Exception e) {
+                logger.log(Level.SEVERE, e.getMessage());
+            }
         }
         return ResponseEntity.noContent().build();
     }

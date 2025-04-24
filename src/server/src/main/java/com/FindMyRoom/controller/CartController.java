@@ -26,12 +26,14 @@ public class CartController {
     @GetMapping("/list")
     public ResponseEntity<?> getAmountCartOfUser(HttpSession session) {
         UserResponseDTO user = (UserResponseDTO) session.getAttribute("account");
-        user.setId(URLIdEncoder.decodeId(user.getEncodeId()));
-        try {
-            int size = cSrv.getCartByUserID(user.getId()).getSize();
-            return ResponseEntity.ok().body(size);
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, e.getMessage());
+        if (user != null) {
+            user.setId(URLIdEncoder.decodeId(user.getEncodeId()));
+            try {
+                int size = cSrv.getCartByUserID(user.getId()).getSize();
+                return ResponseEntity.ok().body(size);
+            } catch (Exception e) {
+                logger.log(Level.SEVERE, e.getMessage());
+            }
         }
         return ResponseEntity.ok().body(0);
     }

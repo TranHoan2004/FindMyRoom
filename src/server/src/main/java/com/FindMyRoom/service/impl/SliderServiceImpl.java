@@ -28,7 +28,6 @@ public class SliderServiceImpl implements SliderService {
         List<String> sliders = new ArrayList<>();
         list.forEach(b -> {
             String filePath = new String(b, StandardCharsets.UTF_8);
-            logger.info(filePath);
             sliders.add(filePath);
         });
         return sliders;
