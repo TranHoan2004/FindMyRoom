@@ -1,0 +1,32 @@
+.nav-pills {
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+    display: flex;
+    justify-content: center;
+    background-color: transparent;
+}
+
+.nav-pills .nav-item {
+    margin: 0 8px;
+}
+
+.nav-pills .nav-link {
+    background-color: transparent;
+    color: black;
+    border-radius: 8px;
+    padding: 0.7rem 1.2rem;
+    transition: color 0.3s ease, transform 0.2s ease-in-out;
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+    color: var(--primary-color);
+    text-decoration: underline;
+    font-weight: 500;
+}
+
+.nav-pills .nav-link:hover {
+    color: var(--primary-color);
+    transform: translateY(-2px);
+}

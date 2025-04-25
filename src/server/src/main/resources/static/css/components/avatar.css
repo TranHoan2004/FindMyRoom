@@ -1,0 +1,9 @@
+.user-avatar {
+    border: 2px solid white;
+    transition: transform 0.3s ease;
+}
+
+.user-avatar:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}

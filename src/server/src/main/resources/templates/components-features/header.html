@@ -6,6 +6,11 @@
 </head>
 <body>
 <div th:fragment="header">
+    <link rel="stylesheet" th:href="@{/css/components/avatar.css}">
+    <link rel="stylesheet" th:href="@{/css/components/cart.css}">
+    <link rel="stylesheet" th:href="@{/css/components/header-icons.css}">
+    <link rel="stylesheet" th:href="@{/css/components/notification.css}">
+    <!--    <link rel="stylesheet" th:href="@{/css/components/.css}">-->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
         <a class="navbar-brand" th:href="@{/home}" th:text="${web_name}"></a>
 

@@ -1,0 +1,19 @@
+.offcanvas {
+    background-color: var(--bg-white);
+    color: var(--text-color);
+    border: none;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.offcanvas-header {
+    border-bottom: 1px solid var(--border-color);
+    color: var(--primary-color);
+}
+
+.offcanvas-title {
+    font-weight: 500;
+}
+
+.offcanvas-body {
+    padding-bottom: 2rem;
+}

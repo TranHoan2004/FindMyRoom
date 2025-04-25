@@ -132,6 +132,8 @@ function renderAllThePosts(post, today) {
                          <h5 class="card-title">${post.title}</h5>
                          <div class="card-text">
                             <p>${post.content}</p>
+<!--                            <a href="/post/${post.id}" class="text-decoration-none fw-semibold text-primary">››› Xem chi tiết</a>-->
+                            <a href="#" class="text-decoration-none text-primary">››› Xem chi tiết</a>
                          </div>
 <!--                         <div class="rating" data-post-id="${post.id}">-->
 <!--                            <span>Đánh gia: </span>-->

@@ -1,0 +1,21 @@
+.footer {
+    background-color: #343a40 !important;
+    color: #f8f9fa;
+    padding: 1.5rem 0;
+}
+
+.footer p {
+    margin-bottom: 0;
+    font-size: 0.95rem;
+    color: #adb5bd;
+}
+
+.footer a {
+    color: var(--secondary-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer a:hover {
+    color: var(--accent-color);
+}

@@ -2,13 +2,15 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <script th:src="@{/js/axios.min.js}"></script>
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-    <link rel="stylesheet" th:href="@{/css/all.min.css}">
-    <link rel="stylesheet" th:href="@{/css/css2.css}">
-    <link rel="stylesheet" th:href="@{/css/swiper-bundle.min.css}"/>
+    <script th:src="@{/js/lib/axios.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/lib/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/lib/all.min.css}">
+    <link rel="stylesheet" th:href="@{/css/lib/css2.css}">
+    <link rel="stylesheet" th:href="@{/css/lib/swiper-bundle.min.css}"/>
     <link rel="stylesheet" th:href="@{/css/common.css}">
     <link rel="stylesheet" th:href="@{/css/darkmode.css}">
+    <link rel="stylesheet" th:href="@{/css/components/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/components/post-box.css}">
     <title th:text="${setting_title}"></title>
 </head>
 <body>
@@ -113,11 +115,14 @@
 <!-- Footer (ok) -->
 <div th:replace="~{users-features/delete-account-popup::deleteAccount}"></div>
 
-<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
-<script th:src="@{/js/jquery-3.7.1.min.js}"></script>
+<script th:src="@{/js/lib/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/lib/jquery-3.7.1.min.js}"></script>
 <script type="text/javascript" src="https://cdn.fchat.vn/assets/embed/webchat.js?id=68046fcf7eb26f456e0a70a5"
         async="async"></script>
 <script th:src="@{/js/common.js}" type="module"></script>
+<script th:src="@{/js/lib/sockjs.min.js}"></script>
+<script th:src="@{/js/lib/stomp.min.js}"></script>
 <script th:src="@{/js/account/AccountSolving.js}" type="module"></script>
+<script th:src="@{/js/cart/GetCart.js}" type="module"></script>
 </body>
 </html>

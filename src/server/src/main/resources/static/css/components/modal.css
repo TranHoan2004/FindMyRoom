@@ -1,0 +1,25 @@
+.modal-content {
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    border: none;
+}
+
+.modal-header {
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--bg-white);
+    color: var(--primary-color);
+}
+
+.modal-title {
+    font-weight: 500;
+}
+
+.modal-body {
+    background-color: var(--bg-white);
+    color: var(--text-color);
+}
+
+.modal-footer {
+    border-top: 1px solid var(--border-color);
+    background-color: var(--bg-white);
+}
