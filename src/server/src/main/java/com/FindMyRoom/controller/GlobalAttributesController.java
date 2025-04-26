@@ -51,6 +51,7 @@ public class GlobalAttributesController {
 
         // user
         map.put("deleteAccount", m -> attr.setupDeleteAccountPage(model, locale));
+        map.put("profile", m -> attr.setupProfilePage(model, locale));
 
         // notification
         map.put("notification", m -> attr.setupNotificationPopup(model, locale));

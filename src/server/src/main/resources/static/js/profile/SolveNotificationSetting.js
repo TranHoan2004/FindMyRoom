@@ -1,6 +1,6 @@
 function markAsRead(btn) {
     const badge = btn.closest('.alert').querySelector('.badge');
-    badge.textContent = "Đã đọc";
+    badge.textContent = seen;
     badge.classList.remove('bg-secondary');
     badge.classList.add('bg-success');
     btn.disabled = true;
@@ -27,7 +27,7 @@ function saveNotificationSettings() {
     };
 
     localStorage.setItem("notificationSettings", JSON.stringify(settings));
-    alert("✅ Cài đặt thông báo đã được lưu!");
+    alert("✅ ", message);
 }
 
 document.addEventListener("DOMContentLoaded", function () {

@@ -36,11 +36,11 @@ function renderInteractions() {
 function translateAction(action) {
     switch (action) {
         case "viewed":
-            return "👁️ Đã xem";
+            return "👁️ " + seen;
         case "saved":
-            return "📌 Đã lưu";
+            return "📌 " + saved;
         case "contacted":
-            return "📞 Đã liên hệ";
+            return "📞 " + contacted;
         default:
             return "";
     }
@@ -54,7 +54,7 @@ function deleteInteraction(index) {
 }
 
 function clearInteractionHistory() {
-    if (confirm("Bạn có chắc chắn muốn xóa toàn bộ lịch sử không?")) {
+    if (confirm(alertBeforeDelete)) {
         localStorage.removeItem("interactionHistory");
         renderInteractions();
     }

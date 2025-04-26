@@ -6,7 +6,9 @@ const Input = ({
     inputPlaceholder,
     isRequired,
     type = 'text',
-    name
+    name,
+    value,
+    onChange
 }) => {
     return (
         <input
@@ -16,6 +18,8 @@ const Input = ({
             required={isRequired ? 'required' : ''}
             type={type}
             name={name}
+            value={value}
+            onChange={onChange}
         ></input>
     );
 };

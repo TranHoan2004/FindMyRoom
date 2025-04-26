@@ -6,44 +6,10 @@
     <link rel="stylesheet" th:href="@{/css/lib/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/lib/all.min.css}">
     <link rel="stylesheet" th:href="@{/css/lib/css2.css}">
-    <link rel="stylesheet" th:href="@{/css/common.css}">
-    <link rel="stylesheet" th:href="@{/css/darkmode.css}">
-    <title>Profile</title>
-    <style>
-        /* --- Sidebar Profile Style --- */
-        .nav-section-title {
-            font-weight: 600;
-            color: var(--primary-color) !important;
-            font-size: 1rem;
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            margin-top: 1.2rem;
-        }
-
-        .nav-link-custom {
-            display: block;
-            padding: 0.55rem 1rem;
-            border-radius: 10px;
-            color: var(--text-color);
-            transition: all 0.3s ease;
-            font-weight: 500;
-            margin-bottom: 4px;
-            text-decoration: none;
-        }
-
-        .nav-link-custom:hover {
-            background-color: var(--bg-light);
-            color: var(--primary-color);
-        }
-
-        .nav-link-custom.active {
-            background-color: var(--secondary-color) !important;
-            color: #000 !important;
-            font-weight: 600 !important;
-        }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/components/common.css}">
+    <link rel="stylesheet" th:href="@{/css/components/darkmode.css}">
+    <link rel="stylesheet" th:href="@{/css/components/profile.css}">
+    <title th:text="${profile_title}"></title>
 </head>
 <body>
 <!-- Header -->
@@ -59,7 +25,10 @@
                 <!-- Thong bao he thong -->
                 <div class="tab-pane fade" id="system">
                     <div class="notification-group mb-4">
-                        <h5><i class="bi bi-gear-fill text-secondary"></i> Thông báo hệ thống</h5>
+                        <h5>
+                            <i class="bi bi-gear-fill text-secondary"></i>
+                            <span th:text="${system_noti}"></span>
+                        </h5>
                         <div class="alert alert-info d-flex justify-content-between align-items-start">
                             <div>
                                 <strong>⚙️ Bảo trì hệ thống</strong><br>
@@ -95,14 +64,17 @@
                 <!-- Thong bao ve uu dai -->
                 <div class="tab-pane fade" id="promotion">
                     <div class="notification-group mb-4">
-                        <h5><i class="bi bi-gift-fill text-danger"></i> Ưu đãi</h5>
+                        <h5>
+                            <i class="bi bi-gift-fill text-danger"></i>
+                            <span th:text="${sale_title}"></span>
+                        </h5>
                         <div class="alert alert-warning d-flex justify-content-between align-items-start">
                             <div>
                                 <strong>🎉 Ưu đãi tháng 5</strong><br>
                                 Bạn nhận được mã giảm 50.000₫ cho đơn đầu tiên!
                                 <a href="#">Tìm hiểu ngay</a>
                                 <div class="small text-muted mt-1">Nhận lúc: 25/04/2025 09:00 | <span
-                                        class="badge bg-secondary">Chưa đọc</span></div>
+                                        class="badge bg-secondary" th:text="${unread_title}"></span></div>
                             </div>
                             <div class="btn-group ms-2">
                                 <button class="btn btn-sm btn-outline-success" onclick="markAsRead(this)">✓</button>
@@ -116,7 +88,7 @@
                                 🔥 Giảm 20% cho người dùng mới trong tháng 5.
                                 <a href="#">Tìm hiểu ngay</a>
                                 <div class="small text-muted mt-1">Nhận lúc: 25/04/2025 09:00 | <span
-                                        class="badge bg-secondary">Chưa đọc</span></div>
+                                        class="badge bg-secondary" th:text="${unread_title}"></span></div>
                             </div>
                             <div class="btn-group ms-2">
                                 <button class="btn btn-sm btn-outline-success" onclick="markAsRead(this)">✓</button>
@@ -131,14 +103,17 @@
                 <!-- Thong bao tu chu tro -->
                 <div class="tab-pane fade" id="owner">
                     <div class="notification-group mb-4">
-                        <h5><i class="bi bi-house-heart-fill text-success"></i> Từ chủ trọ</h5>
+                        <h5>
+                            <i class="bi bi-house-heart-fill text-success"></i>
+                            <span th:text="${from_houseowner}"></span>
+                        </h5>
                         <div class="alert alert-success d-flex justify-content-between align-items-start">
                             <div>
-                                <strong>📩 Tin nhắn mới từ chủ trọ</strong><br>
+                                <strong th:text="'📩 ' + ${new_message_from_houseowner}"></strong><br>
                                 Chủ trọ "Nguyễn Văn A" đã gửi tin nhắn cho bạn.
-                                <a href="#">Xem phản hồi</a>
+                                <a href="#" th:text="${see_response}"></a>
                                 <div class="small text-muted mt-1">Nhận lúc: 25/04/2025 11:45 | <span
-                                        class="badge bg-secondary">Chưa đọc</span></div>
+                                        class="badge bg-secondary" th:text="${unread_title}"></span></div>
                             </div>
                             <div class="btn-group ms-2">
                                 <button class="btn btn-sm btn-outline-success" onclick="markAsRead(this)">✓</button>
@@ -149,11 +124,11 @@
                         </div>
                         <div class="alert alert-success d-flex justify-content-between align-items-start">
                             <div>
-                                <strong>📩 Tin nhắn mới từ chủ trọ</strong><br>
+                                <strong th:text="'📩 ' + ${new_message_from_houseowner}"></strong><br>
                                 🏠 Chủ trọ "Nguyễn Văn A" đã phản hồi yêu cầu đặt phòng của bạn.
-                                <a href="#">Xem phản hồi</a>
+                                <a href="#" th:text="${see_response}"></a>
                                 <div class="small text-muted mt-1">Nhận lúc: 25/04/2025 11:45 | <span
-                                        class="badge bg-secondary">Chưa đọc</span></div>
+                                        class="badge bg-secondary" th:text="${unread_title}"></span></div>
                             </div>
                             <div class="btn-group ms-2">
                                 <button class="btn btn-sm btn-outline-success" onclick="markAsRead(this)">✓</button>
@@ -167,14 +142,15 @@
 
                 <!-- Thong tin nguoi dung -->
                 <div class="tab-pane fade show active" id="info">
-                    <h4>Thông tin người dùng</h4>
+                    <h4 th:text="${user_information}"></h4>
                     <form id="userInfoForm" class="row g-4 mt-3" enctype="multipart/form-data">
                         <!-- Ảnh đại diện -->
                         <div class="col-md-3 text-center">
                             <img id="avatarPreview" src="/images/image1.png" class="rounded-circle shadow-sm"
                                  width="120" height="120" alt="Avatar">
                             <div class="mt-2">
-                                <label for="avatarInput" class="btn btn-outline-primary btn-sm">🖼️ Chọn ảnh</label>
+                                <label for="avatarInput" class="btn btn-outline-primary btn-sm"
+                                       th:text="'🖼️ ' + ${image_select}"></label>
                                 <input type="file" class="d-none" id="avatarInput" accept="image/*">
                             </div>
                         </div>
@@ -183,54 +159,54 @@
                         <div class="col-md-9">
                             <div class="row g-3">
                                 <div class="col-md-6">
-                                    <label class="form-label">Họ tên</label>
+                                    <label class="form-label" th:text="${fullname_title}"></label>
                                     <input type="text" class="form-control" id="fullName" value="Trần Xuân Hoàn"
                                            readonly>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label" id="emailField">Email</label>
+                                    <label class="form-label" id="emailField" th:text="${email_title}"></label>
                                     <input type="email" class="form-control" id="email" value="hoan@example.com"
                                            readonly>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label">Số điện thoại</label>
+                                    <label class="form-label" th:text="${phone_number}"></label>
                                     <input type="text" class="form-control" id="phone" value="0989999999" readonly>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label">Ngày sinh</label>
+                                    <label class="form-label" th:text="${dob}"></label>
                                     <input type="date" class="form-control" id="dob" value="1995-01-01" readonly>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label">Giới tính</label>
+                                    <label class="form-label" th:text="${gender_title}"></label>
                                     <select class="form-select" id="gender" disabled>
-                                        <option selected>Nam</option>
-                                        <option>Nữ</option>
-                                        <option>Khác</option>
+                                        <option selected th:text="${male_title}"></option>
+                                        <option th:text="${female_title}"></option>
+                                        <option th:text="${other_gender}"></option>
                                     </select>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label">Tỉnh/Thành phố</label>
+                                    <label class="form-label" th:text="${province_city}"></label>
                                     <input type="text" class="form-control" id="province" value="TP.HCM" readonly>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label">Quận/Huyện</label>
+                                    <label class="form-label" th:text="${district}"></label>
                                     <input type="text" class="form-control" id="district" value="Quận 1" readonly>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label">Số nhà</label>
+                                    <label class="form-label" th:text="${house_number}"></label>
                                     <input type="text" class="form-control" id="houseNumber" value="123" readonly>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label">Tên đường</label>
+                                    <label class="form-label" th:text="${street_name}"></label>
                                     <input type="text" class="form-control" id="street" value="Đường ABC" readonly>
                                 </div>
                             </div>
 
                             <div class="mt-4 d-flex gap-3">
-                                <button type="button" id="editInfoBtn" class="btn btn-primary">✏️ Chỉnh sửa</button>
-                                <button type="submit" id="saveInfoBtn" class="btn btn-success d-none">💾 Lưu thay
-                                    đổi
-                                </button>
+                                <button type="button" id="editInfoBtn" class="btn btn-primary"
+                                        th:text="'✏️ ' + ${edit_btn}"></button>
+                                <button type="submit" id="saveInfoBtn" class="btn btn-success d-none"
+                                        th:text="'💾 ' + ${save_btn}"></button>
                             </div>
                         </div>
                     </form>
@@ -238,43 +214,43 @@
 
                 <!-- Doi mat khau -->
                 <div class="tab-pane fade" id="password">
-                    <h4 class="mb-4">🔐 Đổi mật khẩu</h4>
+                    <h4 class="mb-4" th:text="'🔐 ' + ${reset_password}"></h4>
                     <form id="changePasswordForm"
                           class="p-4 border rounded shadow-sm bg-white dark-mode-support needs-validation" novalidate>
                         <div class="mb-3 position-relative">
-                            <label for="currentPassword" class="form-label fw-bold">Mật khẩu hiện tại</label>
+                            <label for="currentPassword" class="form-label fw-bold"
+                                   th:text="${current_password}"></label>
                             <div class="input-group">
                                 <input type="password" class="form-control" id="currentPassword"
-                                       placeholder="Nhập mật khẩu hiện tại" required>
+                                       th:placeholder="${enter_current_password}" required>
                                 <button class="btn btn-outline-secondary toggle-password" type="button"
                                         data-target="currentPassword" hidden>
                                     <i class="bi bi-eye"></i>
                                 </button>
                             </div>
-                            <div class="invalid-feedback">Vui lòng nhập mật khẩu hiện tại.</div>
+                            <div class="invalid-feedback" th:text="${please_enter_current_password}"></div>
                         </div>
 
                         <div class="mb-3 position-relative">
-                            <label for="newPassword" class="form-label fw-bold">Mật khẩu mới</label>
+                            <label for="newPassword" class="form-label fw-bold" th:text="${new_password}"></label>
                             <div class="input-group">
                                 <input type="password" class="form-control" id="newPassword"
-                                       placeholder="Tạo mật khẩu mới" required>
+                                       th:placeholder="${enter_new_password}" required>
                                 <button class="btn btn-outline-secondary toggle-password" type="button"
                                         data-target="newPassword" hidden>
                                     <i class="bi bi-eye"></i>
                                 </button>
                             </div>
-                            <div class="form-text">
-                                Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt.
-                            </div>
+                            <div class="form-text" th:text="${new_password_condition}"></div>
                             <div class="invalid-feedback" id="newPasswordFeedback"></div>
                         </div>
 
                         <div class="mb-3 position-relative">
-                            <label for="confirmPassword" class="form-label fw-bold">Nhập lại mật khẩu mới</label>
+                            <label for="confirmPassword" class="form-label fw-bold"
+                                   th:text="${enter_new_password_again}"></label>
                             <div class="input-group">
                                 <input type="password" class="form-control" id="confirmPassword"
-                                       placeholder="Nhập lại mật khẩu mới" required>
+                                       th:placeholder="${enter_new_password_again}" required>
                                 <button class="btn btn-outline-secondary toggle-password" type="button"
                                         data-target="confirmPassword" hidden>
                                     <i class="bi bi-eye"></i>
@@ -282,7 +258,7 @@
                             </div>
                             <div class="invalid-feedback" id="confirmPasswordFeedback"></div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Đổi mật khẩu</button>
+                        <button type="submit" class="btn btn-primary" th:text="${reset_password}"></button>
                         <div id="passwordMessage" class="mt-3 text-center"></div>
                     </form>
                 </div>
@@ -290,91 +266,93 @@
                 <!-- Cai dat thong bao -->
                 <div class="tab-pane fade" id="notification-setting">
                     <div class="notification-settings p-4 bg-white dark-mode-support rounded shadow-sm">
-                        <h4 class="mb-4"><i class="bi bi-bell-fill me-2"></i>Cài đặt thông báo</h4>
+                        <h4 class="mb-4">
+                            <i class="bi bi-bell-fill me-2"></i>
+                            <span th:text="${notification_setting}"></span>
+                        </h4>
 
                         <!-- Ưu đãi -->
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Thông báo ưu đãi</label>
+                            <label class="form-label fw-bold" th:text="${sale_noti}"></label>
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" id="promoNotify" checked>
-                                <label class="form-check-label" for="promoNotify">Nhận thông báo ưu đãi mới</label>
+                                <label class="form-check-label" for="promoNotify"
+                                       th:text="${receive_new_sale_noti}"></label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="promoType" id="promoWeb" checked>
-                                <label class="form-check-label" for="promoWeb">Hiển thị trên web</label>
+                                <label class="form-check-label" for="promoWeb" th:text="${display_on_web}"></label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="promoType" id="promoEmail">
-                                <label class="form-check-label" for="promoEmail">Gửi qua email</label>
+                                <label class="form-check-label" for="promoEmail" th:text="${send_by_email}"></label>
                             </div>
                         </div>
 
                         <!-- Hệ thống -->
                         <div class="mb-3 border-top pt-3">
-                            <label class="form-label fw-bold">Thông báo hệ thống</label>
+                            <label class="form-label fw-bold" th:text="${system_noti}"></label>
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" id="systemNotify" checked>
-                                <label class="form-check-label" for="systemNotify">Nhận thông báo bảo trì, chính
-                                    sách, v.v.</label>
+                                <label class="form-check-label" for="systemNotify"
+                                       th:text="${receive_all_noti}"></label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="systemType" id="systemWeb"
                                        checked>
-                                <label class="form-check-label" for="systemWeb">Hiển thị trên web</label>
+                                <label class="form-check-label" for="systemWeb" th:text="${display_on_web}"></label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="systemType" id="systemEmail">
-                                <label class="form-check-label" for="systemEmail">Gửi qua email</label>
+                                <label class="form-check-label" for="systemEmail" th:text="${send_by_email}"></label>
                             </div>
                         </div>
 
                         <!-- Từ chủ trọ -->
                         <div class="mb-3 border-top pt-3">
-                            <label class="form-label fw-bold">Thông báo từ chủ trọ</label>
+                            <label class="form-label fw-bold" th:text="${noti_houseowner}"></label>
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" id="ownerNotify" checked>
-                                <label class="form-check-label" for="ownerNotify">
-                                    Nhận thông báo tin nhắn, phản hồi từ chủ trọ
-                                </label>
+                                <label class="form-check-label" for="ownerNotify"
+                                       th:text="${receive_noti_houseowner}"></label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="ownerType" id="ownerWeb" checked>
-                                <label class="form-check-label" for="ownerWeb">Hiển thị trên web</label>
+                                <label class="form-check-label" for="ownerWeb" th:text="${display_on_web}"></label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="ownerType" id="ownerEmail">
-                                <label class="form-check-label" for="ownerEmail">Gửi qua email</label>
+                                <label class="form-check-label" for="ownerEmail" th:text="${send_by_email}"></label>
                             </div>
                         </div>
 
                         <!-- Nút lưu -->
                         <div class="text-end mt-4">
-                            <button class="btn btn-primary" onclick="saveNotificationSettings()">
-                                Lưu thay đổi
-                            </button>
+                            <button class="btn btn-primary" onclick="saveNotificationSettings()"
+                                    th:text="${save_btn}"></button>
                         </div>
                     </div>
                 </div>
 
                 <!-- Bai dang -->
                 <div class="tab-pane fade" id="myposts">
-                    <h4>Bài đăng của tôi</h4>
+                    <h4 th:text="${my_post}"></h4>
                     <div id="userPosts"></div>
                 </div>
 
                 <!-- Lich su tuong tac -->
                 <div class="tab-pane fade" id="history">
                     <div class="tab-pane fade show active" id="interactionHistory">
-                        <h4 class="mb-3">📜 Lịch sử tương tác</h4>
+                        <h4 class="mb-3" th:text="'📜 ' + ${contact_history}"></h4>
 
                         <!-- Bộ lọc -->
                         <div class="mb-3">
-                            <label for="filterType" class="form-label">Lọc theo hành động:</label>
+                            <label for="filterType" class="form-label" th:text="${filter_by_action} + ':'"></label>
                             <select class="form-select w-auto" id="filterType" onchange="renderInteractions()">
-                                <option value="all">Tất cả</option>
-                                <option value="viewed">Đã xem</option>
-                                <option value="saved">Đã lưu</option>
-                                <option value="contacted">Đã liên hệ</option>
+                                <option value="all" th:text="${all_title}"></option>
+                                <option value="viewed" th:text="${seen_title}"></option>
+                                <option value="saved" th:text="${saved_title}"></option>
+                                <option value="contacted" th:text="${contacted}"></option>
                             </select>
                         </div>
 
@@ -383,9 +361,9 @@
                             <table class="table table-bordered align-middle">
                                 <thead class="table-light">
                                 <tr>
-                                    <th>Tiêu đề bài trọ</th>
-                                    <th>Hành động</th>
-                                    <th>Thời gian</th>
+                                    <th th:text="${post_title}"></th>
+                                    <th th:text="${action_title}"></th>
+                                    <th th:text="${time_title}"></th>
                                     <th></th>
                                 </tr>
                                 </thead>
@@ -396,9 +374,8 @@
                         </div>
 
                         <!-- Xóa toàn bộ -->
-                        <button class="btn btn-danger mt-2" onclick="clearInteractionHistory()">
-                            🗑️ Xóa toàn bộ lịch sử
-                        </button>
+                        <button class="btn btn-danger mt-2" onclick="clearInteractionHistory()"
+                                th:text="'🗑️ ' + ${clear_history}"></button>
                     </div>
                 </div>
             </div>
@@ -406,16 +383,27 @@
     </div>
 </div>
 
+<!-- Footer -->
+<div th:replace="~{components-features/footer::footer}"></div>
+
+<script th:inline="javascript">
+    const seen = /*[[${seen_title}]]*/ {}
+    const message = /*[[${save_noti_setting}]]*/ {}
+    const contacted = /*[[${contacted}]]*/ {}
+    const saved = /*[[${saved_title}]]*/ {}
+    const alertBeforeDelete = /*[[${alert_before_delete_history}]]*/ {}
+    const readOnly = /*[[${read_only}]]*/ {}
+</script>
 <script th:src="@{/js/lib/bootstrap.bundle.min.js}"></script>
 <script th:src="@{/js/lib/jquery-3.7.1.min.js}"></script>
 <script th:src="@{/js/common.js}" type="module"></script>
 <script th:src="@{/js/cart/GetCart.js}" type="module"></script>
-<script type="text/javascript" src="https://cdn.fchat.vn/assets/embed/webchat.js?id=68046fcf7eb26f456e0a70a5"
-        async="async"></script>
 <script th:src="@{/js/lib/sockjs.min.js}"></script>
 <script th:src="@{/js/lib/stomp.min.js}"></script>
 <script th:src="@{/js/profile/EditUserProfile.js}"></script>
 <script th:src="@{/js/profile/InteractionHistory.js}"></script>
 <script th:src="@{/js/profile/SolveNotificationSetting.js}"></script>
+<script type="text/javascript" src="https://cdn.fchat.vn/assets/embed/webchat.js?id=68046fcf7eb26f456e0a70a5"
+        async="async"></script>
 </body>
 </html>

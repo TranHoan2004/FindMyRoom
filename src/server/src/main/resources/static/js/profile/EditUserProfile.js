@@ -1,3 +1,5 @@
+console.log(readOnly)
+
 const avatarInput = document.getElementById("avatarInput");
 const avatarPreview = document.getElementById("avatarPreview");
 const editBtn = document.getElementById("editInfoBtn");
@@ -27,7 +29,7 @@ editBtn.addEventListener("click", function () {
     editBtn.classList.add("d-none");
     saveBtn.classList.remove("d-none");
     const field = document.getElementById('emailField')
-    field.innerHTML += ' (Read Only)'
+    field.innerHTML += ' (' + readOnly + ')'
 });
 
 document.getElementById("userInfoForm").addEventListener("submit", function (e) {

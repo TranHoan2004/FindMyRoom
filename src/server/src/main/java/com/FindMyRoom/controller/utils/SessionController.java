@@ -44,7 +44,7 @@ public class SessionController {
     public UserResponseDTO getEntityFromSession(HttpSession session) throws Exception {
         String email = getEmailFromSession(session);
         logger.info("Get email from session: " + email);
-        UserResponseDTO userDTO = new UserResponseDTO();
+        UserResponseDTO userDTO;
         if (!email.isEmpty()) {
             userDTO = service.getUserDTOByEmail(email);
             if (userDTO == null) {

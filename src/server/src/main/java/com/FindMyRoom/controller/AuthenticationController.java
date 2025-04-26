@@ -2,10 +2,9 @@ package com.FindMyRoom.controller;
 
 import com.FindMyRoom.controller.utils.SessionController;
 import com.FindMyRoom.dto.request.UserRequestDTO;
+import com.FindMyRoom.service.EmailService;
 import com.FindMyRoom.service.UserService;
 import com.FindMyRoom.utils.RandomCode;
-import com.FindMyRoom.utils.email.EmailService;
-import com.FindMyRoom.utils.email.EmailServiceImpl;
 import jakarta.servlet.http.HttpSession;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
@@ -21,15 +20,17 @@ import java.util.logging.Logger;
 
 @Controller
 public class AuthenticationController {
+    private final EmailService eSrv;
     private final UserService uSrv;
     private String randomCode;
     private final SessionController sc;
     private final Logger logger = Logger.getLogger(this.getClass().getName());
 
-    public AuthenticationController(UserService userService, SessionController sc) {
+    public AuthenticationController(UserService userService, SessionController sc, EmailService service) {
         this.randomCode = null;
         this.uSrv = userService;
         this.sc = sc;
+        this.eSrv = service;
     }
 
     @GetMapping("/verify")
@@ -120,11 +121,10 @@ public class AuthenticationController {
     }
 
     private void sendEmail(String email, @NotNull HttpSession session) {
-        EmailService service = new EmailServiceImpl();
         randomCode = RandomCode.generateSixRandomCodes();
         session.setAttribute("randomCode", randomCode);
         logger.info(randomCode);
-//        service.sendEmail(email, "[Find My Room] Verify Code", randomCode);
+        eSrv.sendSimpleMail(email, "[Find My Room] Verify Code", randomCode);
         logger.info("Send email successfully");
     }
 }

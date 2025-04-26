@@ -1,0 +1,32 @@
+.nav-section-title {
+    font-weight: 600;
+    color: var(--primary-color) !important;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 1.2rem;
+}
+
+.nav-link-custom {
+    display: block;
+    padding: 0.55rem 1rem;
+    border-radius: 10px;
+    color: var(--text-color);
+    transition: all 0.3s ease;
+    font-weight: 500;
+    margin-bottom: 4px;
+    text-decoration: none;
+}
+
+.nav-link-custom:hover {
+    background-color: var(--bg-light);
+    color: var(--primary-color);
+}
+
+.nav-link-custom.active {
+    background-color: var(--secondary-color) !important;
+    color: #000 !important;
+    font-weight: 600 !important;
+}

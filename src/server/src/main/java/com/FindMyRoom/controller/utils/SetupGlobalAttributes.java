@@ -134,6 +134,59 @@ public class SetupGlobalAttributes {
         model.addAttribute("alert_before_delete", messageSource.getMessage("alert_before_delete", null, locale));
         model.addAttribute("delete_label", messageSource.getMessage("delete_label", null, locale));
     }
+
+    public void setupProfilePage(@NotNull Model model, Locale locale) {
+        model.addAttribute("system_noti", messageSource.getMessage("system_noti", null, locale));
+        model.addAttribute("sale_title", messageSource.getMessage("sale_title", null, locale));
+        model.addAttribute("from_houseowner", messageSource.getMessage("from_houseowner", null, locale));
+        model.addAttribute("new_message_from_houseowner", messageSource.getMessage("new_message_from_houseowner", null, locale));
+        model.addAttribute("see_response", messageSource.getMessage("see_response", null, locale));
+        model.addAttribute("unread_title", messageSource.getMessage("unread_title", null, locale));
+        model.addAttribute("user_information", messageSource.getMessage("user_information", null, locale));
+        model.addAttribute("image_select", messageSource.getMessage("image_select", null, locale));
+        model.addAttribute("fullname_title", messageSource.getMessage("fullname_title", null, locale));
+        model.addAttribute("dob", messageSource.getMessage("dob", null, locale));
+        model.addAttribute("gender_title", messageSource.getMessage("gender_title", null, locale));
+        model.addAttribute("male_title", messageSource.getMessage("male_title", null, locale));
+        model.addAttribute("female_title", messageSource.getMessage("female_title", null, locale));
+        model.addAttribute("other_gender", messageSource.getMessage("other_gender", null, locale));
+        model.addAttribute("province_city", messageSource.getMessage("province_city", null, locale));
+        model.addAttribute("district", messageSource.getMessage("district", null, locale));
+        model.addAttribute("house_number", messageSource.getMessage("house_number", null, locale));
+        model.addAttribute("street_name", messageSource.getMessage("street_name", null, locale));
+        model.addAttribute("edit_btn", messageSource.getMessage("edit_btn", null, locale));
+        model.addAttribute("save_btn", messageSource.getMessage("save_btn", null, locale));
+        model.addAttribute("reset_password", messageSource.getMessage("reset_password", null, locale));
+        model.addAttribute("current_password", messageSource.getMessage("current_password", null, locale));
+        model.addAttribute("enter_current_password", messageSource.getMessage("enter_current_password", null, locale));
+        model.addAttribute("please_enter_current_password", messageSource.getMessage("please_enter_current_password", null, locale));
+        model.addAttribute("new_password", messageSource.getMessage("new_password", null, locale));
+        model.addAttribute("enter_new_password", messageSource.getMessage("enter_new_password", null, locale));
+        model.addAttribute("new_password_condition", messageSource.getMessage("new_password_condition", null, locale));
+        model.addAttribute("enter_new_password_again", messageSource.getMessage("enter_new_password_again", null, locale));
+        model.addAttribute("notification_setting", messageSource.getMessage("notification_setting", null, locale));
+        model.addAttribute("sale_noti", messageSource.getMessage("sale_noti", null, locale));
+        model.addAttribute("receive_new_sale_noti", messageSource.getMessage("receive_new_sale_noti", null, locale));
+        model.addAttribute("display_on_web", messageSource.getMessage("display_on_web", null, locale));
+        model.addAttribute("send_by_email", messageSource.getMessage("send_by_email", null, locale));
+        model.addAttribute("receive_all_noti", messageSource.getMessage("receive_all_noti", null, locale));
+        model.addAttribute("noti_houseowner", messageSource.getMessage("noti_houseowner", null, locale));
+        model.addAttribute("receive_noti_houseowner", messageSource.getMessage("receive_noti_houseowner", null, locale));
+        model.addAttribute("my_post", messageSource.getMessage("my_post", null, locale));
+        model.addAttribute("contact_history", messageSource.getMessage("contact_history", null, locale));
+        model.addAttribute("filter_by_action", messageSource.getMessage("filter_by_action", null, locale));
+        model.addAttribute("all_title", messageSource.getMessage("all_title", null, locale));
+        model.addAttribute("seen_title", messageSource.getMessage("seen_title", null, locale));
+        model.addAttribute("saved_title", messageSource.getMessage("saved_title", null, locale));
+        model.addAttribute("contacted", messageSource.getMessage("contacted", null, locale));
+        model.addAttribute("post_title", messageSource.getMessage("post_title", null, locale));
+        model.addAttribute("action_title", messageSource.getMessage("action_title", null, locale));
+        model.addAttribute("time_title", messageSource.getMessage("time_title", null, locale));
+        model.addAttribute("clear_history", messageSource.getMessage("clear_history", null, locale));
+        model.addAttribute("save_noti_setting", messageSource.getMessage("save_noti_setting", null, locale));
+        model.addAttribute("alert_before_delete_history", messageSource.getMessage("alert_before_delete_history", null, locale));
+        model.addAttribute("read_only", messageSource.getMessage("read_only", null, locale));
+    }
     // </editor-fold>
 
     // <editor-fold> desc="Notification"

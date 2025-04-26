@@ -4,6 +4,7 @@ import Button from '../atomics/Button.jsx';
 const LoginButton = ({
     className,
     style = {},
+    children,
     ...rest
 }) => {
     return (
@@ -12,6 +13,7 @@ const LoginButton = ({
                 className={className}
                 type='submit'
                 style={style}
+                text={children}
                 {...rest}
             >
             </Button>
