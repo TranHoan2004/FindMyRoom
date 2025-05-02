@@ -1,5 +1,3 @@
-console.log(readOnly)
-
 const avatarInput = document.getElementById("avatarInput");
 const avatarPreview = document.getElementById("avatarPreview");
 const editBtn = document.getElementById("editInfoBtn");
@@ -46,24 +44,24 @@ document.getElementById("userInfoForm").addEventListener("submit", function (e) 
 
     const age = getAge(dob);
     if (isNaN(age) || age < 18) {
-        errors.push("Bạn phải từ 18 tuổi trở lên.");
+        errors.push(alert18Older);
     }
 
     const phoneRegex = /^(0)(3[2-9]|5[6|8|9]|7[0|6-9]|8[1-5]|9[0-9])[0-9]{7}$/;
     if (!phoneRegex.test(phone)) {
-        errors.push("Số điện thoại không hợp lệ. Vui lòng nhập đúng định dạng Việt Nam (10 số, bắt đầu bằng 0).");
+        errors.push(alertPhonenumber);
     }
 
     if (!province || !district || !houseNumber || !street) {
-        errors.push("Vui lòng nhập đầy đủ địa chỉ (Tỉnh/TP, Quận/Huyện, Số nhà, Tên đường).");
+        errors.push(alertAddress);
     }
 
     if (errors.length > 0) {
-        alert("❌ Lỗi:\n" + errors.join("\n"));
+        alert("❌ " + errorTitle + ":\n" + errors.join("\n"));
         return;
     }
 
-    alert("✅ Thông tin đã được cập nhật thành công!");
+    alert("✅ " + updateSuccessfully);
     inputs.forEach(input => {
         input.setAttribute("readonly", true);
         input.setAttribute("disabled", true);
@@ -102,9 +100,9 @@ document.getElementById("changePasswordForm").addEventListener("submit", functio
     passwordMessage.className = "";
 
     if (!passwordRegex.test(newPassword.value)) {
-        alert("Mật khẩu chưa đáp ứng yêu cầu.");
+        alert(passwordNotAccepted1);
         document.getElementById("newPasswordFeedback").textContent =
-            "Mật khẩu chưa đáp ứng yêu cầu.";
+            passwordNotAccepted1;
         newPassword.classList.add("is-invalid");
         isValid = false;
     } else {
@@ -112,19 +110,19 @@ document.getElementById("changePasswordForm").addEventListener("submit", functio
     }
 
     if (newPassword.value !== confirmPassword.value) {
-        alert("Mật khẩu xác nhận không khớp.");
+        alert(passwordNotAccepted2);
         document.getElementById("confirmPasswordFeedback").textContent =
-            "Mật khẩu xác nhận không khớp.";
+            passwordNotAccepted2;
         confirmPassword.classList.add("is-invalid");
         isValid = false;
     } else {
-        alert("Mật khẩu xác nhận khớp.");
+        alert(passwordAccepted);
         confirmPassword.classList.remove("is-invalid");
     }
 
     if (isValid) {
         passwordMessage.className = "alert alert-success";
-        passwordMessage.textContent = "✅ Mật khẩu đã được đổi thành công!";
+        passwordMessage.textContent = "✅ " + updatePasswordSuccessfully;
 
         setTimeout(() => {
             currentPassword.value = "";

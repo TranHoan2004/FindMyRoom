@@ -1,6 +1,11 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
+    # for normal deployment
+#    url: jdbc:mysql://localhost:3306/findmytro?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8&autoReconnect=true&allowPublicKeyRetrieval=true
+    # for deploying by docker container
+    url: jdbc:mysql://ipadress:3306/findmytro?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8&autoReconnect=true&allowPublicKeyRetrieval=true
+    username: root
   jpa:
     hibernate:
       ddl-auto: update

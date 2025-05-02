@@ -44,6 +44,15 @@ public class PostServiceImpl implements PostService {
         return getPostDTOs(pageable, posts, posts.getTotalPages());
     }
 
+    @Override
+    public Page<PostResponseDTO> getAllPostByUserId(long id, int page, int size) throws Exception {
+        logger.info("getAllPostByUserId");
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Post> posts = repo.findAllByUserId(id, pageable);
+        System.out.println(posts.getTotalPages());
+        return getPostDTOs(pageable, posts, posts.getTotalElements());
+    }
+
     @NotNull
     private Page<PostResponseDTO> getPostDTOs(Pageable pageable, @NotNull Page<Post> posts, long count) throws Exception {
         if (posts.isEmpty()) {
@@ -53,7 +62,6 @@ public class PostServiceImpl implements PostService {
         List<Post> postDTOs = posts.getContent();
         List<PostResponseDTO> postDTOList = new ArrayList<>();
         postDTOs.forEach(p -> postDTOList.add(mapping.convert(p)));
-
         return new PageImpl<>(postDTOList, pageable, count);
     }
 }

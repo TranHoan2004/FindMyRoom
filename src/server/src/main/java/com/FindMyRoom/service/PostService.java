@@ -7,4 +7,6 @@ public interface PostService {
     Page<PostResponseDTO> getAllPostDTOsByPage(int page, int size) throws Exception;
 
     Page<PostResponseDTO> getAllFilteredPostDTOsByPage(int page, int size, String string) throws Exception;
+
+    Page<PostResponseDTO> getAllPostByUserId(long id, int page, int size) throws Exception;
 }

@@ -21,4 +21,6 @@ public interface PostRepository extends CrudRepository<Post, Long> {
         OR p.specialItem LIKE :str
         """)
     Page<Post> findAllWithFilter(Pageable pageable, @Param("str") String string);
+
+    Page<Post> findAllByUserId(Long userId, Pageable pageable);
 }

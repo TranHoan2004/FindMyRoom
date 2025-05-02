@@ -1,0 +1,5 @@
+target/*.original
+*.iml
+*.log
+.git
+.idea

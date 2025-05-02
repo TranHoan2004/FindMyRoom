@@ -186,6 +186,16 @@ public class SetupGlobalAttributes {
         model.addAttribute("save_noti_setting", messageSource.getMessage("save_noti_setting", null, locale));
         model.addAttribute("alert_before_delete_history", messageSource.getMessage("alert_before_delete_history", null, locale));
         model.addAttribute("read_only", messageSource.getMessage("read_only", null, locale));
+        model.addAttribute("alert_18_older", messageSource.getMessage("alert_18_older", null, locale));
+        model.addAttribute("alert_phone_number", messageSource.getMessage("alert_phone_number", null, locale));
+        model.addAttribute("alert_address", messageSource.getMessage("alert_address", null, locale));
+        model.addAttribute("error_title", messageSource.getMessage("error_title", null, locale));
+        model.addAttribute("update_successfully", messageSource.getMessage("update_successfully", null, locale));
+        model.addAttribute("password_not_accepted1", messageSource.getMessage("password_not_accepted1", null, locale));
+        model.addAttribute("password_not_accepted2", messageSource.getMessage("password_not_accepted2", null, locale));
+        model.addAttribute("password_accepted", messageSource.getMessage("password_accepted", null, locale));
+        model.addAttribute("update_password_successfully", messageSource.getMessage("update_password_successfully", null, locale));
+//        model.addAttribute("", messageSource.getMessage("", null, locale));
     }
     // </editor-fold>
 

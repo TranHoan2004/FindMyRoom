@@ -115,12 +115,11 @@ public class AuthenticationConfig implements Constants.Role {
 
     @Bean
     public UserDetailsService userDetailsService(UserService service) {
-        logger.info("check username and password");
         return email -> {
+            logger.info("check username and password");
             UserResponseDTO dto;
             try {
                 dto = service.getUserDTOByEmail(email);
-                logger.info(dto.getPassword() + " " + dto.getEmail());
             } catch (Exception e) {
                 throw new UsernameNotFoundException("User not found");
             }

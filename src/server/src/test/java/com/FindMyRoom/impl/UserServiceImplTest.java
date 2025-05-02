@@ -1,8 +1,9 @@
-package com.FindMyRoom.service.impl;
+package com.FindMyRoom.impl;
 
 import com.FindMyRoom.model.Users;
 import com.FindMyRoom.model.utils.Role;
 import com.FindMyRoom.repository.UserRepository;
+import com.FindMyRoom.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
