@@ -1,6 +1,8 @@
 package com.FindMyRoom.security;
 
 import com.FindMyRoom.config.Constants;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -14,8 +16,9 @@ import java.util.logging.Logger;
 
 @Configuration
 @EnableWebSecurity
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthorizationConfig implements Constants.Role {
-    private final Logger logger = Logger.getLogger(this.getClass().getName());
+    Logger logger = Logger.getLogger(this.getClass().getName());
 
     @Bean
     public SecurityFilterChain generalConfiguration(HttpSecurity http) throws Exception {

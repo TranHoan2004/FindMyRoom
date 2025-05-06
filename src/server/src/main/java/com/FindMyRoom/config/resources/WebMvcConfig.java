@@ -1,4 +1,4 @@
-package com.FindMyRoom.config;
+package com.FindMyRoom.config.resources;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Bean;

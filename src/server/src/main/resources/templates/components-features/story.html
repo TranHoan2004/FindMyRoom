@@ -14,41 +14,7 @@
         <div class="swiper-wrapper" id="story-content"></div>
     </div>
     <script th:src="@{/js/lib/swiper-bundle.min.js}"></script>
-    <script>
-        const swiper = new Swiper(".mySwiper", {
-            slidesPerView: 4,
-            spaceBetween: 15,
-            freeMode: true,
-            breakpoints: {
-                576: {
-                    slidesPerView: 5
-                },
-                768: {
-                    slidesPerView: 6
-                }
-            }
-        });
-
-        fetch('/story/list')
-            .then(response => response.json())
-            .then(data => {
-                const container = document.getElementById('story-container')
-                const div = document.getElementById('story-content')
-                let content = ''
-                // console.log(data)
-                data.forEach((d) => {
-                    content += `
-                            <div class="swiper-slide text-center">
-                                <img src="${d.thumbnailImg}" width="100" height="100"
-                                        class="rounded-circle mb-1" alt="">
-                                <div><small>${d.storyType}</small></div>
-                            </div>`;
-                })
-                div.innerHTML = content
-                container.appendChild(div)
-            })
-            .catch(err => console.error('err when loading images ', err))
-    </script>
+    <script th:src="@{/js/story/DisplayStory.js}" type="module"></script>
 </div>
 </body>
 

@@ -3,15 +3,14 @@ package com.FindMyRoom.dto.response;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-@Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class NotificationResponseDTO {
-    String id;
+public class StoryResponse {
+    String encodedId;
     String link;
-    String message;
-    String title;
-    boolean status;
+    String thumbnailImg;
+    String storyType;
 }

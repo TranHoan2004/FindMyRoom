@@ -3,6 +3,7 @@ package com.FindMyRoom.model;
 import com.FindMyRoom.model.utils.AdminID;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.util.Set;
 
@@ -13,18 +14,19 @@ import java.util.Set;
 @Builder
 @Entity
 @Table(name = "Admin")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Admin {
     @EmbeddedId
-    private AdminID id;
+    AdminID id;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @MapsId("adminID")
     @JoinColumn(name = "admin_id", referencedColumnName = "id")
-    private Users user;
+    Users user;
 
     @OneToMany(mappedBy = "admin", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Employee> employees;
+    Set<Employee> employees;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "admin")
-    private Set<Services> services;
+    Set<Services> services;
 }

@@ -67,7 +67,7 @@ const LoginForm = () => {
             <LoginButton
                 className='login100-form-btn'
                 type='submit'
-                text='Login'
+                children={'Login'}
                 style={{ background: 'rgb(87, 184, 70)' }}
             ></LoginButton>
 

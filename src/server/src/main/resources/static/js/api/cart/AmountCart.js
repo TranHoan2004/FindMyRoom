@@ -8,9 +8,7 @@ export async function GetAmountCart() {
                 }
             }
         )
-        const data = response.data
-        console.log(data)
-        return data
+        return response.data
     } catch (e) {
         console.log(e.message)
     }

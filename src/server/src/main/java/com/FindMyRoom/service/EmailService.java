@@ -1,6 +1,8 @@
 package com.FindMyRoom.service;
 
 import jakarta.mail.internet.MimeMessage;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;

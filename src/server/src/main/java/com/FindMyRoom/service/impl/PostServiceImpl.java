@@ -5,6 +5,9 @@ import com.FindMyRoom.mapping.PostMapping;
 import com.FindMyRoom.model.Post;
 import com.FindMyRoom.repository.PostRepository;
 import com.FindMyRoom.service.PostService;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -17,10 +20,11 @@ import java.util.List;
 import java.util.logging.Logger;
 
 @Service
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PostServiceImpl implements PostService {
-    private final PostRepository repo;
-    private final PostMapping mapping;
-    private final Logger logger = Logger.getLogger(this.getClass().getName());
+    PostRepository repo;
+    PostMapping mapping;
+    Logger logger = Logger.getLogger(this.getClass().getName());
 
     public PostServiceImpl(PostRepository repo) {
         this.repo = repo;
@@ -28,7 +32,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Page<PostResponseDTO> getAllPostDTOsByPage(int page, int size) throws Exception {
+    public Page<PostResponseDTO> getAllPostDTOsByPage(int page, int size) {
         logger.info("getAllPostDTOs");
         Pageable pageable = PageRequest.of(page, size);
         Page<Post> posts = repo.findAll(pageable);
@@ -37,7 +41,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Page<PostResponseDTO> getAllFilteredPostDTOsByPage(int page, int size, @NotNull String string) throws Exception {
+    public Page<PostResponseDTO> getAllFilteredPostDTOsByPage(int page, int size, @NotNull String string) {
         logger.info("getAllFilteredPostDTOsByPage");
         Pageable pageable = PageRequest.of(page, size);
         Page<Post> posts = repo.findAllWithFilter(pageable, "%" + string.toLowerCase() + "%");
@@ -45,18 +49,17 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Page<PostResponseDTO> getAllPostByUserId(long id, int page, int size) throws Exception {
+    public Page<PostResponseDTO> getAllPostByUserId(long id, int page, int size) {
         logger.info("getAllPostByUserId");
         Pageable pageable = PageRequest.of(page, size);
         Page<Post> posts = repo.findAllByUserId(id, pageable);
-        System.out.println(posts.getTotalPages());
         return getPostDTOs(pageable, posts, posts.getTotalElements());
     }
 
     @NotNull
-    private Page<PostResponseDTO> getPostDTOs(Pageable pageable, @NotNull Page<Post> posts, long count) throws Exception {
+    private Page<PostResponseDTO> getPostDTOs(Pageable pageable, @NotNull Page<Post> posts, long count) {
         if (posts.isEmpty()) {
-            throw new Exception("No posts");
+            throw new EntityNotFoundException("No posts");
         }
 
         List<Post> postDTOs = posts.getContent();

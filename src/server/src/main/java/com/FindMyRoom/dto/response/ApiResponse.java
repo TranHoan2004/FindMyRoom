@@ -1,17 +1,17 @@
 package com.FindMyRoom.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class NotificationResponseDTO {
-    String id;
-    String link;
+public class ApiResponse<T> {
+    int code;
     String message;
-    String title;
-    boolean status;
+    T data;
 }

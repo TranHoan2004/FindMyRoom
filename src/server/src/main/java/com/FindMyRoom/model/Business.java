@@ -2,6 +2,7 @@ package com.FindMyRoom.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.util.Set;
 
@@ -12,24 +13,25 @@ import java.util.Set;
 @Builder
 @Entity
 @Table(name = "Business")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Business {
     @Id
-    private Long id;
+    Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     @MapsId
-    private Users user;
+    Users user;
 
     @Column(nullable = false)
-    private float balance;
+    float balance;
 
     @Column(nullable = false, length = 20, name = "permission_number")
-    private String permissionNumber;
+    String permissionNumber;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "business")
-    private Set<BoardingHouse> boardingHouseList;
+    Set<BoardingHouse> boardingHouseList;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "business")
-    private Set<Post> posts;
+    Set<Post> posts;
 }

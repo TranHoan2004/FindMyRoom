@@ -7,15 +7,15 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
-    List<String> getAllEmails() throws Exception;
+    List<String> getAllEmails();
 
-    UserResponseDTO getUserDTOByEmail(String email) throws Exception;
+    UserResponseDTO getUserDTOByEmail(String email);
 
     void addAnNewAccount(UserRequestDTO userDTO);
 
-    void updateUserDTO(String email, String password) throws Exception;
+    void updateUserDTO(String email, String password);
 
-    Optional<UserResponseDTO> getAllUserDTOs() throws Exception;
+    Optional<UserResponseDTO> getAllUserDTOs();
 
     boolean isPhoneNumberExisting(String phoneNumber);
 

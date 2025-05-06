@@ -1,5 +1,7 @@
 package com.FindMyRoom.controller.utils;
 
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
@@ -8,8 +10,9 @@ import org.springframework.ui.Model;
 import java.util.Locale;
 
 @Component
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class SetupGlobalAttributes {
-    private final MessageSource messageSource;
+    MessageSource messageSource;
 
     public SetupGlobalAttributes(MessageSource messageSource) {
         this.messageSource = messageSource;

@@ -1,15 +1,14 @@
 package com.FindMyRoom.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Data
-@SuperBuilder
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class CartResponseDTO {
-    private String id;
-    private int size;
+    String id;
+    int size;
 }

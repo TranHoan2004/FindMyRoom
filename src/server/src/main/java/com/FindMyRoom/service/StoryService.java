@@ -1,11 +1,11 @@
 package com.FindMyRoom.service;
 
-import com.FindMyRoom.dto.StoryDTO;
+import com.FindMyRoom.dto.response.StoryResponse;
 
 import java.util.List;
 
 public interface StoryService {
-    List<StoryDTO> getAllStoryDTOs() throws Exception;
+    List<StoryResponse> getAllStoryDTOs();
 
-    StoryDTO getStoryDTOById(Long id) throws Exception;
+    StoryResponse getStoryDTOById(Long id);
 }

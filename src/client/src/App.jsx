@@ -1,8 +1,10 @@
+import Header from './components/organisms/Header'
 import LoginPage from './pages/LoginPage'
 
 function App() {
   return (
-    <LoginPage></LoginPage>
+    // <LoginPage></LoginPage>
+    <Header></Header>
   )
 }
 

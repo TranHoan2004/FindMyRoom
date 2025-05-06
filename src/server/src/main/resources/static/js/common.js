@@ -104,7 +104,7 @@ import {GetAllNotification} from "./api/notification/GetAllNotification.js";
 window.addEventListener('load', () => {
     const noti = document.getElementById('notificationAmount')
     GetAllNotification().then(data => {
-        noti.innerHTML = data.length
+        noti.innerHTML = data ? data.data.length : 0;
     }).catch(e => {
         console.log(e.message)
     })

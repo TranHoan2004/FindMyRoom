@@ -4,6 +4,8 @@ import com.FindMyRoom.config.Constants;
 import com.FindMyRoom.dto.response.UserResponseDTO;
 import com.FindMyRoom.service.UserService;
 import jakarta.servlet.http.HttpSession;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -27,8 +29,9 @@ import java.util.logging.Logger;
 
 @Configuration
 @EnableWebSecurity
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthenticationConfig implements Constants.Role {
-    private final Logger logger = Logger.getLogger(this.getClass().getName());
+    Logger logger = Logger.getLogger(this.getClass().getName());
 
     @Bean
     public SecurityFilterChain authenticationConfiguration(HttpSecurity http, UserDetailsService service,

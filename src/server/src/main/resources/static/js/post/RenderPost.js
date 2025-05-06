@@ -7,11 +7,12 @@ document.addEventListener('DOMContentLoaded', () => {
 async function renderPosts(page, filter) {
     page = page === null ? 1 : page;
     try {
-        const responseData = await GetData(page, filter);
+        const rawResponseData = await GetData(page, filter);
+        const responseData = rawResponseData.data
         let html = '';
         let pageIndex = '';
 
-        const data = responseData._embedded?.postResponseDTOList;
+        const data = responseData.content;
         if (!data || data.length === 0) {
             html += `
                 <div class="card card-post">
@@ -36,6 +37,7 @@ async function renderPosts(page, filter) {
         console.log(err)
     }
 }
+
 window.renderPosts = renderPosts;
 
 // xử lý bộ lọc và trình bày post theo bộ lọc

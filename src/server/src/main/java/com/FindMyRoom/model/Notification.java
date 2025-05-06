@@ -1,9 +1,11 @@
 package com.FindMyRoom.model;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 @Data
@@ -12,25 +14,25 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @Entity
 @Table(name = "notification")
-// HoanTX
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    long id;
 
     @Column(nullable = false)
-    private String link;
+    String link;
 
     @Column(nullable = false, columnDefinition = "VARCHAR(5000)")
-    private String message;
+    String message;
 
     @Column(nullable = false)
-    private String title;
+    String title;
 
     // False for not seen yet, True for having seen
     @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
-    private boolean status;
+    boolean status;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Users user;
+    Users user;
 }

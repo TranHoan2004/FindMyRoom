@@ -5,15 +5,19 @@ import com.FindMyRoom.mapping.CartMapping;
 import com.FindMyRoom.model.Cart;
 import com.FindMyRoom.repository.CartRepository;
 import com.FindMyRoom.service.CartService;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.util.logging.Logger;
 
 @Service
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CartServiceImpl implements CartService {
-    private final CartRepository repo;
-    private final CartMapping mapping;
-    private final Logger logger = Logger.getLogger(CartServiceImpl.class.getName());
+    CartRepository repo;
+    CartMapping mapping;
+    Logger logger = Logger.getLogger(CartServiceImpl.class.getName());
 
     public CartServiceImpl(CartRepository repo) {
         this.repo = repo;
@@ -21,11 +25,11 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public CartResponseDTO getCartByUserID(Long id) throws Exception {
+    public CartResponseDTO getCartByUserID(Long id) {
         logger.info("getCartByUserID");
         Cart cart = repo.findByUserId(id);
         if (cart == null) {
-            throw new Exception("Cart not found");
+            throw new EntityNotFoundException("Cart not found");
         }
         return mapping.convert(cart);
     }

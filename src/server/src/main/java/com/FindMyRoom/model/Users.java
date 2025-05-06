@@ -3,6 +3,7 @@ package com.FindMyRoom.model;
 import com.FindMyRoom.model.utils.Role;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.FutureOrPresent;
@@ -17,75 +18,73 @@ import java.util.Set;
 @Getter
 @Entity
 @Table(name = "Users")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    Long id;
 
     @Column(nullable = false, length = 30, unique = true)
-    @Pattern(regexp = "^[A-Za-z](.*)(@)(.{2,})(\\\\.)(.{2,})", message = "Must follow the format <name>@<domain>")
     @Setter
-    private String email;
+    String email;
 
     @Column(nullable = false)
-    @Size(max = 32, min = 8)
     @Setter
-    private String password;
+    String password;
 
     @Column
     @Setter
-    private String fullname;
+    String fullname;
 
     @Column(name = "phone_number", nullable = false)
-    @Size(max = 11, min = 10)
     @Setter
-    private String phoneNumber;
+    String phoneNumber;
 
     @Column
     @Setter
-    private Boolean gender;
+    Boolean gender;
 
     @Column(name = "image_url", columnDefinition = "LONGTEXT")
     @Setter
-    private byte[] imgURL;
+    byte[] imgURL;
 
     @Column(nullable = false)
     @Setter
-    private Boolean status;
+    Boolean status;
 
     @Column(name = "created_date", nullable = false)
     @FutureOrPresent
     @DateTimeFormat(pattern = "yyyy-MM-dd", fallbackPatterns = {"yyyy/MM/dd", "dd-MM-yyyy", "dd/MM/yyyy"})
     @Temporal(TemporalType.DATE)
     @Setter
-    private LocalDate createdDate;
+    LocalDate createdDate;
 
     @Setter
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role;
+    Role role;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
-    private Set<Admin> admins;
+    Set<Admin> admins;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
-    private Set<Employee> employees;
+    Set<Employee> employees;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
-    private Set<Business> businesses;
+    Set<Business> businesses;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
-    private Set<Post> posts;
+    Set<Post> posts;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
-    private Set<Review> reviews;
+    Set<Review> reviews;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
-    private Set<Booking> bookings;
+    Set<Booking> bookings;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
-    private Cart cart;
+    Cart cart;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
-    private Set<Notification> notifications;
+    Set<Notification> notifications;
 }

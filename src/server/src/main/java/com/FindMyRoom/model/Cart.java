@@ -1,10 +1,8 @@
 package com.FindMyRoom.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -16,14 +14,15 @@ import java.util.Set;
 @Builder
 @Entity
 @Table(name = "Cart")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Cart {
     @Id
-    private Long id;
+    Long id;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     @MapsId
-    private Users user;
+    Users user;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
@@ -31,11 +30,11 @@ public class Cart {
             joinColumns = @JoinColumn(name = "post_id"),
             inverseJoinColumns = @JoinColumn(name = "cart_id")
     )
-    private Set<Post> post;
+    Set<Post> post;
 
     @Column(nullable = false)
     @Min(0)
     @Max(999)
-    private int size;
+    int size;
 }
 

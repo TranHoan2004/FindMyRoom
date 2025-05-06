@@ -2,10 +2,13 @@ package com.FindMyRoom.controller;
 
 import com.FindMyRoom.controller.utils.SessionController;
 import com.FindMyRoom.dto.request.UserRequestDTO;
+import com.FindMyRoom.dto.response.ApiResponse;
 import com.FindMyRoom.service.EmailService;
 import com.FindMyRoom.service.UserService;
 import com.FindMyRoom.utils.RandomCode;
 import jakarta.servlet.http.HttpSession;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,18 +16,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Controller
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class AuthenticationController {
-    private final EmailService eSrv;
-    private final UserService uSrv;
-    private String randomCode;
-    private final SessionController sc;
-    private final Logger logger = Logger.getLogger(this.getClass().getName());
+    final EmailService eSrv;
+    final UserService uSrv;
+    String randomCode;
+    final SessionController sc;
+    final Logger logger = Logger.getLogger(this.getClass().getName());
 
     public AuthenticationController(UserService userService, SessionController sc, EmailService service) {
         this.randomCode = null;
@@ -72,16 +77,32 @@ public class AuthenticationController {
                 // if true, we create a new account, this email should not be existing
                 if (!emails.contains(email)) {
                     sendEmail(email, session);
-                    return ResponseEntity.status(HttpStatus.OK).body("Ready to create a new account");
+                    return ResponseEntity.status(HttpStatus.ACCEPTED).body(new ApiResponse<>(
+                            HttpStatus.ACCEPTED.value(),
+                            "Ready to create a new account",
+                            null
+                    ));
                 }
-                return ResponseEntity.badRequest().body("This email is already existing");
+                return ResponseEntity.badRequest().body(new ApiResponse<>(
+                        HttpStatus.CONFLICT.value(),
+                        "This email is already existing",
+                        null
+                ));
             }
             if (emails.contains(email)) {
                 // if false, we reset password, this email should be existing
                 sendEmail(email, session);
-                return ResponseEntity.status(HttpStatus.OK).body("Ready to reset password");
+                return ResponseEntity.status(HttpStatus.CONTINUE).body(new ApiResponse<>(
+                        HttpStatus.CONTINUE.value(),
+                        "Ready to reset password",
+                        null
+                ));
             }
-            return ResponseEntity.badRequest().body("Email not found");
+            return ResponseEntity.badRequest().body(new ApiResponse<>(
+                    HttpStatus.NOT_FOUND.value(),
+                    "Email not found",
+                    null
+            ));
         } catch (Exception e) {
             logger.warning(e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -89,34 +110,57 @@ public class AuthenticationController {
     }
 
     @PostMapping("/validate-code")
-    public ResponseEntity<String> validateCode(HttpSession session) {
-        return ResponseEntity.ok((String) session.getAttribute("randomCode"));
+    public ResponseEntity<ApiResponse<String>> validateCode(HttpSession session) {
+        return ResponseEntity.ok(new ApiResponse<>(
+                HttpStatus.OK.value(),
+                (String) session.getAttribute("randomCode"),
+                null
+        ));
     }
 
     @PostMapping("/create")
-    public ResponseEntity<String> createAccount(@RequestBody UserRequestDTO userDTO) {
+    public ResponseEntity<ApiResponse<Object>> createAccount(@Valid @RequestBody UserRequestDTO userDTO) {
         try {
             if (uSrv.isPhoneNumberExisting(userDTO.getPhoneNumber())) {
-                return ResponseEntity.status(HttpStatus.CONFLICT).body("Phone number is existing");
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiResponse<>(
+                        HttpStatus.CONFLICT.value(),
+                        "Phone number is existing",
+                        null
+                ));
             }
             uSrv.addAnNewAccount(userDTO);
-            return ResponseEntity.status(HttpStatus.OK).body("Create account successfully");
+            return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>(
+                    HttpStatus.CREATED.value(),
+                    "Create account successfully",
+                    null
+            ));
         } catch (Exception e) {
             logger.log(Level.ALL, e.getMessage(), e);
         }
-        return ResponseEntity.badRequest().body("Create account failed");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse<>(
+                HttpStatus.BAD_REQUEST.value(),
+                "Create account failed",
+                null));
     }
 
     @PutMapping("/update")
-    public ResponseEntity<String> updateAccount(@RequestBody UserRequestDTO userDTO) {
+    public ResponseEntity<ApiResponse<String>> updateAccount(@Valid @RequestBody UserRequestDTO userDTO) {
         logger.info("updateAccount");
         try {
             logger.info(userDTO.toString());
             uSrv.updateUserDTO(userDTO.getEmail(), userDTO.getPassword());
-            return ResponseEntity.status(HttpStatus.OK).body("Update account successfully");
+            return ResponseEntity.ok(new ApiResponse<>(
+                    HttpStatus.OK.value(),
+                    "Update account successfully",
+                    null
+            ));
         } catch (Exception e) {
             logger.warning(e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage() + ", update account failed");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse<>(
+                    HttpStatus.BAD_REQUEST.value(),
+                    e.getMessage() + ", update account failed",
+                    null
+            ));
         }
     }
 

@@ -3,6 +3,8 @@ package com.FindMyRoom.controller;
 import com.FindMyRoom.controller.utils.SessionController;
 import com.FindMyRoom.service.UserService;
 import jakarta.servlet.http.HttpSession;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,10 +15,11 @@ import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/user")
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserController {
-    private final SessionController sc;
-    private final UserService uSrv;
-    private final Logger logger = Logger.getLogger(UserController.class.getName());
+    SessionController sc;
+    UserService uSrv;
+    Logger logger = Logger.getLogger(UserController.class.getName());
 
     public UserController(SessionController sc, UserService uSrv) {
         this.sc = sc;

@@ -2,6 +2,7 @@ package com.FindMyRoom.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
@@ -10,18 +11,19 @@ import lombok.*;
 @Builder
 @Entity
 @Table(name = "Slider")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Slider {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    Long id;
 
     @Column(nullable = false, columnDefinition = "LONGTEXT", name = "image_url")
-    private byte[] imgURL;
+    byte[] imgURL;
 
     @Column(nullable = false)
-    private Boolean status;
+    Boolean status;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "author_id")
-    private Employee author;
+    Employee author;
 }

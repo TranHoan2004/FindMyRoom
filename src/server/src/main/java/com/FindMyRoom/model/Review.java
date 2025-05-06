@@ -2,6 +2,7 @@ package com.FindMyRoom.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.FutureOrPresent;
@@ -14,25 +15,26 @@ import java.time.LocalDate;
 @Builder
 @Entity
 @Table(name = "Review")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    Long id;
 
     @Column(nullable = false)
-    private String content;
+    String content;
 
     @Column(nullable = false, name = "created_date")
     @FutureOrPresent
     @DateTimeFormat(pattern = "yyyy-MM-dd", fallbackPatterns = {"yyyy/MM/dd", "dd-MM-yyyy", "dd/MM/yyyy"})
     @Temporal(TemporalType.DATE)
-    private LocalDate createdDate;
+    LocalDate createdDate;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "house_id")
-    private BoardingHouse house;
+    BoardingHouse house;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "author_id")
-    private Users user;
+    Users user;
 }

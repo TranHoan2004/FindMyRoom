@@ -2,6 +2,7 @@ package com.FindMyRoom.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.FutureOrPresent;
@@ -15,54 +16,55 @@ import java.util.Set;
 @Builder
 @Entity
 @Table(name = "Post")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    Long id;
 
     @Column(nullable = false)
-    private String title;
+    String title;
 
     @Column(nullable = false)
-    private String content;
+    String content;
 
     @Column(nullable = false)
-    private String address;
+    String address;
 
     @Column(nullable = false, columnDefinition = "LONGTEXT", name = "thumbnai_url")
-    private byte[] thumbnailURL;
+    byte[] thumbnailURL;
 
     @Column(name = "special_items", nullable = false)
-    private String specialItem;
+    String specialItem;
 
     @Column(columnDefinition = "LONGTEXT", nullable = false)
-    private String media;
+    String media;
 
     @Column(name = "created_date", nullable = false)
     @FutureOrPresent
     @DateTimeFormat(pattern = "yyyy-MM-dd", fallbackPatterns = {"yyyy/MM/dd", "dd-MM-yyyy", "dd/MM/yyyy"})
     @Temporal(TemporalType.DATE)
-    private LocalDate createdDate;
+    LocalDate createdDate;
 
     @Column(nullable = false)
-    private Boolean status;
+    Boolean status;
 
     @Column(nullable = false, columnDefinition = "BIGINT DEFAULT 0", name = "view_count")
-    private Long view;
+    Long view;
 
     @Column(nullable = false, columnDefinition = "BIGINT DEFAULT 0", name = "post_like")
-    private Long like;
+    Long like;
 
     @Column(nullable = false, columnDefinition = "BIGINT DEFAULT 0", name = "post_share")
-    private Long share;
+    Long share;
 
-    private Set<String> comments;
+    Set<String> comments;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    private Users user;
+    Users user;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "business_id")
-    private Business business;
+    Business business;
 }

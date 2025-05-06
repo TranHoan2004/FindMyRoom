@@ -1,5 +1,6 @@
 package com.FindMyRoom.mapping;
 
+import com.FindMyRoom.controller.utils.URLIdEncoder;
 import com.FindMyRoom.dto.request.UserRequestDTO;
 import com.FindMyRoom.dto.response.UserResponseDTO;
 import com.FindMyRoom.model.Users;
@@ -15,15 +16,13 @@ public class UserMapping {
             case ROLE_BUSINESSMAN -> role = "Business Manager";
         }
         return UserResponseDTO.builder()
-                .id(users.getId())
+                .encodeId(URLIdEncoder.encodeId(users.getId()))
                 .email(users.getEmail())
                 .password(users.getPassword())
                 .fullname(users.getFullname())
-                .phoneNumber(users.getPhoneNumber())
                 .imgURL(users.getImgURL())
                 .status(users.getStatus())
                 .createdDate(users.getCreatedDate())
-                .gender(users.getGender())
                 .role(role)
                 .systemRole(users.getRole())
                 .build();

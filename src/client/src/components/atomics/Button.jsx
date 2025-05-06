@@ -2,12 +2,16 @@ import React from 'react';
 
 const Button = ({
     className,
-    text,
+    type = 'button',
+    children,
     ...rest
 }) => {
     return (
-        <button className={className} {...rest}>
-            {text}
+        <button
+            className={className}
+            type={type}
+            {...rest}>
+            {children}
         </button>
     );
 };

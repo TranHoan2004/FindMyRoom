@@ -4,6 +4,8 @@ import com.FindMyRoom.dto.response.UserResponseDTO;
 import com.FindMyRoom.service.UserService;
 import com.FindMyRoom.service.impl.UserServiceImpl;
 import jakarta.servlet.http.HttpSession;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -15,9 +17,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Component
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class SessionController {
-    private final UserService service;
-    private final Logger logger = Logger.getLogger(this.getClass().getName());
+    UserService service;
+    Logger logger = Logger.getLogger(this.getClass().getName());
 
     public SessionController(UserServiceImpl service) {
         this.service = service;

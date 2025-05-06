@@ -1,6 +1,5 @@
 package com.FindMyRoom.service.impl;
 
-import com.FindMyRoom.dto.EmployeeDTO;
 import com.FindMyRoom.repository.EmployeeRepository;
 import com.FindMyRoom.service.EmployeeService;
 import org.springframework.stereotype.Service;
@@ -15,8 +14,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         this.repo = repo;
     }
 
-    @Override
-    public Optional<EmployeeDTO> getAllEmployeeDTOs() {
-        return Optional.empty();
-    }
+//    @Override
+//    public Optional<EmployeeDTO> getAllEmployeeDTOs() {
+//        return Optional.empty();
+//    }
 }

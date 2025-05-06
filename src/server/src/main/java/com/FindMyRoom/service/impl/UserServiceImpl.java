@@ -7,6 +7,9 @@ import com.FindMyRoom.model.Users;
 import com.FindMyRoom.model.utils.Role;
 import com.FindMyRoom.repository.UserRepository;
 import com.FindMyRoom.service.UserService;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,11 +20,12 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 @Service
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserServiceImpl implements UserService {
-    private final UserRepository repo;
-    private final BCryptPasswordEncoder encoder;
-    private final UserMapping mapping;
-    private final Logger logger = Logger.getLogger(this.getClass().getName());
+    UserRepository repo;
+    BCryptPasswordEncoder encoder;
+    UserMapping mapping;
+    Logger logger = Logger.getLogger(this.getClass().getName());
 
     public UserServiceImpl(UserRepository repo, BCryptPasswordEncoder encoder) {
         this.repo = repo;
@@ -30,20 +34,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<String> getAllEmails() throws Exception {
+    public List<String> getAllEmails() {
         List<String> emails = repo.getEmails();
         if (emails.isEmpty()) {
-            throw new Exception("Not found");
+            throw new EntityNotFoundException("There are no emails in the database");
         }
         return emails;
     }
 
     @Override
-    public UserResponseDTO getUserDTOByEmail(String email) throws Exception {
+    public UserResponseDTO getUserDTOByEmail(String email) {
         logger.info("getUserDTOByEmail");
         Users users = repo.getByEmail(email);
         if (users == null) {
-            throw new Exception("User not found");
+            throw new EntityNotFoundException("User not found");
         }
         return mapping.convert(users);
     }
@@ -60,11 +64,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUserDTO(String email, String password) throws Exception {
+    public void updateUserDTO(String email, String password) {
         logger.info("updateUserDTO");
         Users users = repo.getByEmail(email);
         if (users == null) {
-            throw new Exception("User not found");
+            throw new EntityNotFoundException("User not found");
         }
         // update users information
         users.setPassword(encoder.encode(password));
@@ -74,11 +78,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<UserResponseDTO> getAllUserDTOs() throws Exception {
+    public Optional<UserResponseDTO> getAllUserDTOs() {
         logger.info("getAllUserDTOs");
         Iterable<Users> list = repo.findAll();
         if (!list.iterator().hasNext()) {
-            throw new Exception("No results");
+            throw new EntityNotFoundException("There are no Users in the database");
         }
         Optional<UserResponseDTO> optionalUser = Optional.empty();
         for (Users user : list) {
@@ -94,10 +98,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(String email) throws Exception {
+    public void deleteUser(String email) {
         Users user = repo.getByEmail(email);
         if (user == null) {
-            throw new Exception("User not found");
+            throw new EntityNotFoundException("User not found");
         }
         repo.deleteById(user.getId());
     }

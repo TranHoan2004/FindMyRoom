@@ -13,4 +13,10 @@ public interface Constants {
         String ROLE_BUSINESSMAN = "BUSINESSMAN";
         String ROLE_EMPLOYEE = "EMPLOYEE";
     }
+
+    interface Regex {
+        String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        String PHONE_REGEX = "^[0-9]{10}$";
+        String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]$";
+    }
 }

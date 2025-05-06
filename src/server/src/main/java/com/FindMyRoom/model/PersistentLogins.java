@@ -1,10 +1,8 @@
 package com.FindMyRoom.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
 
@@ -14,17 +12,18 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Table(name = "persistent_logins")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class PersistentLogins {
     @Id
     @Column(length = 64)
-    private String series;
+    String series;
 
     @Column(length = 64, nullable = false)
-    private String username;
+    String username;
 
     @Column(length = 64, nullable = false)
-    private String token;
+    String token;
 
     @Column(nullable = false)
-    private LocalDateTime lastUsed;
+    LocalDateTime lastUsed;
 }

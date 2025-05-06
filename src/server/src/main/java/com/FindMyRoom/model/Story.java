@@ -2,6 +2,7 @@ package com.FindMyRoom.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
@@ -10,17 +11,16 @@ import lombok.*;
 @Builder
 @Entity
 @Table(name = "story")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Story {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String title;
+    Long id;
 
-    //    @Enumerated(EnumType.STRING)
-//    private StoryType type;
-    private String link;
-    private String description;
-    private byte[] thumbnailImg;
+    String title;
+    String link;
+    String description;
+    byte[] thumbnailImg;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private StoryType type;

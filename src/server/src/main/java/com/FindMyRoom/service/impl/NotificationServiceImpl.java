@@ -5,6 +5,8 @@ import com.FindMyRoom.mapping.NotificationMapping;
 import com.FindMyRoom.model.Notification;
 import com.FindMyRoom.repository.NotificationRepository;
 import com.FindMyRoom.service.NotificationService;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,10 +14,11 @@ import java.util.List;
 import java.util.logging.Logger;
 
 @Service
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class NotificationServiceImpl implements NotificationService {
-    private final NotificationRepository repo;
-    private NotificationMapping mapping;
-    private final Logger logger = Logger.getLogger(NotificationServiceImpl.class.getName());
+    NotificationRepository repo;
+    NotificationMapping mapping;
+    Logger logger = Logger.getLogger(NotificationServiceImpl.class.getName());
 
     public NotificationServiceImpl(NotificationRepository repo) {
         this.repo = repo;

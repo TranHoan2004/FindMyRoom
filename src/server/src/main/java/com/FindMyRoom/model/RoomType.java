@@ -2,6 +2,7 @@ package com.FindMyRoom.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.util.Set;
 
@@ -12,13 +13,14 @@ import java.util.Set;
 @Builder
 @Entity
 @Table(name = "RoomType")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class RoomType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    Long id;
 
-    private String name;
+    String name;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "type")
-    private Set<BoardingHouse> houses;
+    Set<BoardingHouse> houses;
 }

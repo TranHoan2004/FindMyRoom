@@ -13,7 +13,7 @@ const LoginButton = ({
                 className={className}
                 type='submit'
                 style={style}
-                text={children}
+                children={children}
                 {...rest}
             >
             </Button>

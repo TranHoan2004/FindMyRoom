@@ -1,5 +1,6 @@
 package com.FindMyRoom.mapping;
 
+import com.FindMyRoom.controller.utils.URLIdEncoder;
 import com.FindMyRoom.dto.response.PostResponseDTO;
 import com.FindMyRoom.model.Post;
 import org.jetbrains.annotations.NotNull;
@@ -10,7 +11,7 @@ public class PostMapping {
     public PostResponseDTO convert(@NotNull Post post) {
         String filePath = new String(post.getThumbnailURL(), StandardCharsets.UTF_8);
         return PostResponseDTO.builder()
-                .id(post.getId())
+                .id(URLIdEncoder.encodeId(post.getId()))
                 .title(post.getTitle())
                 .content(post.getContent())
                 .thumbnailURL(filePath)

@@ -1,17 +1,16 @@
-package com.FindMyRoom.dto.response;
+package com.FindMyRoom.exception;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-@Data
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class NotificationResponseDTO {
-    String id;
-    String link;
+public enum ErrorCode {
+    USER_EXISTED(1001, "User existed"),
+    USER_INVALID(1002, "User invalid");
+
+    int code;
     String message;
-    String title;
-    boolean status;
 }

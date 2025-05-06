@@ -3,9 +3,7 @@ export async function GetAllNotification() {
         const response = await axios.get(
             '/notification/list'
         )
-        const data = response.data
-        console.log(data)
-        return data
+        return response.data
     } catch (e) {
         console.log(e)
     }

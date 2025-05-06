@@ -21,8 +21,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String index() {
-//        return "redirect:/home";
-        return "users-features/profile";
+        return "redirect:/home";
     }
 
     @GetMapping("/home")
@@ -45,7 +44,7 @@ public class HomeController {
         try {
             UserResponseDTO user = sc.getEntityFromSession(session);
             UserResponseDTO newUser = UserResponseDTO.builder()
-                    .encodeId(URLIdEncoder.encodeId(user.getId()))
+                    .encodeId(user.getEncodeId())
                     .role(user.getRole())
                     .fullname(user.getFullname())
                     .build();
